@@ -1,0 +1,54 @@
+--- digikam3/digikam/digikam.desktop~	Wed Jul 28 02:02:58 2004
++++ digikam3/digikam/digikam.desktop	Wed Jul 28 02:02:58 2004
+@@ -24,3 +24,5 @@
+ Comment[pl]=Program do zarzÄ…dzania zdjÄ™ciami
+ Comment[nl]=Foto beheerprogramma
+-Terminal=0
++Terminal=false
++Categories=Qt;KDE;Graphics;Photograph;
++# vi: encoding=utf-8
+--- digikam3/interfaces/digikamplugin.desktop~	Wed Jul 28 02:00:35 2004
++++ digikam3/interfaces/digikamplugin.desktop	Wed Jul 28 02:00:35 2004
+@@ -4,7 +4,7 @@
+ X-KDE-ServiceType=Digikam/Plugin
+ X-KDE-DerivedName=Digikam Plugin
+ Comment=A Digikam Plugin
+-Name[de]=Externe Module für Digikam
++Name[de]=Externe Module fÃ¼r Digikam
+ Name[es]=Complemento para Digikam
+ Name[fr]=Module externe pour Digikam
+ Name[it]=Plugin per Digikam
+@@ -12,7 +12,7 @@
+ Name[pl]=Wtyczki do programu Digikam
+ Name[nl]=Digikam plugin
+ Name[hu]=Digikam Plugin
+-Comment[de]=Ein externes Modul für Digikam
++Comment[de]=Ein externes Modul fÃ¼r Digikam
+ Comment[es]=Un complemento para Digikam
+ Comment[fr]=Un module externe pour Digikam
+ Comment[it]=Modulo esterno per Digikam
+@@ -22,3 +22,4 @@
+ Comment[hu]=Digikam Plugin
+ [PropertyDef::X-Digikam-MergeMenu]
+ Type=bool
++# vi: encoding=utf-8
+--- digikam3/digikamcameraclient/digikamcameraclient.desktop~	Wed Jul 28 01:54:17 2004
++++ digikam3/digikamcameraclient/digikamcameraclient.desktop	Wed Jul 28 01:56:29 2004
+@@ -14,12 +14,13 @@
+ Type=Application
+ DocPath=digikamcameraclient/digikamcameraclient.html
+ GenericName=Digital camera interface for KDE
+-GenericName[de]=KDE Interface für Digital Kameras
+-GenericName[es]=Interfaz de KDE para cámaras digitales
++GenericName[de]=KDE Interface fÃ¼r Digital Kameras
++GenericName[es]=Interfaz de KDE para cÃ¡maras digitales
+ GenericName[fr]=Interface KDE pour appareil photo numerique
+ GenericName[it]=Interfaccia KDE per fotocamere digitali
+-GenericName[da]=KDE grænseflade til digitalkameraer
++GenericName[da]=KDE grÃ¦nseflade til digitalkameraer
+ GenericName[pl]=Interfejs KDE do aparatu cyfrowego
+ GenericName[nl]=KDE koppeling voor digitale camara's
+ GenericName[hu]=DigitÃ¡lis kamera kliens KDE-hez
+-Terminal=0
++Terminal=false
++# vi: encoding=utf-8

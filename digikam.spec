@@ -2,14 +2,15 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	0.6
-Release:	3
+Version:	0.6.1
+Release:	1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	c841d1bbd51d0105f545f106451d5ae5
+Source0:	http://digikam.free.fr/Tarballs/%{name}-%{version}.tar.bz2
+# Source0-md5:	ad3a349a05306a6cd76a268510cc9253
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	kdelibs-devel
+BuildRequires:	kdesdk-po2xml
 BuildRequires:	libexif-devel >= 0.5.7
 BuildRequires:	libgphoto2-devel
 BuildRequires:	lockdev-devel
@@ -37,18 +38,18 @@ A KDE frontend for gphoto2 - header files.
 Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 
 %prep
-%setup -q 
+%setup -q -n %{name}3
 
 %build
 
 #%{__make} -f admin/Makefile.common configure.in
 #cp admin/acinclude.m4.in ./acinclude.m4
-%{__libtoolize}
-%{__aclocal}
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-%{__perl} -w admin/am_edit
+#%{__libtoolize}
+#%{__aclocal}
+#%{__autoconf}
+#%{__autoheader}
+#%{__automake}
+#%{__perl} -w admin/am_edit
 
 %configure \
 	--disable-rpath

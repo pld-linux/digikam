@@ -1,12 +1,12 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	0.7
-Release:	1
+Version:	0.7.1
+Release:	0.1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
-# Source0-md5:	73472790ce00de424451dc89ec20e57d
+# Source0-md5:	46ff47fd3757d53263891eb5fbd72fc6
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	automake
 BuildRequires:	gdbm-devel
@@ -14,7 +14,7 @@ BuildRequires:	imlib2-devel
 BuildRequires:	kdelibs-devel
 BuildRequires:	kdesdk-po2xml
 BuildRequires:	libgphoto2-devel
-BuildRequires:	libkexif-devel >= 0.1
+BuildRequires:	libkexif-devel >= 0.2
 BuildRequires:	libkipi-devel >= 0.1
 BuildRequires:	libtiff-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
@@ -49,10 +49,12 @@ Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 
 %{__sed} -i -e "s,Terminal=0,Terminal=false,g" \
 	./digikam/digikam/digikam.desktop \
+	./digikam/showfoto/showfoto.desktop \
 	./digikam/imageplugins/digikamimageplugin_core.desktop \
 	./digikam/utilities/imageeditor/digikamimageplugin.desktop
 echo "Categories=Qt;KDE;Graphics;Photograph;" >> ./digikam/digikam/digikam.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/digikam/digikam.desktop
+echo "# vi: encoding=utf-8" >> ./digikam/showfoto/showfoto.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/imageplugins/digikamimageplugin_core.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/utilities/imageeditor/digikamimageplugin.desktop
 
@@ -95,6 +97,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/services/*
 %{_datadir}/servicetypes/*
 %{_datadir}/apps/digikam
+%{_datadir}/apps/showfoto
 %{_desktopdir}/kde/*.desktop
 %{_iconsdir}/[!l]*/*/*/*
 

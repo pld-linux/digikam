@@ -9,8 +9,8 @@ Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
 # Source0-md5:	c841d1bbd51d0105f545f106451d5ae5
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	kdelibs-devel
-BuildRequires:	libgphoto2-devel
 BuildRequires:	libexif-devel >= 0.5.7
+BuildRequires:	libgphoto2-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define         _htmldir        /usr/share/doc/kde/HTML
@@ -27,13 +27,13 @@ cyfrowych pod Linuksem.
 Summary:	A KDE frontend for gphoto2 - header files
 Summary(pl):	Interfejs KDE do gphoto2 - pliki nag³ówkowe
 Group:		Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
-A KDE frontend for gphoto2 - header files
+A KDE frontend for gphoto2 - header files.
 
 %description -l pl
-Interfejs KDE do gphoto2 - pliki nag³ówkowe
+Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 
 %prep
 %setup -q 
@@ -41,17 +41,15 @@ Interfejs KDE do gphoto2 - pliki nag³ówkowe
 %build
 kde_appsdir="%{_applnkdir}"; export kde_appsdir
 kde_htmldir="%{_htmldir}"; export kde_htmldir
-kde_icondir="%{_pixmapsdir}"; export kde_icondir
 
 #%{__make} -f admin/Makefile.common configure.in
 #cp admin/acinclude.m4.in ./acinclude.m4
-rm -f missing
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-/usr/bin/perl -w admin/am_edit
+%{__perl} -w admin/am_edit
 
 %configure \
 	--disable-rpath
@@ -66,27 +64,29 @@ rm -rf $RPM_BUILD_ROOT
 
 %find_lang %{name} --with-kde
 
-%post   -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
-
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post   -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc README
 %attr(755,root,root) %{_bindir}/*
-%{_libdir}/*.*.*.*
-%{_libdir}/kde3/*
+%attr(755,root,root) %{_libdir}/*.so.*.*.*
+%attr(755,root,root) %{_libdir}/kde3/*.so
+%{_libdir}/kde3/*.la
 %{_applnkdir}/Graphics/*
 %{_datadir}/services/*
 %{_datadir}/servicetypes/*
 %{_datadir}/apps/digikam
 %{_datadir}/apps/digikamcameraclient
-%{_pixmapsdir}/[!l]*/*/*/*
+%{_iconsdir}/[!l]*/*/*/*
 %{_mandir}/man1/*
 
 %files devel
-%{_includedir}/digikam
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/*.so
 %{_libdir}/*.la
-%{_libdir}/*.so
+%{_includedir}/digikam

@@ -3,7 +3,7 @@ Summary:	A KDE frontend for gphoto2
 Summary(pl):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	0.7.0
-Release:	0.%{_snap}1
+Release:	0.%{_snap}.1
 License:	GPL
 Group:		X11/Applications
 #Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
@@ -18,6 +18,7 @@ BuildRequires:	libgphoto2-devel
 BuildRequires:	lockdev-devel
 BuildRequires:	imlib-devel
 BuildRequires:	libkipi-devel
+BuildRequires:	libkexif-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -75,11 +76,11 @@ rm -rf $RPM_BUILD_ROOT
 	kde_htmldir=%{_kdedocdir} \
 	kde_libs_htmldir=%{_kdedocdir}
 
-#install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
-#mv $RPM_BUILD_ROOT/usr/share/applnk/Graphics/*.desktop $RPM_BUILD_ROOT%{_desktopdir}/kde
-#install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
+install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
+mv $RPM_BUILD_ROOT/usr/share/applnk/Graphics/*.desktop $RPM_BUILD_ROOT%{_desktopdir}/kde
 
-%find_lang %{name} --with-kde
+
+#find_lang %{name} --with-kde
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -87,7 +88,8 @@ rm -rf $RPM_BUILD_ROOT
 %post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
-%files -f %{name}.lang
+%files 
+##f %{name}.lang
 %defattr(644,root,root,755)
 %doc README
 %attr(755,root,root) %{_bindir}/*
@@ -97,10 +99,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/services/*
 %{_datadir}/servicetypes/*
 %{_datadir}/apps/digikam
-%{_datadir}/apps/digikamcameraclient
 %{_desktopdir}/kde/*.desktop
 %{_iconsdir}/[!l]*/*/*/*
-%{_mandir}/man1/*
 
 %files devel
 %defattr(644,root,root,755)

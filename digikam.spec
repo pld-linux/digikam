@@ -8,7 +8,7 @@ License:	GPL
 Group:		X11/Applications
 #Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source0:	%{name}-%{_snap}.tar.bz2
-# Source0-md5:	842fd284823b48392a659936246da685
+# Source0-md5:	54e1b0b5697b90a439fd9734550c50bf
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	automake
 BuildRequires:	kdelibs-devel

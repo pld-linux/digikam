@@ -12,6 +12,7 @@ BuildRequires:	kdelibs-devel
 BuildRequires:	libexif-devel >= 0.5.7
 BuildRequires:	libgphoto2-devel
 BuildRequires:	lockdev-devel
+BuildRequires:	imlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define         _htmldir        /usr/share/doc/kde/HTML

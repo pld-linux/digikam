@@ -5,7 +5,7 @@ Version:	0.7.2
 Release:	0.1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
 # Source0-md5:	c4573ae34c87b41efad4e69f983c36b9
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	automake

@@ -65,7 +65,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
 mv $RPM_BUILD_ROOT/usr/share/applnk/Graphics/*.desktop $RPM_BUILD_ROOT%{_desktopdir}/kde
 install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
-echo 'Categories=Photograph' >> $RPM_BUILD_ROOT%{_desktopdir}/kde/%{name}.desktop
+echo 'Categories=Graphics;Photograph;' >> $RPM_BUILD_ROOT%{_desktopdir}/kde/%{name}.desktop
 
 %find_lang %{name} --with-kde
 

@@ -6,7 +6,7 @@ Version:	0.6.2
 Release:	0.1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://digikam.free.fr/Tarballs/%{name}-%{version}.tar.bz2
+Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 # Source0-md5:	842fd284823b48392a659936246da685
 Patch0:		%{name}-desktop.patch
 URL:		http://digikam.sourceforge.net/

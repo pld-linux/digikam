@@ -42,7 +42,7 @@ A KDE frontend for gphoto2 - header files.
 Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 
 %prep
-%setup -q -n %{name}3
+%setup -q -n %{name}
 %patch0 -p1
 
 %build

@@ -9,11 +9,12 @@ Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 # Source0-md5:	842fd284823b48392a659936246da685
 Patch0:		%{name}-desktop.patch
+Patch1:		%{name}-libexif06.patch
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	automake
 BuildRequires:	kdelibs-devel
 BuildRequires:	kdesdk-po2xml
-BuildRequires:	libexif-devel >= 1:0.5.7
+BuildRequires:	libexif-devel >= 1:0.6.10
 BuildRequires:	libgphoto2-devel
 BuildRequires:	lockdev-devel
 BuildRequires:	imlib-devel
@@ -44,6 +45,7 @@ Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 %prep
 %setup -q -n %{name}
 %patch0 -p1
+%patch1 -p1
 
 %build
 cp -f /usr/share/automake/config.sub admin

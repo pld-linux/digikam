@@ -8,6 +8,7 @@ License:	GPL
 Group:		X11/Applications
 Source0:	http://digikam.free.fr/Tarballs/%{name}-%{version}.tar.bz2
 # Source0-md5:	ad3a349a05306a6cd76a268510cc9253
+Patch0:		%{name}-desktop.patch
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	kdelibs-devel
 BuildRequires:	kdesdk-po2xml
@@ -41,6 +42,7 @@ Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 
 %prep
 %setup -q -n %{name}3
+%patch0 -p1
 
 %build
 
@@ -67,7 +69,6 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
 mv $RPM_BUILD_ROOT/usr/share/applnk/Graphics/*.desktop $RPM_BUILD_ROOT%{_desktopdir}/kde
 install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
-echo 'Categories=Graphics;Photograph;' >> $RPM_BUILD_ROOT%{_desktopdir}/kde/%{name}.desktop
 
 %find_lang %{name} --with-kde
 

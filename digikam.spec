@@ -3,13 +3,14 @@ Summary:	A KDE frontend for gphoto2
 Summary(pl):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	0.6.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://digikam.free.fr/Tarballs/%{name}-%{version}.tar.bz2
 # Source0-md5:	ad3a349a05306a6cd76a268510cc9253
 Patch0:		%{name}-desktop.patch
 URL:		http://digikam.sourceforge.net/
+BuildRequires:	automake
 BuildRequires:	kdelibs-devel
 BuildRequires:	kdesdk-po2xml
 BuildRequires:	libexif-devel >= 1:0.5.7
@@ -45,6 +46,7 @@ Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 %patch0 -p1
 
 %build
+cp -f /usr/share/automake/config.sub admin
 
 #%{__make} -f admin/Makefile.common configure.in
 #cp admin/acinclude.m4.in ./acinclude.m4

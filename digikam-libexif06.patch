@@ -1,0 +1,15 @@
+--- digikam/utilities/kexif/kexifentry.cpp.old	2003-09-19 21:11:09.000000000 +0200
++++ digikam/utilities/kexif/kexifentry.cpp	2004-09-18 12:37:39.000000000 +0200
+@@ -65,7 +65,11 @@
+     mName  = QString(exif_tag_get_name(mExifEntry->tag));
+     mTitle = QString(exif_tag_get_title(mExifEntry->tag));
+     mDescription = QString(exif_tag_get_description(mExifEntry->tag));
+-    mValue = QString(exif_entry_get_value(mExifEntry));
++    char val[1024];
++    exif_entry_get_value(mExifEntry, val, 1023);
++    // just in case we don't get a null-terminated string
++    val[1023] = '\0'; 
++    mValue = QString(val);
+ }
+ 
+ QString KExifEntry::getName()

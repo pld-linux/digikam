@@ -17,7 +17,7 @@ BuildRequires:	libgphoto2-devel
 BuildRequires:	libkexif-devel >= 0.1
 BuildRequires:	libkipi-devel >= 0.1
 BuildRequires:	libtiff-devel
-BuildRequires:	pkgconfig >= 0.9.0
+BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description

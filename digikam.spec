@@ -11,7 +11,7 @@ Source0:	http://digikam.free.fr/Tarballs/%{name}-%{version}.tar.bz2
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	kdelibs-devel
 BuildRequires:	kdesdk-po2xml
-BuildRequires:	libexif-devel >= 0.5.7
+BuildRequires:	libexif-devel >= 1:0.5.7
 BuildRequires:	libgphoto2-devel
 BuildRequires:	lockdev-devel
 BuildRequires:	imlib-devel

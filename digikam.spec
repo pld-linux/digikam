@@ -1,8 +1,9 @@
+
 Summary:	A KDE frontend for gphoto2
 Summary(pl):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	0.6
-Release:	2
+Release:	3
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
@@ -14,8 +15,6 @@ BuildRequires:	libgphoto2-devel
 BuildRequires:	lockdev-devel
 BuildRequires:	imlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define         _htmldir        /usr/share/doc/kde/HTML
 
 %description
 Designed to be a standalone application to preview and download images
@@ -41,8 +40,6 @@ Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 %setup -q 
 
 %build
-kde_appsdir="%{_applnkdir}"; export kde_appsdir
-kde_htmldir="%{_htmldir}"; export kde_htmldir
 
 #%{__make} -f admin/Makefile.common configure.in
 #cp admin/acinclude.m4.in ./acinclude.m4
@@ -62,9 +59,15 @@ kde_htmldir="%{_htmldir}"; export kde_htmldir
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
+	DESTDIR=$RPM_BUILD_ROOT \
+	'kde_htmldir=%{_kdedocdir}'
+install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
+mv $RPM_BUILD_ROOT/usr/share/applnk/Graphics/*.desktop $RPM_BUILD_ROOT%{_desktopdir}/kde
+install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
+echo 'Categories=Photograph' >> $RPM_BUILD_ROOT%{_desktopdir}/kde/%{name}.desktop
 
 %find_lang %{name} --with-kde
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -79,11 +82,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/*.so.*.*.*
 %attr(755,root,root) %{_libdir}/kde3/*.so
 %{_libdir}/kde3/*.la
-%{_applnkdir}/Graphics/*
 %{_datadir}/services/*
 %{_datadir}/servicetypes/*
 %{_datadir}/apps/digikam
 %{_datadir}/apps/digikamcameraclient
+%{_desktopdir}/kde/*.desktop
 %{_iconsdir}/[!l]*/*/*/*
 %{_mandir}/man1/*
 

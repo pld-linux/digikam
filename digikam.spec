@@ -16,7 +16,7 @@ BuildRequires:	kdesdk-po2xml
 BuildRequires:	libexif-devel >= 1:0.5.7
 BuildRequires:	libgphoto2-devel
 BuildRequires:	lockdev-devel
-BuildRequires:	imlib-devel
+BuildRequires:	imlib2-devel
 BuildRequires:	libkipi-devel
 BuildRequires:	libkexif-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)

@@ -60,7 +60,8 @@ cp -f /usr/share/automake/config.sub admin
 #%%{__perl} -w admin/am_edit
 
 %configure \
-	--disable-rpath
+	--disable-rpath \
+	--with-qt-libraries=%{_libdir}
 
 %{__make}
 

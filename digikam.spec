@@ -30,6 +30,8 @@ Summary:	A KDE frontend for gphoto2 - header files
 Summary(pl):	Interfejs KDE do gphoto2 - pliki nag³ówkowe
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	kdelibs-devel
+Requires:	libgphoto2-devel
 
 %description devel
 A KDE frontend for gphoto2 - header files.
@@ -68,7 +70,6 @@ install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
 echo 'Categories=Graphics;Photograph;' >> $RPM_BUILD_ROOT%{_desktopdir}/kde/%{name}.desktop
 
 %find_lang %{name} --with-kde
-
 
 %clean
 rm -rf $RPM_BUILD_ROOT

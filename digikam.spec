@@ -1,23 +1,23 @@
-
+%define		_snap	040918
 Summary:	A KDE frontend for gphoto2
 Summary(pl):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	0.6.2
-Release:	2
+Version:	0.7.0
+Release:	0.%{_snap}1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+#Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+Source0:	%{name}-%{_snap}.tar.bz2
 # Source0-md5:	842fd284823b48392a659936246da685
-Patch0:		%{name}-desktop.patch
-Patch1:		%{name}-libexif06.patch
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	automake
 BuildRequires:	kdelibs-devel
 BuildRequires:	kdesdk-po2xml
-BuildRequires:	libexif-devel >= 1:0.6.10
+BuildRequires:	libexif-devel >= 1:0.5.7
 BuildRequires:	libgphoto2-devel
 BuildRequires:	lockdev-devel
 BuildRequires:	imlib-devel
+BuildRequires:	libkipi-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -44,20 +44,22 @@ Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 
 %prep
 %setup -q -n %{name}
-%patch0 -p1
-%patch1 -p1
+
+%{__sed} -i -e "s,Terminal=0,Terminal=false,g" \
+	./digikam/digikam/digikam.desktop \
+	./digikam/imageplugins/digikamimageplugin_core.desktop \
+	./digikam/digikamcameraclient/digikamcameraclient.desktop \
+	./digikam/utilities/imageeditor/digikamimageplugin.desktop
+echo "Categories=Qt;KDE;Graphics;Photograph;" >> ./digikam/digikam/digikam.desktop
+echo "# vi: encoding=utf-8" >> ./digikam/digikam/digikam.desktop
+echo "# vi: encoding=utf-8" >> ./digikam/imageplugins/digikamimageplugin_core.desktop
+echo "# vi: encoding=utf-8" >> ./digikam/digikamcameraclient/digikamcameraclient.desktop
+echo "# vi: encoding=utf-8" >> ./digikam/utilities/imageeditor/digikamimageplugin.desktop
 
 %build
 cp -f /usr/share/automake/config.sub admin
-
-#%%{__make} -f admin/Makefile.common configure.in
-#cp admin/acinclude.m4.in ./acinclude.m4
-#%%{__libtoolize}
-#%%{__aclocal}
-#%%{__autoconf}
-#%%{__autoheader}
-#%%{__automake}
-#%%{__perl} -w admin/am_edit
+export UNSERMAKE=/usr/share/unsermake/unsermake
+%{__make} -f admin/Makefile.common cvs
 
 %configure \
 	--disable-rpath \
@@ -70,10 +72,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	'kde_htmldir=%{_kdedocdir}'
-install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
-mv $RPM_BUILD_ROOT/usr/share/applnk/Graphics/*.desktop $RPM_BUILD_ROOT%{_desktopdir}/kde
-install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
+	kde_htmldir=%{_kdedocdir} \
+	kde_libs_htmldir=%{_kdedocdir}
+
+#install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
+#mv $RPM_BUILD_ROOT/usr/share/applnk/Graphics/*.desktop $RPM_BUILD_ROOT%{_desktopdir}/kde
+#install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
 
 %find_lang %{name} --with-kde
 

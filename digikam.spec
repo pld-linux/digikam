@@ -48,14 +48,14 @@ Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 %build
 cp -f /usr/share/automake/config.sub admin
 
-#%{__make} -f admin/Makefile.common configure.in
+#%%{__make} -f admin/Makefile.common configure.in
 #cp admin/acinclude.m4.in ./acinclude.m4
-#%{__libtoolize}
-#%{__aclocal}
-#%{__autoconf}
-#%{__autoheader}
-#%{__automake}
-#%{__perl} -w admin/am_edit
+#%%{__libtoolize}
+#%%{__aclocal}
+#%%{__autoconf}
+#%%{__autoheader}
+#%%{__automake}
+#%%{__perl} -w admin/am_edit
 
 %configure \
 	--disable-rpath

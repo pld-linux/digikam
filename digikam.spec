@@ -10,6 +10,8 @@ Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.gz
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	kdelibs-devel
 BuildRequires:	libgphoto2-devel
+BuildRequires:	fam-devel
+BuildRequires:	kdesdk-po2xml
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define         _htmldir        /usr/share/doc/kde/HTML

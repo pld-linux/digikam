@@ -1,14 +1,12 @@
-%define		_snap	040918
 Summary:	A KDE frontend for gphoto2
 Summary(pl):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	0.7.0
-Release:	0.%{_snap}.1
+Version:	0.7
+Release:	0.1
 License:	GPL
 Group:		X11/Applications
-#Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
-Source0:	%{name}-%{_snap}.tar.bz2
-# Source0-md5:	54e1b0b5697b90a439fd9734550c50bf
+Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+# Source0-md5:	73472790ce00de424451dc89ec20e57d
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	automake
 BuildRequires:	kdelibs-devel

@@ -9,15 +9,15 @@ Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 # Source0-md5:	73472790ce00de424451dc89ec20e57d
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	automake
+BuildRequires:	gdbm-devel
+BuildRequires:	imlib2-devel
 BuildRequires:	kdelibs-devel
 BuildRequires:	kdesdk-po2xml
-BuildRequires:	libexif-devel >= 1:0.5.7
 BuildRequires:	libgphoto2-devel
-BuildRequires:	lockdev-devel
-BuildRequires:	imlib2-devel
-BuildRequires:	libkipi-devel
-BuildRequires:	libkexif-devel
-BuildRequires:	gdbm-devel
+BuildRequires:	libkexif-devel >= 0.1
+BuildRequires:	libkipi-devel >= 0.1
+BuildRequires:	libtiff-devel
+BuildRequires:	pkgconfig >= 0.9.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -75,8 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 	kde_libs_htmldir=%{_kdedocdir}
 
 install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
-mv $RPM_BUILD_ROOT/usr/share/applnk/Graphics/*.desktop $RPM_BUILD_ROOT%{_desktopdir}/kde
-
+mv $RPM_BUILD_ROOT%{_datadir}/applnk/Graphics/*.desktop $RPM_BUILD_ROOT%{_desktopdir}/kde
 
 %find_lang %{name} --with-kde
 

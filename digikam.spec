@@ -1,12 +1,12 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	0.7.1
+Version:	0.7.2
 Release:	0.1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
-# Source0-md5:	46ff47fd3757d53263891eb5fbd72fc6
+# Source0-md5:	c4573ae34c87b41efad4e69f983c36b9
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	automake
 BuildRequires:	gdbm-devel
@@ -64,7 +64,8 @@ export UNSERMAKE=/usr/share/unsermake/unsermake
 
 %configure \
 	--disable-rpath \
-	--with-qt-libraries=%{_libdir}
+	--with-qt-libraries=%{_libdir} \
+	--enable-final
 
 %{__make}
 

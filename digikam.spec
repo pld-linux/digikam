@@ -18,6 +18,7 @@ BuildRequires:	libkexif-devel >= 0.2
 BuildRequires:	libkipi-devel >= 0.1
 BuildRequires:	libtiff-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
+BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description

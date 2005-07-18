@@ -1,13 +1,14 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	0.7.2
+Version:	0.7.3
 Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	c4573ae34c87b41efad4e69f983c36b9
+# Source0-md5:	19a2b479ea16ce4a227e04215f885780
 URL:		http://digikam.sourceforge.net/
+BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gdbm-devel
 BuildRequires:	imlib2-devel
@@ -19,6 +20,7 @@ BuildRequires:	libkipi-devel >= 0.1
 BuildRequires:	libtiff-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	rpmbuild(macros) >= 1.129
+BuildRequires:	sed >= 4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -40,7 +42,7 @@ Requires:	libgphoto2-devel
 %description devel
 A KDE frontend for gphoto2 - header files.
 
-%description -l pl
+%description devel -l pl
 Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 
 %prep
@@ -48,26 +50,21 @@ Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 
 %build
 
-%{__sed} -i -e "s,Terminal=0,Terminal=false,g" \
+%{__sed} -i -e "s,Categories.*,Categories=Qt;KDE;Graphics;Photograph;," \
 	./digikam/digikam/digikam.desktop \
-	./digikam/showfoto/showfoto.desktop \
-	./digikam/imageplugins/digikamimageplugin_core.desktop \
-	./digikam/utilities/imageeditor/digikamimageplugin.desktop
-echo "Categories=Qt;KDE;Graphics;Photograph;" >> ./digikam/digikam/digikam.desktop
+	./digikam/showfoto/showfoto.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/digikam/digikam.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/showfoto/showfoto.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/imageplugins/digikamimageplugin_core.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/utilities/imageeditor/digikamimageplugin.desktop
 
 cp -f /usr/share/automake/config.sub admin
-export UNSERMAKE=/usr/share/unsermake/unsermake
 %{__make} -f admin/Makefile.common cvs
 
 %configure \
 	--disable-rpath \
 	--with-qt-libraries=%{_libdir} \
-	--enable-final
-
+	--with-imlib2-config=%{_bindir}
 %{__make}
 
 %install
@@ -81,7 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
 mv $RPM_BUILD_ROOT%{_datadir}/applnk/Graphics/*.desktop $RPM_BUILD_ROOT%{_desktopdir}/kde
 
-%find_lang %{name} --with-kde
+%find_lang %{name} --with-kde --all-name
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -91,7 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc README
+%doc AUTHORS ChangeLog README
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/*.so.*.*.*
 %attr(755,root,root) %{_libdir}/kde3/*.so

@@ -98,7 +98,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/services/*
 %{_datadir}/servicetypes/*
 %{_datadir}/apps/digikam
-#%{_datadir}/apps/showfoto
+%{_datadir}/apps/showfoto
 %{_desktopdir}/kde/*.desktop
 %{_iconsdir}/[!l]*/*/*/*
 
@@ -107,4 +107,4 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/*.so
 %{_libdir}/*.la
 %{_includedir}/*.h
-#%{_includedir}/digikam
+%{_includedir}/digikam

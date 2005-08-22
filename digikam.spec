@@ -1,12 +1,13 @@
+%define	_snap	20050822
 Summary:	A KDE frontend for gphoto2
 Summary(pl):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	0.7.4
-Release:	1
+Version:	0.8.0
+Release:	0.%{_snap}.1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	3df53700ff78caca60cab4ea4116c7c5
+Source0:	%{name}-%{version}-%{_snap}.tar.bz2
+# Source0-md5:	56c8e01718ffc64a0c2a2d412b00986c
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -21,6 +22,7 @@ BuildRequires:	libtiff-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	sed >= 4.0
+BuildRequires:	sqlite3-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -46,7 +48,7 @@ A KDE frontend for gphoto2 - header files.
 Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 
 %prep
-%setup -q
+%setup -q -n digikam
 
 %build
 
@@ -88,7 +90,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog README
+%doc digikam/AUTHORS digikam/ChangeLog digikam/README
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/*.so.*.*.*
 %attr(755,root,root) %{_libdir}/kde3/*.so
@@ -96,7 +98,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/services/*
 %{_datadir}/servicetypes/*
 %{_datadir}/apps/digikam
-%{_datadir}/apps/showfoto
+#%{_datadir}/apps/showfoto
 %{_desktopdir}/kde/*.desktop
 %{_iconsdir}/[!l]*/*/*/*
 
@@ -105,4 +107,4 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/*.so
 %{_libdir}/*.la
 %{_includedir}/*.h
-%{_includedir}/digikam
+#%{_includedir}/digikam

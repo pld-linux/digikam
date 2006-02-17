@@ -1,12 +1,12 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	0.8.0
-Release:	2
+Version:	0.8.1
+Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	9a0eaf4cb8e10d082b54b920a6244890
+# Source0-md5:	2672c510a78256a034a666f0e237eb3f
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -57,6 +57,7 @@ echo "# vi: encoding=utf-8" >> ./digikam/digikam/digikam.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/showfoto/showfoto.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/imageplugins/digikamimageplugin_core.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/utilities/imageeditor/digikamimageplugin.desktop
+echo "# vi: encoding=utf-8" >> ./digikam/showfoto/mimetypes/x-raw.desktop
 
 cp -f /usr/share/automake/config.sub admin
 %{__make} -f admin/Makefile.common cvs
@@ -97,6 +98,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/servicetypes/*
 %{_datadir}/apps/digikam
 %{_datadir}/apps/showfoto
+%{_datadir}/mimelnk/image/*.desktop
 %{_desktopdir}/kde/*.desktop
 %{_iconsdir}/[!l]*/*/*/*
 

@@ -2,7 +2,7 @@ Summary:	A KDE frontend for gphoto2
 Summary(pl):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	0.8.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
@@ -79,6 +79,9 @@ mv $RPM_BUILD_ROOT%{_datadir}/applnk/Graphics/*.desktop $RPM_BUILD_ROOT%{_deskto
 
 %find_lang %{name} --with-kde --all-name
 
+# conflict with kdelibs
+rm -f $RPM_BUILD_ROOT%{_datadir}/mimelnk/image/x-raw.desktop
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -96,7 +99,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/servicetypes/*
 %{_datadir}/apps/digikam
 %{_datadir}/apps/showfoto
-%{_datadir}/mimelnk/image/*.desktop
 %{_desktopdir}/kde/*.desktop
 %{_iconsdir}/[!l]*/*/*/*
 

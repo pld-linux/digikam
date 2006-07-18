@@ -54,7 +54,6 @@ echo "# vi: encoding=utf-8" >> ./digikam/digikam/digikam.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/showfoto/showfoto.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/imageplugins/digikamimageplugin_core.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/utilities/imageeditor/digikamimageplugin.desktop
-echo "# vi: encoding=utf-8" >> ./digikam/showfoto/mimetypes/x-raw.desktop
 
 %build
 cp -f /usr/share/automake/config.sub admin
@@ -73,9 +72,6 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT \
 	kde_htmldir=%{_kdedocdir} \
 	kde_libs_htmldir=%{_kdedocdir}
-
-install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
-mv $RPM_BUILD_ROOT%{_datadir}/applnk/Graphics/*.desktop $RPM_BUILD_ROOT%{_desktopdir}/kde
 
 %find_lang %{name} --with-kde --all-name
 

@@ -1,13 +1,13 @@
-%define		_snap	rc1
+%define		_snap	beta1
 Summary:	A KDE frontend for gphoto2
 Summary(pl):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	0.8.2
+Version:	0.9.0
 Release:	0.%{_snap}.1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{_snap}.tar.bz2
-# Source0-md5:	ef9bcad20cfc7ef41015c7c18b2c2075
+# Source0-md5:	fc3a26a91fd6f715ffb75efe8be06e4e
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -77,9 +77,6 @@ rm -rf $RPM_BUILD_ROOT
 	kde_htmldir=%{_kdedocdir} \
 	kde_libs_htmldir=%{_kdedocdir}
 
-install -d $RPM_BUILD_ROOT%{_desktopdir}/kde
-mv $RPM_BUILD_ROOT%{_datadir}/applnk/Graphics/*.desktop $RPM_BUILD_ROOT%{_desktopdir}/kde
-
 %find_lang %{name} --with-kde --all-name
 
 %clean
@@ -99,6 +96,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/servicetypes/*
 %{_datadir}/apps/digikam
 %{_datadir}/apps/showfoto
+%{_datadir}/apps/konqueror/servicemenus/digikam-*.desktop
 %{_desktopdir}/kde/*.desktop
 %{_iconsdir}/[!l]*/*/*/*
 

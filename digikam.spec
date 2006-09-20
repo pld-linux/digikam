@@ -99,6 +99,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/apps/konqueror/servicemenus/digikam-*.desktop
 %{_desktopdir}/kde/*.desktop
 %{_iconsdir}/[!l]*/*/*/*
+%{_mandir}/man1/digitaglinktree.1.gz
 
 %files devel
 %defattr(644,root,root,755)

@@ -15,6 +15,7 @@ BuildRequires:	gdbm-devel
 BuildRequires:	imlib2-devel
 BuildRequires:	kdelibs-devel
 BuildRequires:	kdesdk-po2xml
+BuildRequires:	libstdc++-devel
 BuildRequires:	libgphoto2-devel
 BuildRequires:	libkexif-devel >= 0.2
 BuildRequires:	libkipi-devel >= 0.1

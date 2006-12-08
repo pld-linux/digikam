@@ -11,6 +11,7 @@ Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{_snap}.tar.bz2
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	exiv2-devel >= 0.12
 BuildRequires:	gdbm-devel
 BuildRequires:	imlib2-devel
 BuildRequires:	kdelibs-devel
@@ -65,6 +66,10 @@ cp -f /usr/share/automake/config.sub admin
 %{__make} -f admin/Makefile.common cvs
 
 %configure \
+%if "%{_lib}" == "lib64"
+	--enable-libsuffix=64 \
+%endif
+	--%{?debug:en}%{!?debug:dis}able-debug%{?debug:=full} \
 	--disable-rpath \
 	--with-qt-libraries=%{_libdir} \
 	--with-imlib2-config=%{_bindir}

@@ -7,6 +7,7 @@ License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
 # Source0-md5:	5334d608218fe077a476722e2ce55323
+Patch0:		kde-ac260-lt.patch
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -50,6 +51,7 @@ Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %{__sed} -i -e "s,Categories.*,Categories=Qt;KDE;Graphics;Photograph;," \
 	./digikam/digikam/digikam.desktop \

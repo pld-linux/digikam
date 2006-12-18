@@ -1,15 +1,16 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	0.8.2
+Version:	0.9.0
 Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	fd57b7bfe4577dc2e2efd6d33122a46b
+# Source0-md5:	5334d608218fe077a476722e2ce55323
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	exiv2-devel >= 0.12
 BuildRequires:	gdbm-devel
 BuildRequires:	imlib2-devel
 BuildRequires:	kdelibs-devel
@@ -17,6 +18,7 @@ BuildRequires:	kdesdk-po2xml
 BuildRequires:	libgphoto2-devel
 BuildRequires:	libkexif-devel >= 0.2
 BuildRequires:	libkipi-devel >= 0.1
+BuildRequires:	libstdc++-devel
 BuildRequires:	libtiff-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	rpmbuild(macros) >= 1.129
@@ -48,6 +50,9 @@ Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 
 %prep
 %setup -q
+
+%build
+
 %{__sed} -i -e "s,Categories.*,Categories=Qt;KDE;Graphics;Photograph;," \
 	./digikam/digikam/digikam.desktop \
 	./digikam/showfoto/showfoto.desktop
@@ -56,11 +61,14 @@ echo "# vi: encoding=utf-8" >> ./digikam/showfoto/showfoto.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/imageplugins/digikamimageplugin_core.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/utilities/imageeditor/digikamimageplugin.desktop
 
-%build
 cp -f /usr/share/automake/config.sub admin
 %{__make} -f admin/Makefile.common cvs
 
 %configure \
+%if "%{_lib}" == "lib64"
+	--enable-libsuffix=64 \
+%endif
+	--%{?debug:en}%{!?debug:dis}able-debug%{?debug:=full} \
 	--disable-rpath \
 	--with-qt-libraries=%{_libdir} \
 	--with-imlib2-config=%{_bindir}
@@ -75,9 +83,6 @@ rm -rf $RPM_BUILD_ROOT
 	kde_libs_htmldir=%{_kdedocdir}
 
 %find_lang %{name} --with-kde --all-name
-
-# conflict with kdelibs
-rm -f $RPM_BUILD_ROOT%{_datadir}/mimelnk/image/x-raw.desktop
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -96,8 +101,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/servicetypes/*
 %{_datadir}/apps/digikam
 %{_datadir}/apps/showfoto
+%{_datadir}/apps/konqueror/servicemenus/digikam-*.desktop
 %{_desktopdir}/kde/*.desktop
 %{_iconsdir}/[!l]*/*/*/*
+%{_mandir}/man1/digitaglinktree.1*
 
 %files devel
 %defattr(644,root,root,755)

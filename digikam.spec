@@ -27,8 +27,6 @@ BuildRequires:	sed >= 4.0
 BuildRequires:	sqlite3-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define	_noautoreq	libtool(.*)
-
 %description
 Designed to be a standalone application to preview and download images
 from a digital camera on a Linux machine.

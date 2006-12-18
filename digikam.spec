@@ -51,8 +51,6 @@ Interfejs KDE do gphoto2 - pliki nag³ówkowe.
 %prep
 %setup -q
 
-%build
-
 %{__sed} -i -e "s,Categories.*,Categories=Qt;KDE;Graphics;Photograph;," \
 	./digikam/digikam/digikam.desktop \
 	./digikam/showfoto/showfoto.desktop
@@ -61,6 +59,7 @@ echo "# vi: encoding=utf-8" >> ./digikam/showfoto/showfoto.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/imageplugins/digikamimageplugin_core.desktop
 echo "# vi: encoding=utf-8" >> ./digikam/utilities/imageeditor/digikamimageplugin.desktop
 
+%build
 cp -f /usr/share/automake/config.sub admin
 %{__make} -f admin/Makefile.common cvs
 

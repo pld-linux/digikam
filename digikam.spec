@@ -1,5 +1,5 @@
 Summary:	A KDE frontend for gphoto2
-Summary(pl):	Interfejs KDE do gphoto2
+Summary(pl.UTF-8):   Interfejs KDE do gphoto2
 Name:		digikam
 Version:	0.9.0
 Release:	5
@@ -31,13 +31,13 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Designed to be a standalone application to preview and download images
 from a digital camera on a Linux machine.
 
-%description -l pl
-Samodzielna aplikacja do ogl眃ania i 禼i眊ania obrazk體 z aparat體
+%description -l pl.UTF-8
+Samodzielna aplikacja do ogl膮dania i 艣ci膮gania obrazk贸w z aparat贸w
 cyfrowych pod Linuksem.
 
 %package devel
 Summary:	A KDE frontend for gphoto2 - header files
-Summary(pl):	Interfejs KDE do gphoto2 - pliki nag丑wkowe
+Summary(pl.UTF-8):   Interfejs KDE do gphoto2 - pliki nag艂贸wkowe
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	kdelibs-devel
@@ -46,8 +46,8 @@ Requires:	libgphoto2-devel
 %description devel
 A KDE frontend for gphoto2 - header files.
 
-%description devel -l pl
-Interfejs KDE do gphoto2 - pliki nag丑wkowe.
+%description devel -l pl.UTF-8
+Interfejs KDE do gphoto2 - pliki nag艂贸wkowe.
 
 %prep
 %setup -q

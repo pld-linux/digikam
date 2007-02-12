@@ -1,5 +1,5 @@
 Summary:	A KDE frontend for gphoto2
-Summary(pl.UTF-8):   Interfejs KDE do gphoto2
+Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	0.9.0
 Release:	5
@@ -37,7 +37,7 @@ cyfrowych pod Linuksem.
 
 %package devel
 Summary:	A KDE frontend for gphoto2 - header files
-Summary(pl.UTF-8):   Interfejs KDE do gphoto2 - pliki nagłówkowe
+Summary(pl.UTF-8):	Interfejs KDE do gphoto2 - pliki nagłówkowe
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	kdelibs-devel

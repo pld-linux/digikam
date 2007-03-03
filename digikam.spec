@@ -1,12 +1,15 @@
+
+%define		_rc	rc2
+
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	0.9.0
-Release:	5
+Version:	0.9.1
+Release:	0.%{_rc}.1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	5334d608218fe077a476722e2ce55323
+Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{_rc}.tar.bz2
+# Source0-md5:	3dcb7b71a4842efc9ea387a48f84d00c
 Patch0:		kde-ac260-lt.patch
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	autoconf
@@ -18,6 +21,7 @@ BuildRequires:	kdelibs-devel
 BuildRequires:	kdesdk-po2xml
 BuildRequires:	libgphoto2-devel
 BuildRequires:	libkexif-devel >= 0.2
+BuildRequires:	libkexiv2
 BuildRequires:	libkipi-devel >= 0.1
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtiff-devel
@@ -50,7 +54,7 @@ A KDE frontend for gphoto2 - header files.
 Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}-%{_rc}
 %patch0 -p1
 
 %{__sed} -i -e "s,Categories.*,Categories=Qt;KDE;Graphics;Photograph;," \
@@ -74,6 +78,7 @@ cp -f /usr/share/automake/config.sub admin
 	--with-qt-libraries=%{_libdir} \
 	--with-imlib2-config=%{_bindir}
 %{__make}
+%{__make} -C digikam
 
 %install
 rm -rf $RPM_BUILD_ROOT

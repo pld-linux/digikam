@@ -78,7 +78,6 @@ cp -f /usr/share/automake/config.sub admin
 	--with-qt-libraries=%{_libdir} \
 	--with-imlib2-config=%{_bindir}
 %{__make}
-%{__make} -C digikam
 
 %install
 rm -rf $RPM_BUILD_ROOT

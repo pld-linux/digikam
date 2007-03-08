@@ -13,12 +13,9 @@ URL:		http://digikam.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	exiv2-devel >= 0.12
-BuildRequires:	gdbm-devel
-BuildRequires:	imlib2-devel
+BuildRequires:	jasper-devel >= 1.7.0
 BuildRequires:	kdelibs-devel
-BuildRequires:	kdesdk-po2xml
 BuildRequires:	libgphoto2-devel
-BuildRequires:	libkexif-devel >= 0.2
 BuildRequires:	libkexiv2-devel
 BuildRequires:	libkipi-devel >= 0.1
 BuildRequires:	libstdc++-devel

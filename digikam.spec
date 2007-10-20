@@ -16,7 +16,7 @@ BuildRequires:	exiv2-devel >= 0.14
 BuildRequires:	jasper-devel >= 1.7.0
 BuildRequires:	kdelibs-devel
 BuildRequires:	libgphoto2-devel
-BuildRequires:	libkdcraw-devel >= 0.1.1
+BuildRequires:	libkdcraw-devel >= 0.1.2
 BuildRequires:	libkexiv2-devel >= 0.1.5
 BuildRequires:	libkipi-devel >= 0.1
 BuildRequires:	libstdc++-devel

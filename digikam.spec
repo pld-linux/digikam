@@ -5,7 +5,7 @@ Name:		digikam
 Version:	0.9.2
 Release:	3
 License:	GPL
-Group:		X11/Applications
+Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
 # Source0-md5:	0710efe340d1a30a36e3954ea03c46ef
 Patch0:		kde-ac260-lt.patch

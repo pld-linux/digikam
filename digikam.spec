@@ -3,7 +3,7 @@ Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	0.9.2
-Release:	3
+Release:	4
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
@@ -16,7 +16,7 @@ BuildRequires:	exiv2-devel >= 0.14
 BuildRequires:	jasper-devel >= 1.7.0
 BuildRequires:	kdelibs-devel
 BuildRequires:	libgphoto2-devel
-BuildRequires:	libkdcraw-devel >= 0.1.1
+BuildRequires:	libkdcraw-devel >= 0.1.2
 BuildRequires:	libkexiv2-devel >= 0.1.5
 BuildRequires:	libkipi-devel >= 0.1
 BuildRequires:	libstdc++-devel

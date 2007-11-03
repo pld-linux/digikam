@@ -3,7 +3,7 @@ Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	0.9.2
-Release:	5
+Release:	6
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
@@ -27,6 +27,8 @@ BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	sed >= 4.0
 BuildRequires:	sqlite3-devel
 Obsoletes:	digikamimageplugins
+# sr@Latn vs. sr@latin
+Conflicts:	glibc-misc < 6:2.7
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -88,6 +90,8 @@ rm -rf $RPM_BUILD_ROOT
 
 rm $RPM_BUILD_ROOT%{_libdir}/kde3/*.la
 
+[ -d $RPM_BUILD_ROOT%{_datadir}/locale/sr@latin ] || \
+	mv -f $RPM_BUILD_ROOT%{_datadir}/locale/sr@{Latn,latin}
 %find_lang %{name} --with-kde --all-name
 
 %clean

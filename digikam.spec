@@ -1,5 +1,5 @@
 
-%define		beta	beta1
+%define		beta	beta2
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
@@ -9,7 +9,7 @@ Release:	0.%{beta}.1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{beta}.tar.bz2
-# Source0-md5:	dcafeb8cf7eef49a735b84d9f782e329
+# Source0-md5:	7277c393c1171a53b80dfd576670f251
 Patch0:		kde-ac260-lt.patch
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	autoconf

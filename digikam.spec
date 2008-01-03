@@ -104,9 +104,19 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/*.so.*.*.*
 %attr(755,root,root) %{_libdir}/kde3/*.so
+%attr(755,root,root) %{_datadir}/apps/digikam/utils/digikam-camera
+%dir %{_datadir}/apps/digikam
+%dir %{_datadir}/apps/digikam/utils
+%{_datadir}/apps/digikam/icons
+%{_datadir}/apps/digikam/themes
+%{_datadir}/apps/digikam/about
+%{_datadir}/apps/digikam/data
+%{_datadir}/apps/digikam/profiles
+%{_datadir}/apps/digikam/tips
+%{_datadir}/apps/digikam/digikam-splash.png
+%{_datadir}/apps/digikam/*.rc
 %{_datadir}/services/*
 %{_datadir}/servicetypes/*
-%{_datadir}/apps/digikam
 %{_datadir}/apps/showfoto
 %{_datadir}/apps/konqueror/servicemenus/digikam-*.desktop
 %{_desktopdir}/kde/*.desktop

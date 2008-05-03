@@ -1,13 +1,14 @@
+%define		beta	beta4
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	0.9.3
-Release:	2
+Version:	0.9.4
+Release:	0.%{beta}.1
 License:	GPL
 Group:		X11/Applications/Graphics
-Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	20497c1a02394505f899ef0757ebefad
+Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{beta}.tar.bz2
+# Source0-md5:	a9617cc0fe35d50e981ce7fcd68a1565
 Patch0:		kde-ac260-lt.patch
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	autoconf
@@ -53,7 +54,7 @@ A KDE frontend for gphoto2 - header files.
 Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}-%{beta}
 %patch0 -p1
 
 %{__sed} -i -e "s,Categories.*,Categories=Qt;KDE;Graphics;Photograph;," \

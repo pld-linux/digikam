@@ -1,15 +1,15 @@
-%define		subrel	    rc1
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	0.9.4
-Release:	0.%{subrel}.1
+Version:	0.9.3
+Release:	4
 License:	GPL
 Group:		X11/Applications/Graphics
-Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{subrel}.tar.bz2
-# Source0-md5:	a4b6e618acd5d6cdcd3b8e594cd63f7b
+Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
+# Source0-md5:	20497c1a02394505f899ef0757ebefad
 Patch0:		kde-ac260-lt.patch
+Patch1:		%{name}-compat.patch
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -17,7 +17,7 @@ BuildRequires:	exiv2-devel >= 0.14
 BuildRequires:	jasper-devel >= 1.7.0
 BuildRequires:	kdelibs-devel
 BuildRequires:	libgphoto2-devel
-BuildRequires:	libkdcraw-devel >= 0.1.4
+BuildRequires:	libkdcraw-devel >= 0.1.2
 BuildRequires:	libkexiv2-devel >= 0.1.5
 BuildRequires:	libkipi-devel >= 0.1
 BuildRequires:	libstdc++-devel
@@ -54,8 +54,9 @@ A KDE frontend for gphoto2 - header files.
 Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
-%setup -q -n %{name}-%{version}-%{subrel}
+%setup -q
 %patch0 -p1
+%patch1 -p1
 
 %{__sed} -i -e "s,Categories.*,Categories=Qt;KDE;Graphics;Photograph;," \
 	./digikam/digikam/digikam.desktop \

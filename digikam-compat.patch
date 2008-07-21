@@ -1,0 +1,119 @@
+diff -urN digikam-0.9.3.orig/digikam/digikam/main.cpp digikam-0.9.3/digikam/digikam/main.cpp
+--- digikam-0.9.3.orig/digikam/digikam/main.cpp	2007-12-22 19:19:47 +0200
++++ digikam-0.9.3/digikam/digikam/main.cpp	2008-03-16 23:09:28 +0200
+@@ -49,6 +49,9 @@
+ // KIPI Includes.
+ 
+ #include <libkipi/version.h>
++#if KIPI_VERSION >= 0x000106
++#include <libkipi/interface.h>
++#endif
+ 
+ // Libkexiv2 includes.
+ 
+@@ -58,6 +61,9 @@
+ // Libkdcraw includes.
+ 
+ #include <libkdcraw/version.h>
++#if KDCRAW_VERSION >= 0x000104
++#include <libkdcraw/kdcraw.h>
++#endif
+ #include <libkdcraw/dcrawbinary.h>
+ 
+ // C Ansi includes.
+@@ -91,13 +97,25 @@
+ 
+     QString Gphoto2Ver  = QString(gp_library_version(GP_VERSION_SHORT)[0]);
+ 
++#if KIPI_VERSION >= 0x000106
++    QString libInfo     = QString(I18N_NOOP("Using Kipi library version %1")).arg(KIPI::Interface::version()) +
++#else
+     QString libInfo     = QString(I18N_NOOP("Using Kipi library version %1")).arg(kipi_version) +
++#endif
+                           QString("\n") + 
++#if KEXIV2_VERSION >= 0x000107
++                          QString(I18N_NOOP("Using KExiv2 library version %1")).arg(KExiv2Iface::KExiv2::version()) +
++#else
+                           QString(I18N_NOOP("Using KExiv2 library version %1")).arg(kexiv2_version) +
++#endif
+                           QString("\n") +                           
+                           QString(I18N_NOOP("Using Exiv2 library version %1")).arg(Exiv2Ver) +
+                           QString("\n") +                           
++#if KDCRAW_VERSION >= 0x000104
++                          QString(I18N_NOOP("Using KDcraw library version %1")).arg(KDcrawIface::KDcraw::version()) +
++#else
+                           QString(I18N_NOOP("Using KDcraw library version %1")).arg(kdcraw_version) +
++#endif
+                           QString("\n") +                           
+                           QString(I18N_NOOP("Using Dcraw program version %1")).arg(DcrawVer) +
+                           QString("\n") +                           
+diff -urN digikam-0.9.3.orig/digikam/utilities/imageeditor/editor/editorwindow.cpp digikam-0.9.3/digikam/utilities/imageeditor/editor/editorwindow.cpp
+--- digikam-0.9.3.orig/digikam/utilities/imageeditor/editor/editorwindow.cpp	2007-12-22 19:19:47 +0200
++++ digikam-0.9.3/digikam/utilities/imageeditor/editor/editorwindow.cpp	2008-03-16 23:02:05 +0200
+@@ -78,6 +78,7 @@
+ #include <kprogress.h>
+ #include <kwin.h>
+ #include <kcombobox.h>
++#include <libkdcraw/version.h>
+ 
+ // Local includes.
+ 
+@@ -885,8 +886,15 @@
+         m_IOFileSettings->rawDecodingSettings.outputColorSpace = KDcrawIface::RawDecodingSettings::SRGB;
+ 
+     m_IOFileSettings->rawDecodingSettings.sixteenBitsImage        = config->readBoolEntry("SixteenBitsImage", false);
++#if KDCRAW_VERSION >= 0x000104
++    m_IOFileSettings->rawDecodingSettings.whiteBalance            = (KDcrawIface::RawDecodingSettings::WhiteBalance)config->readNumEntry("WhiteBalance",
++                                                                    KDcrawIface::RawDecodingSettings::CAMERA);
++    m_IOFileSettings->rawDecodingSettings.customWhiteBalance      = config->readNumEntry("CustomWhiteBalance", 6500);
++    m_IOFileSettings->rawDecodingSettings.customWhiteBalanceGreen = config->readDoubleNumEntry("CustomWhiteBalanceGreen", 1.0);
++#else
+     m_IOFileSettings->rawDecodingSettings.automaticColorBalance   = config->readBoolEntry("AutomaticColorBalance", true);
+     m_IOFileSettings->rawDecodingSettings.cameraColorBalance      = config->readBoolEntry("CameraColorBalance", true);
++#endif
+     m_IOFileSettings->rawDecodingSettings.RGBInterpolate4Colors   = config->readBoolEntry("RGBInterpolate4Colors", false);
+     m_IOFileSettings->rawDecodingSettings.DontStretchPixels = config->readBoolEntry("DontStretchPixels", false);
+     m_IOFileSettings->rawDecodingSettings.enableNoiseReduction    = config->readBoolEntry("EnableNoiseReduction", false);
+diff -urN digikam-0.9.3.orig/digikam/utilities/setup/setupdcraw.cpp digikam-0.9.3/digikam/utilities/setup/setupdcraw.cpp
+--- digikam-0.9.3.orig/digikam/utilities/setup/setupdcraw.cpp	2007-12-22 19:19:47 +0200
++++ digikam-0.9.3/digikam/utilities/setup/setupdcraw.cpp	2008-03-16 23:09:28 +0200
+@@ -44,6 +44,7 @@
+ 
+ // LibKDcraw includes.
+ 
++#include <libkdcraw/version.h>
+ #include <libkdcraw/dcrawsettingswidget.h>
+ 
+ // Local includes.
+@@ -89,8 +90,14 @@
+     KConfig* config = kapp->config();
+     config->setGroup("ImageViewer Settings");
+     config->writeEntry("SixteenBitsImage", d->dcrawSettings->sixteenBits());
++#if KDCRAW_VERSION >= 0x000104
++    config->writeEntry("WhiteBalance", d->dcrawSettings->whiteBalance());
++    config->writeEntry("CustomWhiteBalance", d->dcrawSettings->customWhiteBalance());
++    config->writeEntry("CustomWhiteBalanceGreen", d->dcrawSettings->customWhiteBalanceGreen());
++#else
+     config->writeEntry("CameraColorBalance", d->dcrawSettings->useCameraWB());
+     config->writeEntry("AutomaticColorBalance", d->dcrawSettings->useAutoColorBalance());
++#endif
+     config->writeEntry("RGBInterpolate4Colors", d->dcrawSettings->useFourColor());
+     config->writeEntry("DontStretchPixels", d->dcrawSettings->useDontStretchPixels());
+     config->writeEntry("EnableNoiseReduction", d->dcrawSettings->useNoiseReduction());
+@@ -116,8 +123,16 @@
+     d->dcrawSettings->setcaBlueMultiplier(config->readDoubleNumEntry("caBlueMultiplier", 1.0));
+     d->dcrawSettings->setDontStretchPixels(config->readBoolEntry("DontStretchPixels", false));
+     d->dcrawSettings->setUnclipColor(config->readNumEntry("UnclipColors", 0));
++#if KDCRAW_VERSION >= 0x000104
++    d->dcrawSettings->setWhiteBalance((KDcrawIface::RawDecodingSettings::WhiteBalance)
++                                      config->readNumEntry("WhiteBalance",
++                                      KDcrawIface::RawDecodingSettings::CAMERA));
++    d->dcrawSettings->setCustomWhiteBalance(config->readNumEntry("CustomWhiteBalance", 6500));
++    d->dcrawSettings->setCustomWhiteBalanceGreen(config->readDoubleNumEntry("CustomWhiteBalanceGreen", 1.0));
++#else
+     d->dcrawSettings->setCameraWB(config->readBoolEntry("CameraColorBalance", true));
+     d->dcrawSettings->setAutoColorBalance(config->readBoolEntry("AutomaticColorBalance", true));
++#endif
+     d->dcrawSettings->setFourColor(config->readBoolEntry("RGBInterpolate4Colors", false));
+     d->dcrawSettings->setQuality((KDcrawIface::RawDecodingSettings::DecodingQuality)
+                                   config->readNumEntry("RAWQuality",

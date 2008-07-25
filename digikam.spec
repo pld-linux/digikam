@@ -1,5 +1,3 @@
-%define		subrel	    rc1
-
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
@@ -9,23 +7,14 @@ License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-beta1.tar.bz2
 # Source0-md5:	15b4a4041d3200126b1eeea57361ccdd
-Patch0:		kde-ac260-lt.patch
 URL:		http://digikam.sourceforge.net/
+# FIXME - add new BR
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	exiv2-devel >= 0.14
-BuildRequires:	jasper-devel >= 1.7.0
-BuildRequires:	kdelibs-devel
-BuildRequires:	libgphoto2-devel
-BuildRequires:	libkdcraw-devel >= 0.1.4
-BuildRequires:	libkexiv2-devel >= 0.1.5
-BuildRequires:	libkipi-devel >= 0.1
-BuildRequires:	libstdc++-devel
-BuildRequires:	libtiff-devel
+BuildRequires:	automoc4
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel
 Obsoletes:	digikamimageplugins
 # sr@Latn vs. sr@latin
 Conflicts:	glibc-misc < 6:2.7
@@ -44,8 +33,6 @@ Summary:	A KDE frontend for gphoto2 - header files
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2 - pliki nagłówkowe
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	kdelibs-devel
-Requires:	libgphoto2-devel
 
 %description devel
 A KDE frontend for gphoto2 - header files.
@@ -55,28 +42,16 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
 %setup -q -n %{name}-%{version}-beta1
-%patch0 -p1
-
-%{__sed} -i -e "s,Categories.*,Categories=Qt;KDE;Graphics;Photograph;," \
-	./digikam/digikam/digikam.desktop \
-	./digikam/showfoto/showfoto.desktop
-echo "# vi: encoding=utf-8" >> ./digikam/digikam/digikam.desktop
-echo "# vi: encoding=utf-8" >> ./digikam/showfoto/showfoto.desktop
-echo "# vi: encoding=utf-8" >> ./digikam/imageplugins/digikamimageplugin_core.desktop
-echo "# vi: encoding=utf-8" >> ./digikam/utilities/imageeditor/digikamimageplugin.desktop
 
 %build
-cp -f /usr/share/automake/config.sub admin
-%{__make} -f admin/Makefile.common cvs
-
-%configure \
+install -d build
+cd build
+%cmake \
 %if "%{_lib}" == "lib64"
-	--enable-libsuffix=64 \
+        -DLIB_SUFFIX=64 \
 %endif
-	--%{?debug:en}%{!?debug:dis}able-debug%{?debug:=full} \
-	--disable-rpath \
-	--with-qt-libraries=%{_libdir} \
-	--with-imlib2-config=%{_bindir}
+        ../
+
 %{__make}
 
 %install

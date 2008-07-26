@@ -1,3 +1,4 @@
+######		/home/robert/rpm/SOURCES/rpm.groups: no such file
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
@@ -8,13 +9,12 @@ Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-beta1.tar.bz2
 # Source0-md5:	15b4a4041d3200126b1eeea57361ccdd
 URL:		http://digikam.sourceforge.net/
-# FIXME - add new BR
-BuildRequires:	autoconf
-BuildRequires:	automake
 BuildRequires:	automoc4
+BuildRequires:	cmake
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	sed >= 4.0
+# FIXME - add new BR
 Obsoletes:	digikamimageplugins
 # sr@Latn vs. sr@latin
 Conflicts:	glibc-misc < 6:2.7
@@ -47,25 +47,26 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 install -d build
 cd build
 %cmake \
+		-DCMAKE_INSTALL_PREFIX=%{_prefix} \
+		-DSYSCONF_INSTALL_DIR=%{_sysconfdir} \
 %if "%{_lib}" == "lib64"
-        -DLIB_SUFFIX=64 \
+		-DLIB_SUFFIX=64 \
 %endif
-        ../
+		../
 
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
+%{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	kde_htmldir=%{_kdedocdir} \
 	kde_libs_htmldir=%{_kdedocdir}
 
-rm $RPM_BUILD_ROOT%{_libdir}/kde3/*.la
 
-[ -d $RPM_BUILD_ROOT%{_datadir}/locale/sr@latin ] || \
-	mv -f $RPM_BUILD_ROOT%{_datadir}/locale/sr@{Latn,latin}
+#[ -d $RPM_BUILD_ROOT%{_datadir}/locale/sr@latin ] || \
+#	mv -f $RPM_BUILD_ROOT%{_datadir}/locale/sr@{Latn,latin}
 %find_lang %{name} --with-kde --all-name
 
 %clean
@@ -77,31 +78,108 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
-%attr(755,root,root) %{_bindir}/*
-%attr(755,root,root) %{_libdir}/*.so.*.*.*
-%attr(755,root,root) %{_libdir}/kde3/*.so
-%attr(755,root,root) %{_datadir}/apps/digikam/utils/digikam-camera
+%attr(755,root,root) %{_bindir}/digikam
+%attr(755,root,root) %{_bindir}/digikam-camera
+%attr(755,root,root) %{_bindir}/digikamthemedesigner
+%attr(755,root,root) %{_bindir}/digitaglinktree
+%attr(755,root,root) %{_bindir}/showfoto
+%attr(755,root,root) %{_libdir}/libdigikamdatabase.so.?
+%attr(755,root,root) %{_libdir}/libdigikamdatabase.so.*.*.*
+%attr(755,root,root) %{_libdir}/libdigikam.so.?
+%attr(755,root,root) %{_libdir}/libdigikam.so.*.*.*
+%attr(755,root,root) %{_libdir}/kde4/digikamimageplugin_*.so
+%attr(755,root,root) %{_libdir}/kde4/kio_digikamalbums.so
+%attr(755,root,root) %{_libdir}/kde4/kio_digikamdates.so
+%attr(755,root,root) %{_libdir}/kde4/kio_digikamsearch.so
+%attr(755,root,root) %{_libdir}/kde4/kio_digikamtags.so
 %dir %{_datadir}/apps/digikam
-%dir %{_datadir}/apps/digikam/utils
 %{_datadir}/apps/digikam/icons
 %{_datadir}/apps/digikam/themes
 %{_datadir}/apps/digikam/about
 %{_datadir}/apps/digikam/data
-%{_datadir}/apps/digikam/profiles
 %{_datadir}/apps/digikam/tips
-%{_datadir}/apps/digikam/digikam-splash.png
-%{_datadir}/apps/digikam/*.rc
-%{_datadir}/services/*
-%{_datadir}/servicetypes/*
+%{_datadir}/apps/digikam/digikamimageplugin_*.rc
+%{_datadir}/apps/digikam/digikamimagewindowui.rc
+%{_datadir}/apps/digikam/digikamui.rc
+%{_datadir}/apps/digikam/lighttablewindowui.rc
+%{_datadir}/apps/digikam/cameraui.rc
 %{_datadir}/apps/showfoto
-%{_datadir}/apps/konqueror/servicemenus/digikam-*.desktop
-%{_desktopdir}/kde/*.desktop
-%{_iconsdir}/[!l]*/*/*/*
-%{_mandir}/man1/digitaglinktree.1*
+%{_datadir}/kde4/services/ServiceMenus/digikam-*.desktop
+%{_datadir}/kde4/services/digikamimageplugin_*.desktop
+%{_datadir}/kde4/services/digikamalbums.protocol
+%{_datadir}/kde4/services/digikamdates.protocol
+%{_datadir}/kde4/services/digikamsearch.protocol
+%{_datadir}/kde4/services/digikamtags.protocol
+%{_datadir}/kde4/servicetypes/digikamimageplugin.desktop
+
+%{_desktopdir}/kde4/*.desktop
+%{_iconsdir}/*/*/actions/addimagefolder.*
+%{_iconsdir}/*/*/actions/adjustcurves.*
+%{_iconsdir}/*/*/actions/adjusthsl.*
+%{_iconsdir}/*/*/actions/adjustlevels.*
+%{_iconsdir}/*/*/actions/adjustrgb.*
+%{_iconsdir}/*/*/actions/albumfoldercomment.*
+%{_iconsdir}/*/*/actions/albumfoldernew.*
+%{_iconsdir}/*/*/actions/antivignetting.*
+%{_iconsdir}/*/*/actions/autocorrection.*
+%{_iconsdir}/*/*/actions/blurfx.*
+%{_iconsdir}/*/*/actions/blurimage.*
+%{_iconsdir}/*/*/actions/bordertool.*
+%{_iconsdir}/*/*/actions/bwtonal.*
+%{_iconsdir}/*/*/actions/channelmixer.*
+%{_iconsdir}/*/*/actions/charcoaltool.*
+%{_iconsdir}/*/*/actions/colorfx.*
+%{_iconsdir}/*/*/actions/colormanagement.*
+%{_iconsdir}/*/*/actions/contrast.*
+%{_iconsdir}/*/*/actions/crop.*
+%{_iconsdir}/*/*/actions/depth16to8.*
+%{_iconsdir}/*/*/actions/depth8to16.*
+%{_iconsdir}/*/*/actions/digitalcam.*
+%{_iconsdir}/*/*/actions/distortionfx.*
+%{_iconsdir}/*/*/actions/editimage.*
+%{_iconsdir}/*/*/actions/embosstool.*
+%{_iconsdir}/*/*/actions/exifinfo.*
+%{_iconsdir}/*/*/actions/filmgrain.*
+%{_iconsdir}/*/*/actions/freerotation.*
+%{_iconsdir}/*/*/actions/histogram.*
+%{_iconsdir}/*/*/actions/hotpixels.*
+%{_iconsdir}/*/*/actions/imagecomment.*
+%{_iconsdir}/*/*/actions/importfolders2albums.*
+%{_iconsdir}/*/*/actions/infrared.*
+%{_iconsdir}/*/*/actions/inpainting.*
+%{_iconsdir}/*/*/actions/inserttext.*
+%{_iconsdir}/*/*/actions/invertimage.*
+%{_iconsdir}/*/*/actions/lensdistortion.*
+%{_iconsdir}/*/*/actions/noisereduction.*
+%{_iconsdir}/*/*/actions/oilpaint.*
+%{_iconsdir}/*/*/actions/perspective.*
+%{_iconsdir}/*/*/actions/raindrop.*
+%{_iconsdir}/*/*/actions/ratiocrop.*
+%{_iconsdir}/*/*/actions/redeyes.*
+%{_iconsdir}/*/*/actions/resize_image.*
+%{_iconsdir}/*/*/actions/restoration.*
+%{_iconsdir}/*/*/actions/sharpenimage.*
+%{_iconsdir}/*/*/actions/shear.*
+%{_iconsdir}/*/*/actions/superimpose.*
+%{_iconsdir}/*/*/actions/texture.*
+%{_iconsdir}/*/*/actions/viewimage.*
+%{_iconsdir}/*/*/actions/whitebalance.*
+#%{_iconsdir}/*/*/apps/digikam.*
+%{_iconsdir}/*/*/apps/showfoto.*
+%{_iconsdir}/*/*/actions/digikamimageplugins.*
+%{_iconsdir}/*/*/actions/filefind.*
+%{_iconsdir}/*/*/actions/flip-horizontal.*
+%{_iconsdir}/*/*/actions/flip-vertical.*
+%{_iconsdir}/*/*/actions/lighttable.*
+%{_iconsdir}/*/*/actions/lighttableadd.*
+%{_iconsdir}/*/*/actions/zoom-select-fit.*
+%{_iconsdir}/*/*/apps/digikamimageplugins.*
+%{_iconsdir}/*/*/mimetypes/raw.*
+%{_mandir}/digitaglinktree.1*
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/*.so
-%{_libdir}/*.la
+%attr(755,root,root) %{_libdir}/libdigikam.so
+%attr(755,root,root) %{_libdir}/libdigikamdatabase.so
 %{_includedir}/*.h
 %{_includedir}/digikam

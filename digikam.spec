@@ -3,11 +3,11 @@ Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	0.10.0
-Release:	0.1
+Release:	0.2
 License:	GPL
 Group:		X11/Applications/Graphics
-Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-beta1.tar.bz2
-# Source0-md5:	15b4a4041d3200126b1eeea57361ccdd
+Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-beta2.tar.bz2
+# Source0-md5:	40b6b9164438c320f9d4b9869ed8ea5e
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	automoc4
 BuildRequires:	cmake
@@ -41,7 +41,7 @@ A KDE frontend for gphoto2 - header files.
 Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
-%setup -q -n %{name}-%{version}-beta1
+%setup -q -n %{name}-%{version}-beta2
 
 %build
 install -d build
@@ -131,7 +131,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/*/*/actions/colorfx.*
 %{_iconsdir}/*/*/actions/colormanagement.*
 %{_iconsdir}/*/*/actions/contrast.*
-%{_iconsdir}/*/*/actions/crop.*
+#%{_iconsdir}/*/*/actions/crop.*
 %{_iconsdir}/*/*/actions/depth16to8.*
 %{_iconsdir}/*/*/actions/depth8to16.*
 %{_iconsdir}/*/*/actions/digitalcam.*
@@ -147,7 +147,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/*/*/actions/importfolders2albums.*
 %{_iconsdir}/*/*/actions/infrared.*
 %{_iconsdir}/*/*/actions/inpainting.*
-%{_iconsdir}/*/*/actions/inserttext.*
+#%{_iconsdir}/*/*/actions/inserttext.*
 %{_iconsdir}/*/*/actions/invertimage.*
 %{_iconsdir}/*/*/actions/lensdistortion.*
 %{_iconsdir}/*/*/actions/noisereduction.*
@@ -168,8 +168,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/*/*/apps/showfoto.*
 %{_iconsdir}/*/*/actions/digikamimageplugins.*
 %{_iconsdir}/*/*/actions/filefind.*
-%{_iconsdir}/*/*/actions/flip-horizontal.*
-%{_iconsdir}/*/*/actions/flip-vertical.*
+#%{_iconsdir}/*/*/actions/flip-horizontal.*
+#%{_iconsdir}/*/*/actions/flip-vertical.*
 %{_iconsdir}/*/*/actions/lighttable.*
 %{_iconsdir}/*/*/actions/lighttableadd.*
 %{_iconsdir}/*/*/actions/zoom-select-fit.*

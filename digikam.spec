@@ -1,16 +1,22 @@
-######		/home/robert/rpm/SOURCES/rpm.groups: no such file
+#
+%define	_beta	beta2
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	0.10.0
-Release:	0.2
+Release:	0.%{_beta}.1
 License:	GPL
 Group:		X11/Applications/Graphics
-Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-beta2.tar.bz2
+Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{_beta}.tar.bz2
 # Source0-md5:	40b6b9164438c320f9d4b9869ed8ea5e
 URL:		http://digikam.sourceforge.net/
+BuildRequires:	QtCore-devel >= 4.4.0
+BuildRequires:	QtSql-devel >= 4.4.0
 BuildRequires:	automoc4
 BuildRequires:	cmake
+BuildRequires:	libkdcraw >= 0.2.0
+BuildRequires:	libkexiv2 >= 0.2.0
+BuildRequires:	libkipi >= 0.2.0
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	sed >= 4.0
@@ -41,7 +47,7 @@ A KDE frontend for gphoto2 - header files.
 Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
-%setup -q -n %{name}-%{version}-beta2
+%setup -q -n %{name}-%{version}-%{_beta}
 
 %build
 install -d build

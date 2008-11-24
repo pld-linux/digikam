@@ -1,5 +1,5 @@
 #
-%define	_beta	beta2
+%define	_beta	beta5
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
@@ -8,15 +8,14 @@ Release:	0.%{_beta}.1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{_beta}.tar.bz2
-# Source0-md5:	40b6b9164438c320f9d4b9869ed8ea5e
+# Source0-md5:	3013084d9f91a712e17beff3dae0fa0c
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	QtCore-devel >= 4.4.0
 BuildRequires:	QtSql-devel >= 4.4.0
 BuildRequires:	automoc4
 BuildRequires:	cmake
-BuildRequires:	libkdcraw >= 0.2.0
-BuildRequires:	libkexiv2 >= 0.2.0
-BuildRequires:	libkipi >= 0.2.0
+BuildRequires:	kde4-kdegraphics-devel
+BuildRequires:	lensfun-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	sed >= 4.0
@@ -181,7 +180,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/*/*/actions/zoom-select-fit.*
 %{_iconsdir}/*/*/apps/digikamimageplugins.*
 %{_iconsdir}/*/*/mimetypes/raw.*
-%{_mandir}/digitaglinktree.1*
+%{_mandir}/man1/digitaglinktree.1*
 
 %files devel
 %defattr(644,root,root,755)

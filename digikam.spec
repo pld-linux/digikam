@@ -15,7 +15,7 @@ URL:		http://digikam.sourceforge.net/
 BuildRequires:	QtCore-devel >= %{qtver}
 BuildRequires:	QtSql-devel >= %{qtver}
 BuildRequires:	automoc4
-BuildRequires:	cmake >= 2.6.1-2
+BuildRequires:	cmake >= 2.6.2
 BuildRequires:	kde4-kdegraphics-devel
 BuildRequires:	kde4-kdepimlibs-devel
 BuildRequires:	lensfun-devel

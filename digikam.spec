@@ -1,5 +1,7 @@
 #
-%define	_beta	beta5
+%define		_beta	beta5
+%define		qtver	4.4.3
+
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
@@ -10,11 +12,12 @@ Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{_beta}.tar.bz2
 # Source0-md5:	3013084d9f91a712e17beff3dae0fa0c
 URL:		http://digikam.sourceforge.net/
-BuildRequires:	QtCore-devel >= 4.4.0
-BuildRequires:	QtSql-devel >= 4.4.0
+BuildRequires:	QtCore-devel >= %{qtver}
+BuildRequires:	QtSql-devel >= %{qtver}
 BuildRequires:	automoc4
-BuildRequires:	cmake
+BuildRequires:	cmake >= 2.6.1-2
 BuildRequires:	kde4-kdegraphics-devel
+BuildRequires:	kde4-kdepimlibs-devel
 BuildRequires:	lensfun-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	rpmbuild(macros) >= 1.129
@@ -52,12 +55,12 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 install -d build
 cd build
 %cmake \
-		-DCMAKE_INSTALL_PREFIX=%{_prefix} \
-		-DSYSCONF_INSTALL_DIR=%{_sysconfdir} \
+	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
+	-DSYSCONF_INSTALL_DIR=%{_sysconfdir} \
 %if "%{_lib}" == "lib64"
-		-DLIB_SUFFIX=64 \
+	-DLIB_SUFFIX=64 \
 %endif
-		../
+	../
 
 %{__make}
 

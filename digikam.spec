@@ -16,8 +16,8 @@ BuildRequires:	QtCore-devel >= %{qtver}
 BuildRequires:	QtSql-devel >= %{qtver}
 BuildRequires:	automoc4
 BuildRequires:	cmake >= 2.6.2
-BuildRequires:	kde4-kdegraphics-devel
-BuildRequires:	kde4-kdepimlibs-devel
+BuildRequires:	kde4-kdegraphics-devel >= 4.1.73
+BuildRequires:	kde4-kdepimlibs-devel >= 4.1.73
 BuildRequires:	lensfun-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	rpmbuild(macros) >= 1.129

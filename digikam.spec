@@ -1,5 +1,5 @@
 #
-%define		_beta	beta5
+%define		_beta	beta6
 %define		qtver	4.4.3
 
 Summary:	A KDE frontend for gphoto2
@@ -10,7 +10,7 @@ Release:	0.%{_beta}.1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{_beta}.tar.bz2
-# Source0-md5:	3013084d9f91a712e17beff3dae0fa0c
+# Source0-md5:	e9614d54efa279f108f74bed1ddbef80
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	QtCore-devel >= %{qtver}
 BuildRequires:	QtSql-devel >= %{qtver}
@@ -93,8 +93,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/showfoto
 %attr(755,root,root) %{_libdir}/libdigikamdatabase.so.?
 %attr(755,root,root) %{_libdir}/libdigikamdatabase.so.*.*.*
-%attr(755,root,root) %{_libdir}/libdigikam.so.?
-%attr(755,root,root) %{_libdir}/libdigikam.so.*.*.*
+%attr(755,root,root) %{_libdir}/libdigikamcore.so.?
+%attr(755,root,root) %{_libdir}/libdigikamcore.so.*.*.*
 %attr(755,root,root) %{_libdir}/kde4/digikamimageplugin_*.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamalbums.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamdates.so
@@ -187,7 +187,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libdigikam.so
+%attr(755,root,root) %{_libdir}/libdigikamcore.so
 %attr(755,root,root) %{_libdir}/libdigikamdatabase.so
 %{_includedir}/*.h
 %{_includedir}/digikam

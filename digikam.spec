@@ -1,5 +1,5 @@
 #
-%define		_beta	beta6
+%define		_beta	beta7
 %define		qtver	4.4.3
 
 Summary:	A KDE frontend for gphoto2
@@ -10,7 +10,7 @@ Release:	0.%{_beta}.1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{_beta}.tar.bz2
-# Source0-md5:	e9614d54efa279f108f74bed1ddbef80
+# Source0-md5:	81b4ab94d9312d685e21796829aa31f9
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	QtCore-devel >= %{qtver}
 BuildRequires:	QtSql-devel >= %{qtver}

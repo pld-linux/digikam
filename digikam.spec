@@ -91,35 +91,35 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/digikamthemedesigner
 %attr(755,root,root) %{_bindir}/digitaglinktree
 %attr(755,root,root) %{_bindir}/showfoto
-%attr(755,root,root) %{_libdir}/libdigikamdatabase.so.?
+%attr(755,root,root) %ghost %{_libdir}/libdigikamdatabase.so.1
 %attr(755,root,root) %{_libdir}/libdigikamdatabase.so.*.*.*
-%attr(755,root,root) %{_libdir}/libdigikamcore.so.?
+%attr(755,root,root) %ghost %{_libdir}/libdigikamcore.so.1
 %attr(755,root,root) %{_libdir}/libdigikamcore.so.*.*.*
 %attr(755,root,root) %{_libdir}/kde4/digikamimageplugin_*.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamalbums.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamdates.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamsearch.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamtags.so
+%{_mandir}/man1/digitaglinktree.1*
 %dir %{_datadir}/apps/digikam
-%{_datadir}/apps/digikam/icons
-%{_datadir}/apps/digikam/themes
 %{_datadir}/apps/digikam/about
+%{_datadir}/apps/digikam/cameraui.rc
 %{_datadir}/apps/digikam/data
-%{_datadir}/apps/digikam/tips
 %{_datadir}/apps/digikam/digikamimageplugin_*.rc
 %{_datadir}/apps/digikam/digikamimagewindowui.rc
 %{_datadir}/apps/digikam/digikamui.rc
+%{_datadir}/apps/digikam/icons
 %{_datadir}/apps/digikam/lighttablewindowui.rc
-%{_datadir}/apps/digikam/cameraui.rc
+%{_datadir}/apps/digikam/themes
+%{_datadir}/apps/digikam/tips
 %{_datadir}/apps/showfoto
-%{_datadir}/kde4/services/ServiceMenus/digikam-*.desktop
-%{_datadir}/kde4/services/digikamimageplugin_*.desktop
 %{_datadir}/kde4/services/digikamalbums.protocol
 %{_datadir}/kde4/services/digikamdates.protocol
+%{_datadir}/kde4/services/digikamimageplugin_*.desktop
 %{_datadir}/kde4/services/digikamsearch.protocol
 %{_datadir}/kde4/services/digikamtags.protocol
+%{_datadir}/kde4/services/ServiceMenus/digikam-*.desktop
 %{_datadir}/kde4/servicetypes/digikamimageplugin.desktop
-
 %{_desktopdir}/kde4/*.desktop
 %{_iconsdir}/*/*/actions/addimagefolder.*
 %{_iconsdir}/*/*/actions/adjustcurves.*
@@ -139,14 +139,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/*/*/actions/colorfx.*
 %{_iconsdir}/*/*/actions/colormanagement.*
 %{_iconsdir}/*/*/actions/contrast.*
-#%{_iconsdir}/*/*/actions/crop.*
 %{_iconsdir}/*/*/actions/depth16to8.*
 %{_iconsdir}/*/*/actions/depth8to16.*
+%{_iconsdir}/*/*/actions/digikamimageplugins.*
 %{_iconsdir}/*/*/actions/digitalcam.*
 %{_iconsdir}/*/*/actions/distortionfx.*
 %{_iconsdir}/*/*/actions/editimage.*
 %{_iconsdir}/*/*/actions/embosstool.*
 %{_iconsdir}/*/*/actions/exifinfo.*
+%{_iconsdir}/*/*/actions/filefind.*
 %{_iconsdir}/*/*/actions/filmgrain.*
 %{_iconsdir}/*/*/actions/freerotation.*
 %{_iconsdir}/*/*/actions/histogram.*
@@ -155,9 +156,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/*/*/actions/importfolders2albums.*
 %{_iconsdir}/*/*/actions/infrared.*
 %{_iconsdir}/*/*/actions/inpainting.*
-#%{_iconsdir}/*/*/actions/inserttext.*
 %{_iconsdir}/*/*/actions/invertimage.*
 %{_iconsdir}/*/*/actions/lensdistortion.*
+%{_iconsdir}/*/*/actions/lighttable.*
+%{_iconsdir}/*/*/actions/lighttableadd.*
 %{_iconsdir}/*/*/actions/noisereduction.*
 %{_iconsdir}/*/*/actions/oilpaint.*
 %{_iconsdir}/*/*/actions/perspective.*
@@ -170,20 +172,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/*/*/actions/shear.*
 %{_iconsdir}/*/*/actions/superimpose.*
 %{_iconsdir}/*/*/actions/texture.*
+%{_iconsdir}/*/*/actions/transform-crop-and-resize.*
 %{_iconsdir}/*/*/actions/viewimage.*
+%{_iconsdir}/*/*/actions/view-object-histogram-linear.*
+%{_iconsdir}/*/*/actions/view-object-histogram-logarithmic.*
 %{_iconsdir}/*/*/actions/whitebalance.*
-#%{_iconsdir}/*/*/apps/digikam.*
-%{_iconsdir}/*/*/apps/showfoto.*
-%{_iconsdir}/*/*/actions/digikamimageplugins.*
-%{_iconsdir}/*/*/actions/filefind.*
-#%{_iconsdir}/*/*/actions/flip-horizontal.*
-#%{_iconsdir}/*/*/actions/flip-vertical.*
-%{_iconsdir}/*/*/actions/lighttable.*
-%{_iconsdir}/*/*/actions/lighttableadd.*
 %{_iconsdir}/*/*/actions/zoom-select-fit.*
+%{_iconsdir}/*/*/apps/digikam.*
 %{_iconsdir}/*/*/apps/digikamimageplugins.*
+%{_iconsdir}/*/*/apps/showfoto.*
 %{_iconsdir}/*/*/mimetypes/raw.*
-%{_mandir}/man1/digitaglinktree.1*
 
 %files devel
 %defattr(644,root,root,755)

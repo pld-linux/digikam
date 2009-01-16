@@ -1,0 +1,10 @@
+--- themedesigner/CMakeLists.txt.orig	2009-01-16 14:49:20.737514804 +0100
++++ themedesigner/CMakeLists.txt	2009-01-16 14:52:36.988575200 +0100
+@@ -88,6 +88,7 @@
+                       ${KDE4_KUTILS_LIBS}
+                       ${KIPI_LIBRARIES}
+                       ${GPHOTO2_LIBRARIES}
++		      khtml
+                      )
+ 
+ IF(KDEPIMLIBS_FOUND)

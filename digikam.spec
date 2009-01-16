@@ -1,23 +1,25 @@
 #
-%define		_beta	beta7
+%define		_beta	beta8
 %define		qtver	4.4.3
+%define		kdever	4.1.96
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	0.10.0
-Release:	0.%{_beta}.2
+Release:	0.%{_beta}.1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{_beta}.tar.bz2
-# Source0-md5:	81b4ab94d9312d685e21796829aa31f9
+# Source0-md5:	1e256ed34d4d7d6b90def644b66f7fa9
 URL:		http://digikam.sourceforge.net/
+Patch0:		%{name}-link.patch
 BuildRequires:	QtCore-devel >= %{qtver}
 BuildRequires:	QtSql-devel >= %{qtver}
 BuildRequires:	automoc4
 BuildRequires:	cmake >= 2.6.2
-BuildRequires:	kde4-kdegraphics-devel >= 4.1.73
-BuildRequires:	kde4-kdepimlibs-devel >= 4.1.73
+BuildRequires:	kde4-kdegraphics-devel >= %{kdever}
+BuildRequires:	kde4-kdepimlibs-devel >= %{kdever}
 BuildRequires:	lensfun-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	rpmbuild(macros) >= 1.129
@@ -48,6 +50,7 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
 %setup -q -n %{name}-%{version}-%{_beta}
+%patch0 -p0
 
 %build
 install -d build
@@ -82,7 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
 %attr(755,root,root) %{_bindir}/digikam
-%attr(755,root,root) %{_bindir}/digikam-camera
+%attr(755,root,root) %{_datadir}/apps/digikam/utils/digikam-camera
 %attr(755,root,root) %{_bindir}/digikamthemedesigner
 %attr(755,root,root) %{_bindir}/digitaglinktree
 %attr(755,root,root) %{_bindir}/showfoto
@@ -113,7 +116,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/kde4/services/digikamimageplugin_*.desktop
 %{_datadir}/kde4/services/digikamsearch.protocol
 %{_datadir}/kde4/services/digikamtags.protocol
-%{_datadir}/kde4/services/ServiceMenus/digikam-*.desktop
+%{_datadir}/apps/solid/actions/digikam-opencamera.desktop
 %{_datadir}/kde4/servicetypes/digikamimageplugin.desktop
 %{_desktopdir}/kde4/*.desktop
 %exclude %{_iconsdir}/*/scalable

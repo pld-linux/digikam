@@ -1,5 +1,5 @@
 #
-%define		_beta	beta8
+%define		_beta	rc1
 %define		qtver	4.4.3
 %define		kdever	4.1.96
 
@@ -11,7 +11,7 @@ Release:	0.%{_beta}.1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{_beta}.tar.bz2
-# Source0-md5:	1e256ed34d4d7d6b90def644b66f7fa9
+# Source0-md5:	08aaf686bb79ee7aade12075ddb2aca4
 URL:		http://digikam.sourceforge.net/
 Patch0:		%{name}-link.patch
 BuildRequires:	QtCore-devel >= %{qtver}
@@ -120,13 +120,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/kde4/servicetypes/digikamimageplugin.desktop
 %{_desktopdir}/kde4/*.desktop
 %exclude %{_iconsdir}/*/scalable
-%{_iconsdir}/*/*/actions/addimagefolder.*
 %{_iconsdir}/*/*/actions/adjustcurves.*
 %{_iconsdir}/*/*/actions/adjusthsl.*
 %{_iconsdir}/*/*/actions/adjustlevels.*
 %{_iconsdir}/*/*/actions/adjustrgb.*
-%{_iconsdir}/*/*/actions/albumfoldercomment.*
-%{_iconsdir}/*/*/actions/albumfoldernew.*
 %{_iconsdir}/*/*/actions/antivignetting.*
 %{_iconsdir}/*/*/actions/autocorrection.*
 %{_iconsdir}/*/*/actions/blurfx.*
@@ -140,19 +137,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/*/*/actions/contrast.*
 %{_iconsdir}/*/*/actions/depth16to8.*
 %{_iconsdir}/*/*/actions/depth8to16.*
-%{_iconsdir}/*/*/actions/digikamimageplugins.*
-%{_iconsdir}/*/*/actions/digitalcam.*
 %{_iconsdir}/*/*/actions/distortionfx.*
 %{_iconsdir}/*/*/actions/editimage.*
 %{_iconsdir}/*/*/actions/embosstool.*
 %{_iconsdir}/*/*/actions/exifinfo.*
-%{_iconsdir}/*/*/actions/filefind.*
 %{_iconsdir}/*/*/actions/filmgrain.*
 %{_iconsdir}/*/*/actions/freerotation.*
-%{_iconsdir}/*/*/actions/histogram.*
 %{_iconsdir}/*/*/actions/hotpixels.*
 %{_iconsdir}/*/*/actions/imagecomment.*
-%{_iconsdir}/*/*/actions/importfolders2albums.*
 %{_iconsdir}/*/*/actions/infrared.*
 %{_iconsdir}/*/*/actions/inpainting.*
 %{_iconsdir}/*/*/actions/invertimage.*
@@ -165,7 +157,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/*/*/actions/raindrop.*
 %{_iconsdir}/*/*/actions/ratiocrop.*
 %{_iconsdir}/*/*/actions/redeyes.*
-%{_iconsdir}/*/*/actions/resize_image.*
 %{_iconsdir}/*/*/actions/restoration.*
 %{_iconsdir}/*/*/actions/sharpenimage.*
 %{_iconsdir}/*/*/actions/shear.*
@@ -178,7 +169,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/*/*/actions/whitebalance.*
 %{_iconsdir}/*/*/actions/zoom-select-fit.*
 %{_iconsdir}/*/*/apps/digikam.*
-%{_iconsdir}/*/*/apps/digikamimageplugins.*
 %{_iconsdir}/*/*/apps/showfoto.*
 %{_iconsdir}/*/*/mimetypes/raw.*
 

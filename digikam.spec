@@ -1,5 +1,5 @@
 #
-%define		_beta	rc1
+%define		_beta	rc2
 %define		qtver	4.4.3
 %define		kdever	4.1.96
 
@@ -11,17 +11,23 @@ Release:	0.%{_beta}.1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{_beta}.tar.bz2
-# Source0-md5:	08aaf686bb79ee7aade12075ddb2aca4
+# Source0-md5:	7e149f44b3ba743ee6f8880ba748c282
 URL:		http://digikam.sourceforge.net/
 Patch0:		%{name}-link.patch
+BuildRequires:	Qt3Support-devel >= %{qtver}
 BuildRequires:	QtCore-devel >= %{qtver}
 BuildRequires:	QtSql-devel >= %{qtver}
+BuildRequires:	QtSvg-devel >= %{qtver}
 BuildRequires:	automoc4
 BuildRequires:	cmake >= 2.6.2
+BuildRequires:	jasper-devel
 BuildRequires:	kde4-kdegraphics-devel >= %{kdever}
 BuildRequires:	kde4-kdepimlibs-devel >= %{kdever}
+BuildRequires:	lcms-devel
 BuildRequires:	lensfun-devel
+BuildRequires:	libgphoto2-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
+BuildRequires:	qt4-qmake >= %{qtver}
 BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	sed >= 4.0
 # FIXME - add new BR

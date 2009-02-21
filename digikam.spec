@@ -30,7 +30,7 @@ BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	qt4-qmake >= %{qtver}
 BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	sed >= 4.0
-# FIXME - add new BR
+Requires:	QtSql-sqlite3
 Obsoletes:	digikamimageplugins
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 

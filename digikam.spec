@@ -1,17 +1,16 @@
 #
-%define		_beta	rc2
 %define		qtver	4.4.3
-%define		kdever	4.1.96
+%define		kdever	4.2.1
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	0.10.0
-Release:	0.%{_beta}.2
+Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
-Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{_beta}.tar.bz2
-# Source0-md5:	7e149f44b3ba743ee6f8880ba748c282
+Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
+# Source0-md5:	6c6daf958ff4fe93974f1074ba967cd9
 URL:		http://digikam.sourceforge.net/
 Patch0:		%{name}-link.patch
 BuildRequires:	Qt3Support-devel >= %{qtver}
@@ -55,7 +54,7 @@ A KDE frontend for gphoto2 - header files.
 Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
-%setup -q -n %{name}-%{version}-%{_beta}
+%setup -q
 %patch0 -p0
 
 %build
@@ -126,58 +125,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/apps/solid/actions/digikam-opencamera.desktop
 %{_datadir}/kde4/servicetypes/digikamimageplugin.desktop
 %{_desktopdir}/kde4/*.desktop
-%exclude %{_iconsdir}/*/scalable
-%{_iconsdir}/*/*/actions/adjustcurves.*
-%{_iconsdir}/*/*/actions/adjusthsl.*
-%{_iconsdir}/*/*/actions/adjustlevels.*
-%{_iconsdir}/*/*/actions/adjustrgb.*
-%{_iconsdir}/*/*/actions/antivignetting.*
-%{_iconsdir}/*/*/actions/autocorrection.*
-%{_iconsdir}/*/*/actions/blurfx.*
-%{_iconsdir}/*/*/actions/blurimage.*
-%{_iconsdir}/*/*/actions/bordertool.*
-%{_iconsdir}/*/*/actions/bwtonal.*
-%{_iconsdir}/*/*/actions/channelmixer.*
-%{_iconsdir}/*/*/actions/charcoaltool.*
-%{_iconsdir}/*/*/actions/colorfx.*
-%{_iconsdir}/*/*/actions/colormanagement.*
-%{_iconsdir}/*/*/actions/contrast.*
-%{_iconsdir}/*/*/actions/depth16to8.*
-%{_iconsdir}/*/*/actions/depth8to16.*
-%{_iconsdir}/*/*/actions/distortionfx.*
-%{_iconsdir}/*/*/actions/editimage.*
-%{_iconsdir}/*/*/actions/embosstool.*
-%{_iconsdir}/*/*/actions/exifinfo.*
-%{_iconsdir}/*/*/actions/filmgrain.*
-%{_iconsdir}/*/*/actions/freerotation.*
-%{_iconsdir}/*/*/actions/hotpixels.*
-%{_iconsdir}/*/*/actions/imagecomment.*
-%{_iconsdir}/*/*/actions/infrared.*
-%{_iconsdir}/*/*/actions/inpainting.*
-%{_iconsdir}/*/*/actions/invertimage.*
-%{_iconsdir}/*/*/actions/lensdistortion.*
-%{_iconsdir}/*/*/actions/lighttable.*
-%{_iconsdir}/*/*/actions/lighttableadd.*
-%{_iconsdir}/*/*/actions/noisereduction.*
-%{_iconsdir}/*/*/actions/oilpaint.*
-%{_iconsdir}/*/*/actions/perspective.*
-%{_iconsdir}/*/*/actions/raindrop.*
-%{_iconsdir}/*/*/actions/ratiocrop.*
-%{_iconsdir}/*/*/actions/redeyes.*
-%{_iconsdir}/*/*/actions/restoration.*
-%{_iconsdir}/*/*/actions/sharpenimage.*
-%{_iconsdir}/*/*/actions/shear.*
-%{_iconsdir}/*/*/actions/superimpose.*
-%{_iconsdir}/*/*/actions/texture.*
-%{_iconsdir}/*/*/actions/transform-crop-and-resize.*
-%{_iconsdir}/*/*/actions/viewimage.*
-%{_iconsdir}/*/*/actions/view-object-histogram-linear.*
-%{_iconsdir}/*/*/actions/view-object-histogram-logarithmic.*
-%{_iconsdir}/*/*/actions/whitebalance.*
-%{_iconsdir}/*/*/actions/zoom-select-fit.*
-%{_iconsdir}/*/*/apps/digikam.*
-%{_iconsdir}/*/*/apps/showfoto.*
-%{_iconsdir}/*/*/mimetypes/raw.*
 
 %files devel
 %defattr(644,root,root,755)

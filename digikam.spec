@@ -20,6 +20,7 @@ BuildRequires:	QtSvg-devel >= %{qtver}
 BuildRequires:	automoc4
 BuildRequires:	cmake >= 2.6.2
 BuildRequires:	jasper-devel
+BuildRequires:	kde4-kdeedu-devel >= %{kdever}
 BuildRequires:	kde4-kdegraphics-devel >= %{kdever}
 BuildRequires:	kde4-kdepimlibs-devel >= %{kdever}
 BuildRequires:	lcms-devel

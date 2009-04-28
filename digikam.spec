@@ -6,7 +6,7 @@ Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	0.10.0
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
@@ -63,6 +63,7 @@ install -d build
 cd build
 %cmake \
 	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
+	-DCMAKE_BUILD_TYPE=%{!?debug:release}%{?debug:debug} \
 	-DSYSCONF_INSTALL_DIR=%{_sysconfdir} \
 %if "%{_lib}" == "lib64"
 	-DLIB_SUFFIX=64 \

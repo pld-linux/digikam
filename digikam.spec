@@ -7,7 +7,7 @@ Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	1.0.0
-Release:	0.%{state}.1
+Release:	0.%{state}.2
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{state}.tar.bz2
@@ -61,6 +61,8 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 %patch0 -p0
 
 %build
+# explicitely remove hne language support (re-add when glibc supports it)
+%{__sed} -i -e 's/add_subdirectory(hne)//g' po/CMakeLists.txt
 install -d build
 cd build
 %cmake \

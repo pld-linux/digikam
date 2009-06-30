@@ -1,32 +1,38 @@
-
-%define		beta	beta2
+#
+%define		qtver	4.5.1
+%define		kdever	4.2.4
+%define		state	beta1
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	0.9.3
-Release:	0.%{beta}.1
+Version:	1.0.0
+Release:	0.%{state}.1
 License:	GPL
-Group:		X11/Applications
-Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{beta}.tar.bz2
-# Source0-md5:	7277c393c1171a53b80dfd576670f251
-Patch0:		kde-ac260-lt.patch
-URL:		http://digikam.sourceforge.net/
-BuildRequires:	autoconf
-BuildRequires:	automake
-BuildRequires:	exiv2-devel >= 0.14
-BuildRequires:	jasper-devel >= 1.7.0
-BuildRequires:	kdelibs-devel
+Group:		X11/Applications/Graphics
+Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{state}.tar.bz2
+# Source0-md5:	6c0fd6fe7bb4d8a5f00c9a165c7b9309
+URL:		http://www.digikam.org/
+Patch0:		%{name}-link.patch
+BuildRequires:	Qt3Support-devel >= %{qtver}
+BuildRequires:	QtCore-devel >= %{qtver}
+BuildRequires:	QtDesigner-devel >= %{qtver}
+BuildRequires:	QtSql-devel >= %{qtver}
+BuildRequires:	QtSvg-devel >= %{qtver}
+BuildRequires:	automoc4
+BuildRequires:	cmake >= 2.6.2
+BuildRequires:	jasper-devel
+#BuildRequires:	kde4-kdeedu-devel >= %{kdever}
+BuildRequires:	kde4-kdegraphics-devel >= %{kdever}
+BuildRequires:	kde4-kdepimlibs-devel >= %{kdever}
+BuildRequires:	lcms-devel
+BuildRequires:	lensfun-devel
 BuildRequires:	libgphoto2-devel
-BuildRequires:	libkdcraw-devel >= 0.1.2
-BuildRequires:	libkexiv2-devel >= 0.1.5
-BuildRequires:	libkipi-devel >= 0.1
-BuildRequires:	libstdc++-devel
-BuildRequires:	libtiff-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
+BuildRequires:	qt4-qmake >= %{qtver}
 BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel
+Requires:	QtSql-sqlite3
 Obsoletes:	digikamimageplugins
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -43,8 +49,6 @@ Summary:	A KDE frontend for gphoto2 - header files
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2 - pliki nagłówkowe
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	kdelibs-devel
-Requires:	libgphoto2-devel
 
 %description devel
 A KDE frontend for gphoto2 - header files.
@@ -53,40 +57,30 @@ A KDE frontend for gphoto2 - header files.
 Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
-%setup -q -n %{name}-%{version}-%{beta}
-%patch0 -p1
-
-%{__sed} -i -e "s,Categories.*,Categories=Qt;KDE;Graphics;Photograph;," \
-	./digikam/digikam/digikam.desktop \
-	./digikam/showfoto/showfoto.desktop
-echo "# vi: encoding=utf-8" >> ./digikam/digikam/digikam.desktop
-echo "# vi: encoding=utf-8" >> ./digikam/showfoto/showfoto.desktop
-echo "# vi: encoding=utf-8" >> ./digikam/imageplugins/digikamimageplugin_core.desktop
-echo "# vi: encoding=utf-8" >> ./digikam/utilities/imageeditor/digikamimageplugin.desktop
+%setup -q -n %{name}-%{version}-%{state}
+%patch0 -p0
 
 %build
-cp -f /usr/share/automake/config.sub admin
-%{__make} -f admin/Makefile.common cvs
-
-%configure \
+install -d build
+cd build
+%cmake \
+	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
+	-DCMAKE_BUILD_TYPE=%{!?debug:release}%{?debug:debug} \
+	-DSYSCONF_INSTALL_DIR=%{_sysconfdir} \
 %if "%{_lib}" == "lib64"
-	--enable-libsuffix=64 \
+	-DLIB_SUFFIX=64 \
 %endif
-	--%{?debug:en}%{!?debug:dis}able-debug%{?debug:=full} \
-	--disable-rpath \
-	--with-qt-libraries=%{_libdir} \
-	--with-imlib2-config=%{_bindir}
+	../
+
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
+%{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	kde_htmldir=%{_kdedocdir} \
 	kde_libs_htmldir=%{_kdedocdir}
-
-rm $RPM_BUILD_ROOT%{_libdir}/kde3/*.la
 
 %find_lang %{name} --with-kde --all-name
 
@@ -99,21 +93,49 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
-%attr(755,root,root) %{_bindir}/*
-%attr(755,root,root) %{_libdir}/*.so.*.*.*
-%attr(755,root,root) %{_libdir}/kde3/*.so
-%{_datadir}/services/*
-%{_datadir}/servicetypes/*
-%{_datadir}/apps/digikam
-%{_datadir}/apps/showfoto
-%{_datadir}/apps/konqueror/servicemenus/digikam-*.desktop
-%{_desktopdir}/kde/*.desktop
-%{_iconsdir}/[!l]*/*/*/*
+%attr(755,root,root) %{_bindir}/cleanup_digikamdb
+%attr(755,root,root) %{_bindir}/digikam
+%dir %{_datadir}/apps/digikam/utils
+%attr(755,root,root) %{_datadir}/apps/digikam/utils/digikam-camera
+%attr(755,root,root) %{_bindir}/digitaglinktree
+%attr(755,root,root) %{_bindir}/showfoto
+%attr(755,root,root) %ghost %{_libdir}/libdigikamdatabase.so.1
+%attr(755,root,root) %{_libdir}/libdigikamdatabase.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libdigikamcore.so.1
+%attr(755,root,root) %{_libdir}/libdigikamcore.so.*.*.*
+%attr(755,root,root) %{_libdir}/kde4/digikamimageplugin_*.so
+%attr(755,root,root) %{_libdir}/kde4/kio_digikamalbums.so
+%attr(755,root,root) %{_libdir}/kde4/kio_digikamdates.so
+%attr(755,root,root) %{_libdir}/kde4/kio_digikamsearch.so
+%attr(755,root,root) %{_libdir}/kde4/kio_digikamtags.so
 %{_mandir}/man1/digitaglinktree.1*
+%{_mandir}/man1/cleanup_digikamdb.1*
+%dir %{_datadir}/apps/digikam
+%{_datadir}/apps/digikam/about
+%{_datadir}/apps/digikam/cameraui.rc
+%{_datadir}/apps/digikam/data
+%{_datadir}/apps/digikam/digikamimageplugin_*.rc
+%{_datadir}/apps/digikam/digikamimagewindowui.rc
+%{_datadir}/apps/digikam/digikamui.rc
+%{_datadir}/apps/digikam/icons
+%{_datadir}/apps/digikam/lighttablewindowui.rc
+%{_datadir}/apps/digikam/queuemgrwindowui.rc
+%{_datadir}/apps/digikam/themes
+%{_datadir}/apps/digikam/tips
+%{_datadir}/apps/showfoto
+%{_datadir}/kde4/services/digikamalbums.protocol
+%{_datadir}/kde4/services/digikamdates.protocol
+%{_datadir}/kde4/services/digikamimageplugin_*.desktop
+%{_datadir}/kde4/services/digikamsearch.protocol
+%{_datadir}/kde4/services/digikamtags.protocol
+%{_datadir}/apps/solid/actions/digikam-opencamera.desktop
+%{_datadir}/kde4/servicetypes/digikamimageplugin.desktop
+%{_iconsdir}/*/*/apps/*.png
+%{_desktopdir}/kde4/*.desktop
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/*.so
-%{_libdir}/*.la
+%attr(755,root,root) %{_libdir}/libdigikamcore.so
+%attr(755,root,root) %{_libdir}/libdigikamdatabase.so
 %{_includedir}/*.h
 %{_includedir}/digikam

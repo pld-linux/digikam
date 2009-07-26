@@ -1,17 +1,17 @@
 #
 %define		qtver	4.5.1
 %define		kdever	4.2.4
-%define		state	beta1
+%define		state	beta3
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	1.0.0
-Release:	0.%{state}.2
+Release:	0.%{state}.1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{state}.tar.bz2
-# Source0-md5:	6c0fd6fe7bb4d8a5f00c9a165c7b9309
+# Source0-md5:	937f6f1f109e8137dad8f1b59f009891
 URL:		http://www.digikam.org/
 Patch0:		%{name}-link.patch
 BuildRequires:	Qt3Support-devel >= %{qtver}
@@ -28,6 +28,7 @@ BuildRequires:	kde4-kdepimlibs-devel >= %{kdever}
 BuildRequires:	lcms-devel
 BuildRequires:	lensfun-devel
 BuildRequires:	libgphoto2-devel
+BuildRequires:	liblqr-devel >= 0.4.0
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	qt4-qmake >= %{qtver}
 BuildRequires:	rpmbuild(macros) >= 1.129
@@ -106,6 +107,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libdigikamcore.so.1
 %attr(755,root,root) %{_libdir}/libdigikamcore.so.*.*.*
 %attr(755,root,root) %{_libdir}/kde4/digikamimageplugin_*.so
+%attr(755,root,root) %{_libdir}/kde4/digikamnepomukservice.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamalbums.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamdates.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamsearch.so
@@ -128,6 +130,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/kde4/services/digikamalbums.protocol
 %{_datadir}/kde4/services/digikamdates.protocol
 %{_datadir}/kde4/services/digikamimageplugin_*.desktop
+%{_datadir}/kde4/services/digikamnepomukservice.desktop
 %{_datadir}/kde4/services/digikamsearch.protocol
 %{_datadir}/kde4/services/digikamtags.protocol
 %{_datadir}/apps/solid/actions/digikam-opencamera.desktop

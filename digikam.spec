@@ -27,6 +27,7 @@ BuildRequires:	kde4-kdepimlibs-devel >= %{kdever}
 BuildRequires:	lcms-devel
 BuildRequires:	lensfun-devel
 BuildRequires:	libgphoto2-devel
+BuildRequires:	libtiff-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	qt4-qmake >= %{qtver}
 BuildRequires:	rpmbuild(macros) >= 1.129

@@ -1,7 +1,7 @@
 #
 %define		qtver	4.5.1
 %define		kdever	4.2.4
-%define		state	beta3
+%define		state	beta4
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
@@ -11,7 +11,7 @@ Release:	0.%{state}.1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{state}.tar.bz2
-# Source0-md5:	937f6f1f109e8137dad8f1b59f009891
+# Source0-md5:	fd43f7aab22fc093904525ba59497e3c
 URL:		http://www.digikam.org/
 Patch0:		%{name}-link.patch
 BuildRequires:	Qt3Support-devel >= %{qtver}

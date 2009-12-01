@@ -20,6 +20,7 @@ BuildRequires:	QtSql-devel >= %{qtver}
 BuildRequires:	QtSvg-devel >= %{qtver}
 BuildRequires:	automoc4
 BuildRequires:	cmake >= 2.6.2
+BuildRequires:	gettext-devel
 BuildRequires:	jasper-devel
 BuildRequires:	kde4-kdeedu-devel >= %{kdever}
 BuildRequires:	kde4-kdegraphics-devel >= %{kdever}
@@ -29,6 +30,7 @@ BuildRequires:	lensfun-devel
 BuildRequires:	libgphoto2-devel
 BuildRequires:	libtiff-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
+BuildRequires:	qt4-build
 BuildRequires:	qt4-qmake >= %{qtver}
 BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	sed >= 4.0

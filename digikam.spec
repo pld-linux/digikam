@@ -1,17 +1,16 @@
 #
-%define		qtver	4.5.3
-%define		kdever	4.2.4
-%define		state	beta6
+%define		qtver	4.6.0
+%define		kdever	4.3.0
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	1.0.0
-Release:	0.%{state}.1
+Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
-Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}-%{state}.tar.bz2
-# Source0-md5:	a71462082f84891f20fc98d180c0f46e
+Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
+# Source0-md5:	6169deb68a3d712a0c6539b09c5f8c0c
 URL:		http://www.digikam.org/
 Patch0:		%{name}-link.patch
 BuildRequires:	Qt3Support-devel >= %{qtver}
@@ -58,7 +57,7 @@ A KDE frontend for gphoto2 - header files.
 Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
-%setup -q -n %{name}-%{version}-%{state}
+%setup -q
 %patch0 -p0
 
 %build
@@ -133,6 +132,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/kde4/services/digikamnepomukservice.desktop
 %{_datadir}/kde4/services/digikamsearch.protocol
 %{_datadir}/kde4/services/digikamtags.protocol
+%{_datadir}/apps/digikam/digikam.notifyrc
 %{_datadir}/apps/solid/actions/digikam-opencamera.desktop
 %{_datadir}/kde4/servicetypes/digikamimageplugin.desktop
 %{_iconsdir}/*/*/apps/*.png

@@ -1,16 +1,16 @@
 #
-%define		qtver	4.4.3
-%define		kdever	4.2.1
+%define		qtver	4.6.0
+%define		kdever	4.3.0
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	0.10.0
-Release:	4
+Version:	1.0.0
+Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	6c6daf958ff4fe93974f1074ba967cd9
+# Source0-md5:	6169deb68a3d712a0c6539b09c5f8c0c
 URL:		http://www.digikam.org/
 Patch0:		%{name}-link.patch
 BuildRequires:	Qt3Support-devel >= %{qtver}
@@ -28,9 +28,8 @@ BuildRequires:	kde4-kdepimlibs-devel >= %{kdever}
 BuildRequires:	lcms-devel
 BuildRequires:	lensfun-devel
 BuildRequires:	libgphoto2-devel
-BuildRequires:	libtiff-devel
+BuildRequires:	liblqr-devel >= 0.4.0
 BuildRequires:	pkgconfig >= 1:0.9.0
-BuildRequires:	qt4-build
 BuildRequires:	qt4-qmake >= %{qtver}
 BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	sed >= 4.0
@@ -63,6 +62,8 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 %patch0 -p0
 
 %build
+# explicitely remove hne language support (re-add when glibc supports it)
+%{__sed} -i -e 's/add_subdirectory(hne)//g' po/CMakeLists.txt
 install -d build
 cd build
 %cmake \
@@ -95,10 +96,10 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
+%attr(755,root,root) %{_bindir}/cleanup_digikamdb
 %attr(755,root,root) %{_bindir}/digikam
 %dir %{_datadir}/apps/digikam/utils
 %attr(755,root,root) %{_datadir}/apps/digikam/utils/digikam-camera
-%attr(755,root,root) %{_bindir}/digikamthemedesigner
 %attr(755,root,root) %{_bindir}/digitaglinktree
 %attr(755,root,root) %{_bindir}/showfoto
 %attr(755,root,root) %ghost %{_libdir}/libdigikamdatabase.so.1
@@ -106,11 +107,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libdigikamcore.so.1
 %attr(755,root,root) %{_libdir}/libdigikamcore.so.*.*.*
 %attr(755,root,root) %{_libdir}/kde4/digikamimageplugin_*.so
+%attr(755,root,root) %{_libdir}/kde4/digikamnepomukservice.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamalbums.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamdates.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamsearch.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamtags.so
 %{_mandir}/man1/digitaglinktree.1*
+%{_mandir}/man1/cleanup_digikamdb.1*
 %dir %{_datadir}/apps/digikam
 %{_datadir}/apps/digikam/about
 %{_datadir}/apps/digikam/cameraui.rc
@@ -120,16 +123,20 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/apps/digikam/digikamui.rc
 %{_datadir}/apps/digikam/icons
 %{_datadir}/apps/digikam/lighttablewindowui.rc
+%{_datadir}/apps/digikam/queuemgrwindowui.rc
 %{_datadir}/apps/digikam/themes
 %{_datadir}/apps/digikam/tips
 %{_datadir}/apps/showfoto
 %{_datadir}/kde4/services/digikamalbums.protocol
 %{_datadir}/kde4/services/digikamdates.protocol
 %{_datadir}/kde4/services/digikamimageplugin_*.desktop
+%{_datadir}/kde4/services/digikamnepomukservice.desktop
 %{_datadir}/kde4/services/digikamsearch.protocol
 %{_datadir}/kde4/services/digikamtags.protocol
+%{_datadir}/apps/digikam/digikam.notifyrc
 %{_datadir}/apps/solid/actions/digikam-opencamera.desktop
 %{_datadir}/kde4/servicetypes/digikamimageplugin.desktop
+%{_iconsdir}/*/*/apps/*.png
 %{_desktopdir}/kde4/*.desktop
 
 %files devel

@@ -1,14 +1,14 @@
-
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	0.9.4
-Release:	2
+Release:	3
 License:	GPL
 Group:		X11/Applications/Graphics
-Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
+Source0:	http://downloads.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
 # Source0-md5:	b0f3fa00bd054b0497146e6ce24dab7c
 Patch0:		kde-ac260-lt.patch
+Patch1:		kde-am.patch
 URL:		http://digikam.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -29,6 +29,9 @@ Obsoletes:	digikamimageplugins
 # sr@Latn vs. sr@latin
 Conflicts:	glibc-misc < 6:2.7
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+# build broken with spaces in CC
+%undefine	with_ccache
 
 %description
 Designed to be a standalone application to preview and download images
@@ -55,14 +58,11 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %{__sed} -i -e "s,Categories.*,Categories=Qt;KDE;Graphics;Photograph;," \
 	./digikam/digikam/digikam.desktop \
 	./digikam/showfoto/showfoto.desktop
-echo "# vi: encoding=utf-8" >> ./digikam/digikam/digikam.desktop
-echo "# vi: encoding=utf-8" >> ./digikam/showfoto/showfoto.desktop
-echo "# vi: encoding=utf-8" >> ./digikam/imageplugins/digikamimageplugin_core.desktop
-echo "# vi: encoding=utf-8" >> ./digikam/utilities/imageeditor/digikamimageplugin.desktop
 
 %build
 cp -f /usr/share/automake/config.sub admin
@@ -74,8 +74,7 @@ cp -f /usr/share/automake/config.sub admin
 %endif
 	--%{?debug:en}%{!?debug:dis}able-debug%{?debug:=full} \
 	--disable-rpath \
-	--with-qt-libraries=%{_libdir} \
-	--with-imlib2-config=%{_bindir}
+	--with-qt-libraries=%{_libdir}
 %{__make}
 
 %install
@@ -101,8 +100,12 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
-%attr(755,root,root) %{_bindir}/*
-%attr(755,root,root) %{_libdir}/*.so.*.*.*
+%attr(755,root,root) %{_bindir}/digikam
+%attr(755,root,root) %{_bindir}/digikamthemedesigner
+%attr(755,root,root) %{_bindir}/digitaglinktree
+%attr(755,root,root) %{_bindir}/showfoto
+%attr(755,root,root) %{_libdir}/libdigikam.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libdigikam.so.0
 %attr(755,root,root) %{_libdir}/kde3/*.so
 %attr(755,root,root) %{_datadir}/apps/digikam/utils/digikam-camera
 %dir %{_datadir}/apps/digikam
@@ -115,12 +118,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/apps/digikam/tips
 %{_datadir}/apps/digikam/digikam-splash.png
 %{_datadir}/apps/digikam/*.rc
-%{_datadir}/services/*
-%{_datadir}/servicetypes/*
+%{_datadir}/services/*.protocol
+%{_datadir}/services/*.desktop
+%{_datadir}/servicetypes/*.desktop
 %{_datadir}/apps/showfoto
 %{_datadir}/apps/konqueror/servicemenus/digikam-*.desktop
 %{_desktopdir}/kde/*.desktop
-%{_iconsdir}/[!l]*/*/*/*
+%{_iconsdir}/*/*/*/*.png
 %{_mandir}/man1/digitaglinktree.1*
 
 %files devel

@@ -1,12 +1,12 @@
 #
-%define		qtver	4.6.0
-%define		kdever	4.3.0
+%define		qtver	4.6.2
+%define		kdever	4.4.0
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	1.1.0
-Release:	2
+Release:	3
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
@@ -20,7 +20,7 @@ BuildRequires:	QtDesigner-devel >= %{qtver}
 BuildRequires:	QtSql-devel >= %{qtver}
 BuildRequires:	QtSvg-devel >= %{qtver}
 BuildRequires:	automoc4
-BuildRequires:	cmake >= 2.6.2
+BuildRequires:	cmake >= 2.8.0
 BuildRequires:	gettext-devel
 BuildRequires:	jasper-devel
 BuildRequires:	kde4-kdeedu-devel >= %{kdever}
@@ -33,7 +33,7 @@ BuildRequires:	libgphoto2-devel
 BuildRequires:	liblqr-devel >= 0.4.0
 BuildRequires:	libtiff-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
-BuildRequires:	qt4-build
+BuildRequires:	qt4-build >= %{qtver}
 BuildRequires:	qt4-qmake >= %{qtver}
 BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	sed >= 4.0
@@ -118,6 +118,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamdates.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamsearch.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamtags.so
+%attr(755,root,root) %{_libdir}/kde4/plugins/marble/ExternalDraw.so
 %{_mandir}/man1/digitaglinktree.1*
 %{_mandir}/man1/cleanup_digikamdb.1*
 %dir %{_datadir}/apps/digikam

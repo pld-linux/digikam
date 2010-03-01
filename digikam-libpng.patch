@@ -1,37 +1,45 @@
-diff -Nur digikam-1.0.0.orig/libs/dimg/loaders/pngloader.cpp digikam-1.0.0/libs/dimg/loaders/pngloader.cpp
---- digikam-1.0.0.orig/libs/dimg/loaders/pngloader.cpp	2009-12-21 11:20:36.000000000 +0200
-+++ digikam-1.0.0/libs/dimg/loaders/pngloader.cpp	2010-01-20 20:18:51.000000000 +0200
-@@ -105,7 +105,7 @@
+--- digikam-0.9.4/digikam/libs/dimg/loaders/pngloader.cpp~	2010-03-01 10:26:46.905217555 +0200
++++ digikam-0.9.4/digikam/libs/dimg/loaders/pngloader.cpp	2010-03-01 10:26:49.241660222 +0200
+@@ -88,7 +88,7 @@
      unsigned char buf[PNG_BYTES_TO_CHECK];
  
-     size_t membersRead = fread(buf, 1, PNG_BYTES_TO_CHECK, f);
--    if ((membersRead != PNG_BYTES_TO_CHECK) || !png_check_sig(buf, PNG_BYTES_TO_CHECK))
-+    if ((membersRead != PNG_BYTES_TO_CHECK) || png_sig_cmp(buf, 0, PNG_BYTES_TO_CHECK))
+     fread(buf, 1, PNG_BYTES_TO_CHECK, f);
+-    if (!png_check_sig(buf, PNG_BYTES_TO_CHECK))
++    if (png_sig_cmp(buf, 0, PNG_BYTES_TO_CHECK))
      {
-         kDebug() << "Not a PNG image file.";
+         DDebug() << k_funcinfo << "Not a PNG image file." << endl;
          fclose(f);
-@@ -322,7 +322,7 @@
+@@ -252,7 +252,8 @@
  #ifdef ENABLE_DEBUG_MESSAGES
-                     kDebug() << "PNG in PNG_COLOR_TYPE_GRAY";
+                 DDebug() << "PNG in PNG_COLOR_TYPE_GRAY" << endl;
  #endif
--                    png_set_gray_1_2_4_to_8(png_ptr);
-+                    png_set_expand_gray_1_2_4_to_8(png_ptr);
-                     png_set_gray_to_rgb(png_ptr);
+-                png_set_gray_1_2_4_to_8(png_ptr);
++                png_set_expand_gray_1_2_4_to_8(png_ptr);
++
+                 png_set_gray_to_rgb(png_ptr);
  
-                     if (QSysInfo::ByteOrder == QSysInfo::LittleEndian)           // Intel
-diff -Nur digikam-1.0.0.orig/libs/threadimageio/thumbnailbasic.cpp digikam-1.0.0/libs/threadimageio/thumbnailbasic.cpp
---- digikam-1.0.0.orig/libs/threadimageio/thumbnailbasic.cpp	2009-12-21 11:20:45.000000000 +0200
-+++ digikam-1.0.0/libs/threadimageio/thumbnailbasic.cpp	2010-01-20 20:19:20.000000000 +0200
-@@ -137,7 +137,7 @@
+                 if (QImage::systemByteOrder() == QImage::LittleEndian)       // Intel
+@@ -659,7 +660,7 @@
+                 png_text comment;
+                 comment.key         = "Comment";
+                 comment.text        = ba.data();
+-                comment.itxt_lenght = ba.size();
++                comment.itxt_length = ba.size();
+                 comment.compression = PNG_ITXT_COMPRESSION_zTXt;
+                 png_set_text(png_ptr, info_ptr, &(comment), 1);
+             
+--- digikam-0.9.4/digikam/kioslave/digikamthumbnail.cpp~	2008-07-16 22:05:55.000000000 +0300
++++ digikam-0.9.4/digikam/kioslave/digikamthumbnail.cpp	2010-03-01 11:44:14.677566100 +0200
+@@ -363,7 +363,7 @@
      unsigned char buf[PNG_BYTES_TO_CHECK];
  
-     size_t itemsRead = fread(buf, 1, PNG_BYTES_TO_CHECK, f);
--    if (itemsRead != 1 || !png_check_sig(buf, PNG_BYTES_TO_CHECK))
-+    if (itemsRead != 1 || png_sig_cmp(buf, 0, PNG_BYTES_TO_CHECK))
+     fread(buf, 1, PNG_BYTES_TO_CHECK, f);
+-    if (!png_check_sig(buf, PNG_BYTES_TO_CHECK))
++    if (png_sig_cmp(buf, 0, PNG_BYTES_TO_CHECK))
      {
          fclose(f);
          return qimage;
-@@ -232,7 +232,7 @@
+@@ -458,7 +458,7 @@
      {
          png_set_gray_to_rgb(png_ptr);
          if (png_get_bit_depth(png_ptr, info_ptr) < 8)

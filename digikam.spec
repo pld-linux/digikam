@@ -6,7 +6,7 @@ Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	1.3.0
-Release:	0.1
+Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
@@ -31,6 +31,7 @@ BuildRequires:	lensfun-devel
 BuildRequires:	libgphoto2-devel
 BuildRequires:	liblqr-devel >= 0.4.0
 BuildRequires:	libtiff-devel
+BuildRequires:	mysql
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	qt4-build >= %{qtver}
 BuildRequires:	qt4-qmake >= %{qtver}
@@ -104,6 +105,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/digikam
 %dir %{_datadir}/apps/digikam/utils
 %attr(755,root,root) %{_datadir}/apps/digikam/utils/digikam-camera
+%dir %{_datadir}/apps/digikam/database
+%{_datadir}/apps/digikam/database/dbconfig.xml
+%{_datadir}/apps/digikam/database/mysql-global.conf
 %attr(755,root,root) %{_bindir}/digitaglinktree
 %attr(755,root,root) %{_bindir}/showfoto
 %attr(755,root,root) %ghost %{_libdir}/libdigikamdatabase.so.1
@@ -117,6 +121,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamsearch.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamtags.so
 %attr(755,root,root) %{_libdir}/kde4/plugins/marble/ExternalDraw.so
+# ?
+%dir %{_libdir}/kde4/libexec
+%attr(755,root,root) %{_libdir}/kde4/libexec/digikamdatabaseserver
 %{_mandir}/man1/digitaglinktree.1*
 %{_mandir}/man1/cleanup_digikamdb.1*
 %dir %{_datadir}/apps/digikam

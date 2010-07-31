@@ -1,16 +1,16 @@
 #
-%define		qtver	4.6.2
-%define		kdever	4.4.0
+%define		qtver	4.6.3
+%define		kdever	4.5.0
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	1.2.0
-Release:	1
+Version:	1.3.0
+Release:	0.1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	8f68022008cf1650924cc8688f176572
+# Source0-md5:	25d09fdab2b2450c6c6075aab3377fce
 URL:		http://www.digikam.org/
 Patch0:		%{name}-link.patch
 BuildRequires:	Qt3Support-devel >= %{qtver}

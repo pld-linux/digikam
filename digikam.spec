@@ -123,8 +123,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamsearch.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamtags.so
 %attr(755,root,root) %{_libdir}/kde4/plugins/marble/ExternalDraw.so
-# ?
-%dir %{_libdir}/kde4/libexec
 %attr(755,root,root) %{_libdir}/kde4/libexec/digikamdatabaseserver
 %{_mandir}/man1/digitaglinktree.1*
 %{_mandir}/man1/cleanup_digikamdb.1*

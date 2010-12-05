@@ -4,7 +4,23 @@
          ${STRIGI_LIBRARIES}
          ${LCMS_LIBRARIES}
          ${GPHOTO2_LIBRARIES}
-+	khtml
++        khtml
+ )
+ 
+ IF(KDEPIMLIBS_FOUND)
+--- digikam/CMakeLists.txt~	2010-11-22 18:47:39.000000000 +0100
++++ digikam/CMakeLists.txt	2010-12-05 19:36:00.781721964 +0100
+@@ -238,12 +238,12 @@
+         ${QT_QT3SUPPORT_LIBRARY}
+         ${STRIGI_LIBRARIES}
+         ${LCMS_LIBRARIES}
+-        ${GPHOTO2_LIBRARIES}
+         digikamcore
+         digikamdatabase
+         advancedrename
+         queuemanager
+         cameragui
++        ${GPHOTO2_LIBRARIES}
  )
  
  IF(KDEPIMLIBS_FOUND)

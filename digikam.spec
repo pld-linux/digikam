@@ -32,7 +32,7 @@ BuildRequires:	libgphoto2-devel
 BuildRequires:	liblqr-devel >= 0.4.0
 BuildRequires:	libtiff-devel
 # fixed mysql_install_db in this version
-BuildRequires:	mysql >= 5.1.49-2
+BuildRequires:	mysql-extras >= 5.5.9-2
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	qt4-build >= %{qtver}
 BuildRequires:	qt4-qmake >= %{qtver}

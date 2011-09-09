@@ -1,16 +1,16 @@
 #
-%define		qtver	4.7.3
-%define		kdever	4.7.0
+%define		qtver	4.7.4
+%define		kdever	4.7.1
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	2.0.0
+Version:	2.1.0
 Release:	0.1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://downloads.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	7b1ab69fc2fb36a45dc3ca38b01d42d8
+# Source0-md5:	3e5228a60ae916c530a7a87e081862b6
 URL:		http://www.digikam.org/
 BuildRequires:	Qt3Support-devel >= %{qtver}
 BuildRequires:	QtCore-devel >= %{qtver}
@@ -81,6 +81,7 @@ cd build
 	-DSYSCONF_INSTALL_DIR=%{_sysconfdir} \
 %if "%{_lib}" == "lib64"
 	-DLIB_SUFFIX=64 \
+	-DLIB_INSTALL_DIR_SUFFIX=64 \
 %endif
 	../
 
@@ -111,6 +112,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/dnginfo
 %attr(755,root,root) %{_bindir}/expoblending
 %attr(755,root,root) %{_bindir}/libkgeomap_demo
+%attr(755,root,root) %{_bindir}/panoramagui
 %attr(755,root,root) %{_bindir}/scangui
 %{_datadir}/apps/digikam/lensfun
 %dir %{_datadir}/apps/digikam/utils
@@ -131,6 +133,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libkipiplugins.so.2
 %attr(755,root,root) %{_libdir}/libmediawiki.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libmediawiki.so.1
+%attr(755,root,root) %{_libdir}/libkvkontakte.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libkvkontakte.so.1
 %attr(755,root,root) %{_libdir}/libdigikamcore.so.*.*.*
 %attr(755,root,root) %{_libdir}/kde4/digikamimageplugin_*.so
 %attr(755,root,root) %{_libdir}/kde4/digikamnepomukservice.so
@@ -184,12 +188,15 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libkgeomap.so
 %attr(755,root,root) %{_libdir}/libkipiplugins.so
 %attr(755,root,root) %{_libdir}/libmediawiki.so
+%attr(755,root,root) %{_libdir}/libkvkontakte.so
 %{_pkgconfigdir}/libkface.pc
 %{_pkgconfigdir}/libkgeomap.pc
 %{_pkgconfigdir}/libmediawiki.pc
 %{_datadir}/apps/cmake/modules/FindKGeoMap.cmake
 %{_datadir}/apps/cmake/modules/FindKface.cmake
 %{_datadir}/apps/cmake/modules/FindMediawiki.cmake
+%{_libdir}/cmake/LibKVkontakte
 %{_includedir}/libkface
+%{_includedir}/libkvkontakte
 %{_includedir}/libkgeomap
 %{_includedir}/libmediawiki

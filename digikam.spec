@@ -36,6 +36,7 @@ BuildRequires:	libtiff-devel
 BuildRequires:	marble-devel >= %{kdever}
 # fixed mysql_install_db in this version
 BuildRequires:	mysql-extras >= 5.5.9-2
+BuildRequires:	opencv-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	qjson-devel
 BuildRequires:	qt4-build >= %{qtver}

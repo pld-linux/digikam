@@ -37,6 +37,7 @@ BuildRequires:	marble-devel >= %{kdever}
 # fixed mysql_install_db in this version
 BuildRequires:	mysql-extras >= 5.5.9-2
 BuildRequires:	pkgconfig >= 1:0.9.0
+BuildRequires:	qjson-devel
 BuildRequires:	qt4-build >= %{qtver}
 BuildRequires:	qt4-qmake >= %{qtver}
 BuildRequires:	rpmbuild(macros) >= 1.129

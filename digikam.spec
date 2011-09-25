@@ -6,7 +6,7 @@ Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	2.1.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://downloads.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
@@ -18,6 +18,7 @@ BuildRequires:	QtDesigner-devel >= %{qtver}
 BuildRequires:	QtSql-devel >= %{qtver}
 BuildRequires:	QtSvg-devel >= %{qtver}
 BuildRequires:	automoc4
+BuildRequires:	clapack-devel
 BuildRequires:	cmake >= 2.8.0
 BuildRequires:	gettext-devel
 BuildRequires:	jasper-devel
@@ -25,6 +26,7 @@ BuildRequires:	kde4-kdelibs-devel >= %{kdever}
 BuildRequires:	kde4-kdepimlibs-devel >= %{kdever}
 BuildRequires:	lcms-devel
 BuildRequires:	lensfun-devel
+BuildRequires:	libf2c-devel
 BuildRequires:	libgphoto2-devel
 BuildRequires:	libkdcraw-devel >= %{kdever}
 BuildRequires:	libkdeedu-devel >= %{kdever}
@@ -32,13 +34,14 @@ BuildRequires:	libkexiv2-devel >= %{kdever}
 BuildRequires:	libkipi-devel >= %{kdever}
 BuildRequires:	libksane-devel >= %{kdever}
 BuildRequires:	liblqr-devel >= 0.4.0
+BuildRequires:	libpgf-devel
 BuildRequires:	libtiff-devel
 BuildRequires:	marble-devel >= %{kdever}
 # fixed mysql_install_db in this version
 BuildRequires:	mysql-extras >= 5.5.9-2
 BuildRequires:	opencv-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
-BuildRequires:	qjson-devel
+BuildRequires:	qjson-devel >= 0.5
 BuildRequires:	qt4-build >= %{qtver}
 BuildRequires:	qt4-qmake >= %{qtver}
 BuildRequires:	rpmbuild(macros) >= 1.129
@@ -73,8 +76,6 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 %setup -q
 
 %build
-# explicitely remove hne language support (re-add when glibc supports it)
-%{__sed} -i -e 's/add_subdirectory(hne)//g' po/CMakeLists.txt
 install -d build
 cd build
 %cmake \
@@ -85,6 +86,7 @@ cd build
 	-DLIB_SUFFIX=64 \
 	-DLIB_INSTALL_DIR_SUFFIX=64 \
 %endif
+	-DSERVERCMD_MYSQL=%{_sbindir}/mysqld \
 	../
 
 %{__make}

@@ -186,6 +186,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/kde4/servicetypes/digikamimageplugin.desktop
 %{_datadir}/kde4/servicetypes/photolayoutseditorborderplugin.desktop
 %{_datadir}/kde4/servicetypes/photolayoutseditoreffectplugin.desktop
+%{_datadir}/config.kcfg/PLEConfigSkeleton.kcfgc
 %{_iconsdir}/*/*/actions/*.png
 %{_iconsdir}/*/*/actions/*.svgz
 %{_iconsdir}/*/*/apps/*.png

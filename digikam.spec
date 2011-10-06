@@ -1,16 +1,16 @@
 #
 %define		qtver	4.7.4
-%define		kdever	4.7.1
+%define		kdever	4.7.2
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	2.1.1
-Release:	2
+Version:	2.2.0
+Release:	0.1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://downloads.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	8cd3f5f2141bbb54ba2fd80371582c2c
+# Source0-md5:	be6100de4961a8cb99a8d9d1688a0460
 URL:		http://www.digikam.org/
 BuildRequires:	Qt3Support-devel >= %{qtver}
 BuildRequires:	QtCore-devel >= %{qtver}
@@ -117,6 +117,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/expoblending
 %attr(755,root,root) %{_bindir}/libkgeomap_demo
 %attr(755,root,root) %{_bindir}/panoramagui
+%attr(755,root,root) %{_bindir}/photolayoutseditor
 %attr(755,root,root) %{_bindir}/scangui
 %{_datadir}/apps/digikam/lensfun
 %dir %{_datadir}/apps/digikam/utils
@@ -149,6 +150,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamtags.so
 %attr(755,root,root) %{_libdir}/kde4/kipiplugin_*.so
 %attr(755,root,root) %{_libdir}/kde4/libexec/digikamdatabaseserver
+%attr(755,root,root) %{_libdir}/kde4/photolayoutseditorborderplugin_polaroid.so
+%attr(755,root,root) %{_libdir}/kde4/photolayoutseditorborderplugin_solid.so
 %{_mandir}/man1/digitaglinktree.1*
 %{_mandir}/man1/cleanup_digikamdb.1*
 %dir %{_datadir}/apps/digikam
@@ -166,6 +169,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/apps/kipiplugin_*
 %{_datadir}/apps/libkface
 %{_datadir}/apps/libkgeomap
+%{_datadir}/apps/photolayoutseditor
 %{_datadir}/apps/showfoto
 %{_datadir}/kde4/services/digikamalbums.protocol
 %{_datadir}/kde4/services/digikamdates.protocol
@@ -175,9 +179,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/kde4/services/digikamsearch.protocol
 %{_datadir}/kde4/services/digikamtags.protocol
 %{_datadir}/kde4/services/kipiplugin_*.desktop
+%{_datadir}/kde4/services/photolayoutseditorborderplugin_polaroid.desktop
+%{_datadir}/kde4/services/photolayoutseditorborderplugin_solid.desktop
 %{_datadir}/apps/digikam/digikam.notifyrc
 %{_datadir}/apps/solid/actions/digikam-opencamera.desktop
 %{_datadir}/kde4/servicetypes/digikamimageplugin.desktop
+%{_datadir}/kde4/servicetypes/photolayoutseditorborderplugin.desktop
+%{_datadir}/kde4/servicetypes/photolayoutseditoreffectplugin.desktop
 %{_iconsdir}/*/*/actions/*.png
 %{_iconsdir}/*/*/actions/*.svgz
 %{_iconsdir}/*/*/apps/*.png

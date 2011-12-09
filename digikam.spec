@@ -1,16 +1,16 @@
 #
 %define		qtver	4.7.4
-%define		kdever	4.7.2
+%define		kdever	4.7.4
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	2.2.0
+Version:	2.4.1
 Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://downloads.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	be6100de4961a8cb99a8d9d1688a0460
+# Source0-md5:	4e36b8cc33f5ac589e4b45b22c902fdd
 URL:		http://www.digikam.org/
 BuildRequires:	Qt3Support-devel >= %{qtver}
 BuildRequires:	QtCore-devel >= %{qtver}
@@ -150,8 +150,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamtags.so
 %attr(755,root,root) %{_libdir}/kde4/kipiplugin_*.so
 %attr(755,root,root) %{_libdir}/kde4/libexec/digikamdatabaseserver
-%attr(755,root,root) %{_libdir}/kde4/photolayoutseditorborderplugin_polaroid.so
-%attr(755,root,root) %{_libdir}/kde4/photolayoutseditorborderplugin_solid.so
 %{_mandir}/man1/digitaglinktree.1*
 %{_mandir}/man1/cleanup_digikamdb.1*
 %dir %{_datadir}/apps/digikam
@@ -179,8 +177,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/kde4/services/digikamsearch.protocol
 %{_datadir}/kde4/services/digikamtags.protocol
 %{_datadir}/kde4/services/kipiplugin_*.desktop
-%{_datadir}/kde4/services/photolayoutseditorborderplugin_polaroid.desktop
-%{_datadir}/kde4/services/photolayoutseditorborderplugin_solid.desktop
 %{_datadir}/apps/digikam/digikam.notifyrc
 %{_datadir}/apps/solid/actions/digikam-opencamera.desktop
 %{_datadir}/kde4/servicetypes/digikamimageplugin.desktop

@@ -1,22 +1,24 @@
 #
-%define		qtver	4.7.4
-%define		kdever	4.7.4
+%define		qtver	4.8.0
+%define		kdever	4.8.0
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	2.4.1
-Release:	4
+Version:	2.5.0
+Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://downloads.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	4e36b8cc33f5ac589e4b45b22c902fdd
+# Source0-md5:	770355060d2033a044c21b0f155be00c
+Patch0:		digikam-2.5.0-libkipi-1.4.0.patch
 URL:		http://www.digikam.org/
 BuildRequires:	Qt3Support-devel >= %{qtver}
 BuildRequires:	QtCore-devel >= %{qtver}
 BuildRequires:	QtDesigner-devel >= %{qtver}
 BuildRequires:	QtSql-devel >= %{qtver}
 BuildRequires:	QtSvg-devel >= %{qtver}
+BuildRequires:	QtXmlPatterns-devel >= %{qtver}
 BuildRequires:	automoc4
 BuildRequires:	clapack-devel
 BuildRequires:	cmake >= 2.8.0
@@ -28,15 +30,15 @@ BuildRequires:	lcms-devel
 BuildRequires:	lensfun-devel
 BuildRequires:	libf2c-devel
 BuildRequires:	libgphoto2-devel
-BuildRequires:	libkdcraw-devel >= %{kdever}
-BuildRequires:	libkdeedu-devel >= %{kdever}
-BuildRequires:	libkexiv2-devel >= %{kdever}
-BuildRequires:	libkipi-devel >= %{kdever}
-BuildRequires:	libksane-devel >= %{kdever}
+BuildRequires:	kde4-libkdcraw-devel >= %{kdever}
+BuildRequires:	kde4-libkdeedu-devel >= %{kdever}
+BuildRequires:	kde4-libkexiv2-devel >= %{kdever}
+BuildRequires:	kde4-libkipi-devel >= %{kdever}
+BuildRequires:	kde4-libksane-devel >= %{kdever}
 BuildRequires:	liblqr-devel >= 0.4.0
 BuildRequires:	libpgf-devel
 BuildRequires:	libtiff-devel
-BuildRequires:	marble-devel >= %{kdever}
+BuildRequires:	kde4-marble-devel >= %{kdever}
 # fixed mysql_install_db in this version
 BuildRequires:	mysql-extras >= 5.5.9-2
 BuildRequires:	opencv-devel
@@ -74,6 +76,9 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
 %setup -q
+cd core
+%patch0 -p1
+cd ..
 
 %build
 install -d build
@@ -116,6 +121,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/dnginfo
 %attr(755,root,root) %{_bindir}/expoblending
 %attr(755,root,root) %{_bindir}/libkgeomap_demo
+%attr(755,root,root) %{_bindir}/multithread
 %attr(755,root,root) %{_bindir}/panoramagui
 %attr(755,root,root) %{_bindir}/photolayoutseditor
 %attr(755,root,root) %{_bindir}/scangui

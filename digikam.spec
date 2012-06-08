@@ -1,17 +1,16 @@
 #
-%define		qtver	4.8.0
+%define		qtver	4.8.1
 %define		kdever	4.8.0
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	2.5.0
-Release:	3
+Version:	2.6.0
+Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://downloads.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	770355060d2033a044c21b0f155be00c
-Patch0:		digikam-2.5.0-libkipi-1.4.0.patch
+# Source0-md5:	5caf799b9a74d3bed3490d2cf66021dd
 URL:		http://www.digikam.org/
 BuildRequires:	Qt3Support-devel >= %{qtver}
 BuildRequires:	QtCore-devel >= %{qtver}
@@ -76,9 +75,6 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
 %setup -q
-cd core
-%patch0 -p1
-cd ..
 
 %build
 install -d build
@@ -120,8 +116,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/dngconverter
 %attr(755,root,root) %{_bindir}/dnginfo
 %attr(755,root,root) %{_bindir}/expoblending
-%attr(755,root,root) %{_bindir}/libkgeomap_demo
-%attr(755,root,root) %{_bindir}/multithread
 %attr(755,root,root) %{_bindir}/panoramagui
 %attr(755,root,root) %{_bindir}/photolayoutseditor
 %attr(755,root,root) %{_bindir}/scangui
@@ -131,6 +125,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/apps/digikam/database
 %{_datadir}/apps/digikam/database/dbconfig.xml
 %{_datadir}/apps/digikam/database/mysql-global.conf
+%{_datadir}/apps/kconf_update/adjustlevelstool.upd
 %attr(755,root,root) %{_bindir}/digitaglinktree
 %attr(755,root,root) %{_bindir}/showfoto
 %attr(755,root,root) %ghost %{_libdir}/libdigikamdatabase.so.2
@@ -189,6 +184,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/kde4/servicetypes/photolayoutseditorborderplugin.desktop
 %{_datadir}/kde4/servicetypes/photolayoutseditoreffectplugin.desktop
 %{_datadir}/config.kcfg/PLEConfigSkeleton.kcfgc
+%{_datadir}/templates/kipiplugins_photolayoutseditor
 %{_iconsdir}/*/*/actions/*.png
 %{_iconsdir}/*/*/actions/*.svgz
 %{_iconsdir}/*/*/apps/*.png

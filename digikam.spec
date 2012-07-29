@@ -11,6 +11,7 @@ License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://downloads.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
 # Source0-md5:	428e5234fa4daa6f154bf23c63787bdd
+Patch0:		%{name}-build.patch
 URL:		http://www.digikam.org/
 BuildRequires:	Qt3Support-devel >= %{qtver}
 BuildRequires:	QtCore-devel >= %{qtver}
@@ -27,7 +28,7 @@ BuildRequires:	kde4-kdelibs-devel >= %{kdever}
 BuildRequires:	kde4-kdepimlibs-devel >= %{kdever}
 BuildRequires:	lcms-devel
 BuildRequires:	lensfun-devel
-BuildRequires:	libf2c-devel
+BuildRequires:	libf2c-devel >= 20110801
 BuildRequires:	libgphoto2-devel
 BuildRequires:	kde4-libkdcraw-devel >= %{kdever}
 BuildRequires:	kde4-libkdeedu-devel >= %{kdever}
@@ -75,6 +76,7 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 install -d build
@@ -165,6 +167,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/apps/digikam/queuemgrwindowui.rc
 %{_datadir}/apps/digikam/tips
 %{_datadir}/apps/gpssync
+%{_datadir}/apps/kipi
 %{_datadir}/apps/kipiplugin_*
 %{_datadir}/apps/libkface
 %{_datadir}/apps/libkgeomap

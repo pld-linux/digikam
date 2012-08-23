@@ -46,7 +46,7 @@ BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	qjson-devel >= 0.5
 BuildRequires:	qt4-build >= %{qtver}
 BuildRequires:	qt4-qmake >= %{qtver}
-BuildRequires:	rpmbuild(macros) >= 1.129
+BuildRequires:	rpmbuild(macros) >= 1.606
 BuildRequires:	sed >= 4.0
 BuildRequires:	shared-desktop-ontologies-devel >= 0.2
 BuildRequires:	soprano-devel

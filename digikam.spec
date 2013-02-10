@@ -1,18 +1,19 @@
 #
 %define		qtver	4.8.3
-%define		kdever	4.9.2
+%define		kdever	4.10.0
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	2.9.0
+Version:	3.0.0
 Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
-Source0:	http://downloads.sourceforge.net/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	eb2971c98cadb31a2d63c4189d26ccab
+Source0:	http://download.kde.org/stable/digikam/%{name}-%{version}.tar.bz2
+# Source0-md5:	e1325fa3f8d2ab2e14ca0af7261967db
 Patch0:		%{name}-build.patch
 URL:		http://www.digikam.org/
+BuildRequires:	ImageMagick-devel
 BuildRequires:	Qt3Support-devel >= %{qtver}
 BuildRequires:	QtCore-devel >= %{qtver}
 BuildRequires:	QtDesigner-devel >= %{qtver}
@@ -27,7 +28,7 @@ BuildRequires:	jasper-devel
 BuildRequires:	kde4-kdelibs-devel >= %{kdever}
 BuildRequires:	kde4-kdepimlibs-devel >= %{kdever}
 BuildRequires:	lcms-devel
-BuildRequires:	lensfun-devel
+BuildRequires:	lensfun-devel >= 0.2.6
 BuildRequires:	libf2c-devel >= 20110801
 BuildRequires:	libgphoto2-devel
 BuildRequires:	kde4-libkdcraw-devel >= %{kdever}
@@ -46,6 +47,7 @@ BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	qjson-devel >= 0.5
 BuildRequires:	qt4-build >= %{qtver}
 BuildRequires:	qt4-qmake >= %{qtver}
+BuildRequires:	qt-gstreamer-devel
 BuildRequires:	rpmbuild(macros) >= 1.606
 BuildRequires:	sed >= 4.0
 BuildRequires:	shared-desktop-ontologies-devel >= 0.2
@@ -84,6 +86,7 @@ install -d build
 cd build
 %cmake \
 	-DSERVERCMD_MYSQL=%{_sbindir}/mysqld \
+	-DENABLE_RAWSPEED=ON \
 	../
 
 %{__make}
@@ -107,6 +110,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc README
+%attr(755,root,root) %{_bindir}/avtest
 %attr(755,root,root) %{_bindir}/cleanup_digikamdb
 %attr(755,root,root) %{_bindir}/digikam
 %attr(755,root,root) %{_bindir}/dngconverter
@@ -115,7 +119,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/panoramagui
 %attr(755,root,root) %{_bindir}/photolayoutseditor
 %attr(755,root,root) %{_bindir}/scangui
-%{_datadir}/apps/digikam/lensfun
 %dir %{_datadir}/apps/digikam/utils
 %attr(755,root,root) %{_datadir}/apps/digikam/utils/digikam-camera
 %dir %{_datadir}/apps/digikam/database
@@ -124,22 +127,21 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/apps/kconf_update/adjustlevelstool.upd
 %attr(755,root,root) %{_bindir}/digitaglinktree
 %attr(755,root,root) %{_bindir}/showfoto
-%attr(755,root,root) %ghost %{_libdir}/libdigikamdatabase.so.2
+%attr(755,root,root) %ghost %{_libdir}/libdigikamdatabase.so.3
 %attr(755,root,root) %{_libdir}/libdigikamdatabase.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libdigikamcore.so.2
+%attr(755,root,root) %ghost %{_libdir}/libdigikamcore.so.3
 %attr(755,root,root) %{_libdir}/libkface.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libkface.so.1
 %attr(755,root,root) %{_libdir}/libkgeomap.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libkgeomap.so.1
 %attr(755,root,root) %{_libdir}/libkipiplugins.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libkipiplugins.so.2
+%attr(755,root,root) %ghost %{_libdir}/libkipiplugins.so.3
 %attr(755,root,root) %{_libdir}/libmediawiki.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libmediawiki.so.1
 %attr(755,root,root) %{_libdir}/libkvkontakte.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libkvkontakte.so.1
 %attr(755,root,root) %{_libdir}/libdigikamcore.so.*.*.*
 %attr(755,root,root) %{_libdir}/kde4/digikamimageplugin_*.so
-%attr(755,root,root) %{_libdir}/kde4/digikamnepomukservice.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamalbums.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamdates.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikammapimages.so
@@ -151,7 +153,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/cleanup_digikamdb.1*
 %dir %{_datadir}/apps/digikam
 %{_datadir}/apps/digikam/about
-%{_datadir}/apps/digikam/cameraui.rc
+%{_datadir}/apps/digikam/importui.rc
 %{_datadir}/apps/digikam/data
 %{_datadir}/apps/digikam/digikamimageplugin_*.rc
 %{_datadir}/apps/digikam/digikamimagewindowui.rc
@@ -171,7 +173,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/kde4/services/digikamdates.protocol
 %{_datadir}/kde4/services/digikamimageplugin_*.desktop
 %{_datadir}/kde4/services/digikammapimages.protocol
-%{_datadir}/kde4/services/digikamnepomukservice.desktop
 %{_datadir}/kde4/services/digikamsearch.protocol
 %{_datadir}/kde4/services/digikamtags.protocol
 %{_datadir}/kde4/services/kipiplugin_*.desktop

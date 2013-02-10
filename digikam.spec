@@ -81,12 +81,16 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 %setup -q
 %patch0 -p1
 
+# use kde one
+mv cmake/modules/FindKipi.cmake cmake/modules/FindKipi.cmake.ORIG
+
 %build
 install -d build
 cd build
 %cmake \
 	-DSERVERCMD_MYSQL=%{_sbindir}/mysqld \
 	-DENABLE_RAWSPEED=ON \
+	-DDIGIKAMSC_USE_PRIVATE_KDEGRAPHICS=OFF \
 	../
 
 %{__make}

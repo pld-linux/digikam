@@ -105,6 +105,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %find_lang %{name} --with-kde --all-name
 
+# libkipi belongs to kde4-libkipi and libkipi.mo belongs to kde4-l10n
+%{__sed} -i -e '/.*\/libkipi.mo$/d' %{name}.lang
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 

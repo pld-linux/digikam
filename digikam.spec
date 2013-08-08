@@ -5,12 +5,12 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	3.2.0
-Release:	2
+Version:	3.3.0
+Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://download.kde.org/stable/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	7c38a5fb9061c7d3f86102bd51a0a4e9
+# Source0-md5:	92aa1918e12099a50476fe202bedb1f6
 Patch0:		%{name}-build.patch
 URL:		http://www.digikam.org/
 BuildRequires:	ImageMagick-devel
@@ -23,6 +23,7 @@ BuildRequires:	QtXmlPatterns-devel >= %{qtver}
 BuildRequires:	automoc4
 BuildRequires:	clapack-devel
 BuildRequires:	cmake >= 2.8.0
+BuildRequires:	eigen3
 BuildRequires:	gettext-devel
 BuildRequires:	jasper-devel
 BuildRequires:	kde4-kdelibs-devel >= %{kdever}
@@ -137,7 +138,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libdigikamdatabase.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libdigikamcore.so.3
 %attr(755,root,root) %{_libdir}/libkface.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libkface.so.1
+%attr(755,root,root) %ghost %{_libdir}/libkface.so.2
 %attr(755,root,root) %{_libdir}/libkgeomap.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libkgeomap.so.1
 %attr(755,root,root) %{_libdir}/libkipiplugins.so.*.*.*
@@ -187,10 +188,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/kde4/servicetypes/digikamimageplugin.desktop
 %{_datadir}/kde4/servicetypes/photolayoutseditorborderplugin.desktop
 %{_datadir}/kde4/servicetypes/photolayoutseditoreffectplugin.desktop
-%{_datadir}/config.kcfg/PLEConfigSkeleton.kcfgc
 %{_datadir}/templates/kipiplugins_photolayoutseditor
+%{_datadir}/config.kcfg/photolayoutseditor.kcfg
 %{_iconsdir}/*/*/actions/*.png
-%{_iconsdir}/*/*/actions/*.svgz
 %{_iconsdir}/*/*/apps/*.png
 %{_iconsdir}/*/*/apps/*.svgz
 %{_desktopdir}/kde4/*.desktop

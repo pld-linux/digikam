@@ -5,12 +5,12 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	3.5.0
-Release:	3
+Version:	4.0.0
+Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://download.kde.org/stable/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	16d570269883652487516a77c9d7d6f8
+# Source0-md5:	03438cc1aeb9a266dcf1f2523ffe983d
 Patch0:		%{name}-build.patch
 URL:		http://www.digikam.org/
 BuildRequires:	ImageMagick-devel
@@ -26,6 +26,7 @@ BuildRequires:	cmake >= 2.8.0
 BuildRequires:	eigen3
 BuildRequires:	gettext-devel
 BuildRequires:	jasper-devel
+BuildRequires:	java-opencv
 BuildRequires:	kde4-kdelibs-devel >= %{kdever}
 BuildRequires:	kde4-kdepimlibs-devel >= %{kdever}
 BuildRequires:	lcms-devel
@@ -134,15 +135,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/apps/kconf_update/adjustlevelstool.upd
 %attr(755,root,root) %{_bindir}/digitaglinktree
 %attr(755,root,root) %{_bindir}/showfoto
-%attr(755,root,root) %ghost %{_libdir}/libdigikamdatabase.so.3
+#%attr(755,root,root) %ghost %{_libdir}/libdigikamdatabase.so.4
 %attr(755,root,root) %{_libdir}/libdigikamdatabase.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libdigikamcore.so.3
+#%attr(755,root,root) %ghost %{_libdir}/libdigikamcore.so.4
 %attr(755,root,root) %{_libdir}/libkface.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libkface.so.2
 %attr(755,root,root) %{_libdir}/libkgeomap.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libkgeomap.so.1
 %attr(755,root,root) %{_libdir}/libkipiplugins.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libkipiplugins.so.3
+#%attr(755,root,root) %ghost %{_libdir}/libkipiplugins.so.4
 %attr(755,root,root) %{_libdir}/libmediawiki.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libmediawiki.so.1
 %attr(755,root,root) %{_libdir}/libkvkontakte.so.*.*.*

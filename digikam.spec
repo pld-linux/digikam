@@ -5,15 +5,14 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	4.5.0
+Version:	4.6.0
 Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://download.kde.org/stable/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	5fb3ab7b7c765bc7a310ca87c8e37220
+# Source0-md5:	705e132f72eda603cb91ee6292f0b34b
 Patch0:		%{name}-build.patch
 Patch1:		sendimages-icedove.diff
-Patch2:		%{name}-libs.patch
 URL:		http://www.digikam.org/
 BuildRequires:	ImageMagick-devel
 BuildRequires:	Qt3Support-devel >= %{qtver}
@@ -86,7 +85,6 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 # use kde one
 rm cmake/modules/FindK{Sane,exiv2,ipi}.cmake
@@ -97,7 +95,10 @@ cd build
 %cmake \
 	-DSERVERCMD_MYSQL=%{_sbindir}/mysqld \
 	-DENABLE_RAWSPEED=ON \
-	-DDIGIKAMSC_USE_PRIVATE_SHAREDLIBS:BOOL=ON \
+	-DDIGIKAMSC_COMPILE_LIBKFACE:BOOL=ON \
+	-DDIGIKAMSC_COMPILE_LIBKGEOMAP:BOOL=ON \
+	-DDIGIKAMSC_COMPILE_LIBMEDIAWIKI:BOOL=ON \
+	-DDIGIKAMSC_COMPILE_LIBKVKONTAKTE:BOOL=ON \
 	../
 
 %{__make}
@@ -129,6 +130,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/dngconverter
 %attr(755,root,root) %{_bindir}/dnginfo
 %attr(755,root,root) %{_bindir}/expoblending
+%attr(755,root,root) %{_bindir}/libkgeomap_demo
 %attr(755,root,root) %{_bindir}/panoramagui
 %attr(755,root,root) %{_bindir}/photolayoutseditor
 %attr(755,root,root) %{_bindir}/scangui
@@ -140,15 +142,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/apps/kconf_update/adjustlevelstool.upd
 %attr(755,root,root) %{_bindir}/digitaglinktree
 %attr(755,root,root) %{_bindir}/showfoto
-#%attr(755,root,root) %ghost %{_libdir}/libdigikamdatabase.so.4
 %attr(755,root,root) %{_libdir}/libdigikamdatabase.so.*.*.*
-#%attr(755,root,root) %ghost %{_libdir}/libdigikamcore.so.4
 %attr(755,root,root) %{_libdir}/libkface.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libkface.so.3
 %attr(755,root,root) %{_libdir}/libkgeomap.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libkgeomap.so.2
 %attr(755,root,root) %{_libdir}/libkipiplugins.so.*.*.*
-#%attr(755,root,root) %ghost %{_libdir}/libkipiplugins.so.4
 %attr(755,root,root) %{_libdir}/libmediawiki.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libmediawiki.so.1
 %attr(755,root,root) %{_libdir}/libkvkontakte.so.*.*.*
@@ -161,7 +160,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamsearch.so
 %attr(755,root,root) %{_libdir}/kde4/kio_digikamtags.so
 %attr(755,root,root) %{_libdir}/kde4/kipiplugin_*.so
-%attr(755,root,root) %{_libdir}/kde4/libexec/digikamdatabaseserver
 %{_mandir}/man1/digitaglinktree.1*
 %{_mandir}/man1/cleanup_digikamdb.1*
 %{_datadir}/appdata/digiKam*.xml
@@ -213,11 +211,5 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libkipiplugins.so
 %attr(755,root,root) %{_libdir}/libmediawiki.so
 %attr(755,root,root) %{_libdir}/libkvkontakte.so
-%{_pkgconfigdir}/libkface.pc
-%{_pkgconfigdir}/libkgeomap.pc
-%{_pkgconfigdir}/libmediawiki.pc
-%{_datadir}/apps/cmake/modules/FindKGeoMap.cmake
-%{_datadir}/apps/cmake/modules/FindMediawiki.cmake
 %{_libdir}/cmake/Kface-*
 %{_libdir}/cmake/LibKVkontakte
-%{_includedir}/libkvkontakte

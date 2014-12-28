@@ -25,7 +25,7 @@ BuildRequires:	automoc4
 BuildRequires:	clapack-devel
 BuildRequires:	cmake >= 2.8.0
 BuildRequires:	eigen3
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	jasper-devel
 BuildRequires:	java-opencv
 BuildRequires:	kde4-baloo-devel >= %{kdever}

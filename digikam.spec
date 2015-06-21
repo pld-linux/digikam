@@ -5,12 +5,12 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	4.9.0
+Version:	4.11.0
 Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://download.kde.org/stable/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	9f0b00b6421fb310921399bae3089b5a
+# Source0-md5:	02a6bf2c3038d4872274bc65ff84c530
 Patch0:		%{name}-build.patch
 Patch1:		sendimages-icedove.diff
 URL:		http://www.digikam.org/
@@ -128,7 +128,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/cleanup_digikamdb
 %attr(755,root,root) %{_bindir}/digikam
 %attr(755,root,root) %{_bindir}/dngconverter
-%attr(755,root,root) %{_bindir}/dnginfo
 %attr(755,root,root) %{_bindir}/expoblending
 %attr(755,root,root) %{_bindir}/libkgeomap_demo
 %attr(755,root,root) %{_bindir}/panoramagui

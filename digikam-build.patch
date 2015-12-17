@@ -1,20 +1,13 @@
---- digikam-2.7.0/extra/kipi-plugins/vkontakte/vkapi.cpp~	2012-07-08 01:24:25.000000000 +0200
-+++ digikam-2.7.0/extra/kipi-plugins/vkontakte/vkapi.cpp	2012-07-29 13:30:18.680442679 +0200
-@@ -18,6 +18,8 @@
-  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-  */
+--- digikam-4.13.0/core/libs/dimg/filters/lens/lensfuniface.h~	2015-09-03 23:22:45.000000000 +0200
++++ digikam-4.13.0/core/libs/dimg/filters/lens/lensfuniface.h	2015-12-18 00:01:24.805431724 +0100
+@@ -24,10 +24,7 @@
  
-+#include <stdio.h>
-+
- #include "vkapi.moc"
+ // Lib LensFun includes
  
- // Qt includes
-@@ -60,7 +62,7 @@
-     return m_accessToken;
- }
+-extern "C"
+-{
+ #include <lensfun.h>
+-}
  
--#include <stdio.h>
-+//#include <stdio.h>
+ // local includes
  
- void VkAPI::startAuthentication(bool forceLogout)
- {

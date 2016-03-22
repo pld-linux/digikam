@@ -6,13 +6,14 @@ Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	4.13.0
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://download.kde.org/stable/digikam/%{name}-%{version}.tar.bz2
 # Source0-md5:	930b9a89244afd1f28490d0acabbecc5
 Patch0:		%{name}-build.patch
 Patch1:		sendimages-icedove.diff
+Patch2:		opencv3.patch
 URL:		http://www.digikam.org/
 BuildRequires:	ImageMagick-devel
 BuildRequires:	Qt3Support-devel >= %{qtver}
@@ -85,6 +86,7 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 # use kde one
 rm cmake/modules/FindK{Sane,exiv2,ipi}.cmake
@@ -99,6 +101,7 @@ cd build
 	-DDIGIKAMSC_COMPILE_LIBKGEOMAP:BOOL=ON \
 	-DDIGIKAMSC_COMPILE_LIBMEDIAWIKI:BOOL=ON \
 	-DDIGIKAMSC_COMPILE_LIBKVKONTAKTE:BOOL=ON \
+	-DENABLE_OPENCV3:BOOL=ON \
 	../
 
 %{__make}

@@ -14,7 +14,7 @@ Source0:	http://download.kde.org/stable/digikam/%{name}-%{version}.tar.bz2
 Patch0:		%{name}-build.patch
 Patch1:		sendimages-icedove.diff
 Patch2:		opencv3.patch
-Patch3:		imagemagick7.patch
+Patch3:		disable-videoslideshow.patch
 URL:		http://www.digikam.org/
 BuildRequires:	ImageMagick-devel
 BuildRequires:	Qt3Support-devel >= %{qtver}

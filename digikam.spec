@@ -14,6 +14,7 @@ Source0:	http://download.kde.org/stable/digikam/%{name}-%{version}.tar.bz2
 Patch0:		%{name}-build.patch
 Patch1:		sendimages-icedove.diff
 Patch2:		opencv3.patch
+Patch3:		imagemagick7.patch
 URL:		http://www.digikam.org/
 BuildRequires:	ImageMagick-devel
 BuildRequires:	Qt3Support-devel >= %{qtver}
@@ -87,6 +88,7 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 # use kde one
 rm cmake/modules/FindK{Sane,exiv2,ipi}.cmake

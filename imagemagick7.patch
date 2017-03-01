@@ -1,0 +1,222 @@
+--- digikam-4.13.0/extra/kipi-plugins/videoslideshow/magickiface/magickiface.cpp~	2015-09-03 23:22:45.000000000 +0200
++++ digikam-4.13.0/extra/kipi-plugins/videoslideshow/magickiface/magickiface.cpp	2017-03-01 18:30:06.512445148 +0100
+@@ -118,7 +118,7 @@
+         MagickImage* img = 0;
+         unsigned char pixels[4];
+ 
+-        ExceptionInfo exception;
++        ExceptionInfo *exception;
+ 
+         /* initialize the pixel data */
+         memset(pixels, 0, sizeof(pixels));
+@@ -133,9 +133,9 @@
+         img->setWidth(1);
+         img->setHeight(1);
+ 
+-        GetExceptionInfo(&exception);
++        exception = AcquireExceptionInfo();
+ 
+-        if (!(img->setImage(ConstituteImage(1, 1, "RGB", CharPixel, pixels, &exception))))
++        if (!(img->setImage(ConstituteImage(1, 1, "RGB", CharPixel, pixels, exception))))
+         {
+             parent->Q_EMIT signalsAPIError("ConstituteImage() failed");
+             parent->freeImage(*img);
+@@ -144,7 +144,7 @@
+ 
+         img->getImage()->compression = UndefinedCompression;
+         img->getImage()->depth       = 16;
+-        DestroyExceptionInfo(&exception);
++        DestroyExceptionInfo(exception);
+ 
+         return img;
+     }
+@@ -248,14 +248,14 @@
+ {
+     MagickImage*  img  = 0;
+     ImageInfo*    info = 0;
+-    ExceptionInfo exception;
++    ExceptionInfo *exception;
+ 
+     img = d->allocImage();
+ 
+     if (!img)
+         return 0;
+ 
+-    GetExceptionInfo(&exception);
++    exception = AcquireExceptionInfo();
+ 
+     if (!(info = CloneImageInfo((ImageInfo*) NULL)))
+     {
+@@ -272,7 +272,7 @@
+     if (img->getImage())
+         DestroyImage(img->getImage());
+ 
+-    if (!(img->setImage(ReadImage(info, &exception))))
++    if (!(img->setImage(ReadImage(info, exception))))
+     {
+         Q_EMIT signalsAPIError("ReadImage(%s) failed\n");
+         freeImage(*img);
+@@ -282,7 +282,7 @@
+     img->setWidth(img->getImage()->columns);
+     img->setHeight(img->getImage()->rows);
+     DestroyImageInfo(info);
+-    DestroyExceptionInfo(&exception);
++    DestroyExceptionInfo(exception);
+ 
+     return img;
+ }
+@@ -296,14 +296,14 @@
+     int fileHandle     = stream.handle();
+     MagickImage*  img  = 0;
+     ImageInfo*    info = 0;
+-    ExceptionInfo exception;
++    ExceptionInfo *exception;
+ 
+     img = d->allocImage();
+ 
+     if (!img)
+         return 0;
+ 
+-    GetExceptionInfo(&exception);
++    exception = AcquireExceptionInfo();
+ 
+     if (!(info = CloneImageInfo((ImageInfo*) NULL)))
+     {
+@@ -318,7 +318,7 @@
+     if (img->getImage())
+         DestroyImage(img->getImage());
+ 
+-    if (!(img->setImage(ReadImage(info,&exception))))
++    if (!(img->setImage(ReadImage(info,exception))))
+     {
+         Q_EMIT signalsAPIError("ReadImage(%s) failed\n");
+         freeImage(*img);
+@@ -328,7 +328,7 @@
+     img->setWidth(img->getImage()->columns);
+     img->setHeight(img->getImage()->rows);
+     DestroyImageInfo(info);
+-    DestroyExceptionInfo(&exception);
++    DestroyExceptionInfo(exception);
+ 
+     return img;
+ }
+@@ -403,18 +403,19 @@
+ {
+     MagickImage*  img   = 0;
+     Image*        image = 0;
+-    ExceptionInfo exception;
++    ExceptionInfo *exception;
+ 
+     img = d->allocImage();
+ 
+     if (!img)
+         return 0;
+ 
+-    GetExceptionInfo(&exception);
+-    QueryColorDatabase(color.toAscii(), &img->getImage()->background_color, &img->getImage()->exception);
++    exception = AcquireExceptionInfo();
++    const ColorInfo *colorinfo = GetColorInfo(color.toAscii(), exception);
++    img->getImage()->background_color = colorinfo->color;
+     SetImageBackgroundColor(img->getImage());
+ 
+-    if (!(image = ResizeImage(img->getImage(), width, height, SCALE_FILTER_FAST, 1.0, &exception)))
++    if (!(image = ResizeImage(img->getImage(), width, height, SCALE_FILTER_FAST, 1.0, exception)))
+     {
+         Q_EMIT signalsAPIError("ResizeImage() failed\n");
+         freeImage(*img);
+@@ -425,7 +426,7 @@
+     img->setImage(image);
+     img->setWidth(img->getImage()->columns);
+     img->setHeight(img->getImage()->rows);
+-    DestroyExceptionInfo(&exception);
++    DestroyExceptionInfo(exception);
+ 
+     if (img->getWidth() != width || img->getHeight() != height)
+     {
+@@ -440,26 +441,26 @@
+ MagickImage* MagickApi::duplicateImage(const MagickImage& src)
+ {
+     MagickImage*  dst = 0;
+-    ExceptionInfo exception;
++    ExceptionInfo *exception;
+ 
+     dst = d->allocImage();
+ 
+     if (!dst)
+         return 0;
+ 
+-    GetExceptionInfo(&exception);
++    exception = AcquireExceptionInfo();
+ 
+     if (dst->getImage())
+         DestroyImage(dst->getImage());
+ 
+-    if (!(dst->setImage(CloneImage(src.getImage(), 0, 0, (MagickBooleanType)1, &exception))))
++    if (!(dst->setImage(CloneImage(src.getImage(), 0, 0, (MagickBooleanType)1, exception))))
+     {
+         Q_EMIT signalsAPIError("CloneImageInfo() failed\n");
+         freeImage(*dst);
+         return 0;
+     }
+ 
+-    DestroyExceptionInfo(&exception);
++    DestroyExceptionInfo(exception);
+ 
+     dst->setWidth(src.getWidth());
+     dst->setHeight(src.getHeight());
+@@ -479,9 +480,9 @@
+ {
+     Image* cropped = 0;
+     Image* source  = src.getImage();
+-    ExceptionInfo exception;
++    ExceptionInfo *exception;
+ 
+-    GetExceptionInfo(&exception);
++    exception = AcquireExceptionInfo();
+ 
+     if (sx != 0 || sy != 0 || w != src.getWidth() || h != src.getHeight())
+     {
+@@ -491,7 +492,7 @@
+         geometry.width  = w;
+         geometry.height = h;
+ 
+-        if (!(source = cropped = CropImage(src.getImage(), &geometry, &exception)))
++        if (!(source = cropped = CropImage(src.getImage(), &geometry, exception)))
+         {
+             Q_EMIT signalsAPIError("CropImage() failed\n");
+             return -1;
+@@ -507,7 +508,7 @@
+     if (cropped)
+         DestroyImage(cropped);
+ 
+-    DestroyExceptionInfo(&exception);
++    DestroyExceptionInfo(exception);
+ 
+     return 1;
+ }
+@@ -638,13 +639,13 @@
+ int MagickApi::scaleImage(MagickImage& img, int width, int height)
+ {
+     Image*        image = 0;
+-    ExceptionInfo exception;
++    ExceptionInfo *exception;
+ 
+     if (img.getWidth() != width || img.getHeight() != height)
+     {
+-        GetExceptionInfo(&exception);
++        exception = AcquireExceptionInfo();
+ 
+-        if (!(image = ResizeImage(img.getImage(), width, height,(FilterTypes)d->filter, 1.0, &exception)))
++        if (!(image = ResizeImage(img.getImage(), width, height,(FilterTypes)d->filter, 1.0, exception)))
+         {
+             Q_EMIT signalsAPIError("ResizeImage() failed\n");
+             return -1;
+@@ -654,7 +655,7 @@
+         img.setImage(image);
+         img.setWidth(img.getImage()->columns);
+         img.setHeight(img.getImage()->rows);
+-        DestroyExceptionInfo(&exception);
++        DestroyExceptionInfo(exception);
+ 
+         if (img.getWidth() != width || img.getHeight() != height)
+         {

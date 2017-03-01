@@ -1,5 +1,5 @@
---- /home/users/baggins/devel/PLD/rpm/BUILD/digikam-4.13.0/extra/kipi-plugins/CMakeLists.txt~	2017-03-01 08:30:30.000000000 +0100
-+++ /home/users/baggins/devel/PLD/rpm/BUILD/digikam-4.13.0/extra/kipi-plugins/CMakeLists.txt	2017-03-01 18:54:46.419083660 +0100
+--- digikam-4.13.0/extra/kipi-plugins/CMakeLists.txt~	2017-03-01 08:30:30.000000000 +0100
++++ digikam-4.13.0/extra/kipi-plugins/CMakeLists.txt	2017-03-01 18:54:46.419083660 +0100
 @@ -470,10 +470,6 @@
              add_subdirectory(panorama)
          endif()

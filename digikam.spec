@@ -5,60 +5,44 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	4.13.0
-Release:	5
+Version:	5.6.0
+Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
-Source0:	http://download.kde.org/stable/digikam/%{name}-%{version}.tar.bz2
-# Source0-md5:	930b9a89244afd1f28490d0acabbecc5
-Patch0:		%{name}-build.patch
-Patch1:		sendimages-icedove.diff
-Patch2:		opencv3.patch
-Patch3:		disable-videoslideshow.patch
+Source0:	http://download.kde.org/stable/digikam/%{name}-%{version}.tar.xz
+# Source0-md5:	7d8c1b1b31acac601bf4c61953000e0a
+Patch0:		sendimages-icedove.diff
 URL:		http://www.digikam.org/
 BuildRequires:	ImageMagick-devel
-BuildRequires:	Qt3Support-devel >= %{qtver}
-BuildRequires:	QtCore-devel >= %{qtver}
-BuildRequires:	QtDesigner-devel >= %{qtver}
-BuildRequires:	QtSql-devel >= %{qtver}
-BuildRequires:	QtSvg-devel >= %{qtver}
-BuildRequires:	QtXmlPatterns-devel >= %{qtver}
-BuildRequires:	automoc4
 BuildRequires:	clapack-devel
 BuildRequires:	cmake >= 2.8.0
 BuildRequires:	eigen3
 BuildRequires:	gettext-tools
 BuildRequires:	jasper-devel
 BuildRequires:	java-opencv
-BuildRequires:	kde4-baloo-devel >= %{kdever}
-BuildRequires:	kde4-kdelibs-devel >= %{kdever}
-BuildRequires:	kde4-kdepimlibs-devel >= %{kdever}
+BuildRequires:	kf5-kcoreaddons-devel
+BuildRequires:	kf5-kdoctools >= 5.38.0
+BuildRequires:	kf5-kfilemetadata-devel
+BuildRequires:	kf5-kiconthemes-devel
+BuildRequires:	kf5-knotifications-devel
+BuildRequires:	kf5-knotifyconfig-devel
+BuildRequires:	kf5-kservice-devel
+BuildRequires:	kf5-solid-devel
+BuildRequires:	kf5-threadweaver-devel
 BuildRequires:	lcms-devel
 BuildRequires:	lensfun-devel >= 0.2.6
 BuildRequires:	libf2c-devel >= 20110801
 BuildRequires:	libgphoto2-devel
-BuildRequires:	kde4-libkdcraw-devel >= %{kdever}
-BuildRequires:	kde4-libkdeedu-devel >= %{kdever}
-BuildRequires:	kde4-libkexiv2-devel >= %{kdever}
-BuildRequires:	kde4-libkipi-devel >= %{kdever}
-BuildRequires:	kde4-libksane-devel >= %{kdever}
 BuildRequires:	liblqr-devel >= 0.4.0
 BuildRequires:	libpgf-devel
 BuildRequires:	libtiff-devel
-BuildRequires:	kde4-marble-devel >= %{kdever}
-# fixed mysql_install_db in this version
-BuildRequires:	mysql-extras >= 5.5.9-2
 BuildRequires:	opencv-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	qjson-devel >= 0.5
-BuildRequires:	qt4-build >= %{qtver}
-BuildRequires:	qt4-qmake >= %{qtver}
-BuildRequires:	qt-gstreamer-devel
 BuildRequires:	rpmbuild(macros) >= 1.606
 BuildRequires:	sed >= 4.0
 BuildRequires:	shared-desktop-ontologies-devel >= 0.2
 BuildRequires:	soprano-devel
-Requires:	QtSql-sqlite3
 Obsoletes:	digikamimageplugins
 Obsoletes:	kipi-plugins
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -86,24 +70,19 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-
-# use kde one
-rm cmake/modules/FindK{Sane,exiv2,ipi}.cmake
 
 %build
 install -d build
 cd build
 %cmake \
-	-DSERVERCMD_MYSQL=%{_sbindir}/mysqld \
-	-DENABLE_RAWSPEED=ON \
-	-DDIGIKAMSC_COMPILE_LIBKFACE:BOOL=ON \
-	-DDIGIKAMSC_COMPILE_LIBKGEOMAP:BOOL=ON \
-	-DDIGIKAMSC_COMPILE_LIBMEDIAWIKI:BOOL=ON \
-	-DDIGIKAMSC_COMPILE_LIBKVKONTAKTE:BOOL=ON \
+	-DENABLE_AKONADICONTACTSUPPORT:BOOL=ON \
+	-DENABLE_APPSTYLES:BOOL=ON \
+	-DENABLE_KFILEMETADATASUPPORT:BOOL=ON \
+	-DENABLE_MEDIAPLAYER:BOOL=ON \
+	-DENABLE_MYSQLSUPPORT:BOOL=ON \
+	-DENABLE_INTERNALMYSQL:BOOL=ON \
 	-DENABLE_OPENCV3:BOOL=ON \
+	-DDIGIKAMSC_COMPILE_KIPIPLUGINS=ON \
 	../
 
 %{__make}
@@ -132,88 +111,29 @@ rm -rf $RPM_BUILD_ROOT
 %doc README
 %attr(755,root,root) %{_bindir}/cleanup_digikamdb
 %attr(755,root,root) %{_bindir}/digikam
-%attr(755,root,root) %{_bindir}/dngconverter
-%attr(755,root,root) %{_bindir}/expoblending
-%attr(755,root,root) %{_bindir}/libkgeomap_demo
-%attr(755,root,root) %{_bindir}/panoramagui
-%attr(755,root,root) %{_bindir}/photolayoutseditor
-%attr(755,root,root) %{_bindir}/scangui
-%dir %{_datadir}/apps/digikam/utils
-%attr(755,root,root) %{_datadir}/apps/digikam/utils/digikam-camera
-%dir %{_datadir}/apps/digikam/database
-%{_datadir}/apps/digikam/database/dbconfig.xml
-%{_datadir}/apps/digikam/database/mysql-global.conf
-%{_datadir}/apps/kconf_update/adjustlevelstool.upd
 %attr(755,root,root) %{_bindir}/digitaglinktree
 %attr(755,root,root) %{_bindir}/showfoto
 %attr(755,root,root) %{_libdir}/libdigikamdatabase.so.*.*.*
-%attr(755,root,root) %{_libdir}/libkface.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libkface.so.3
-%attr(755,root,root) %{_libdir}/libkgeomap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libkgeomap.so.2
-%attr(755,root,root) %{_libdir}/libkipiplugins.so.*.*.*
-%attr(755,root,root) %{_libdir}/libmediawiki.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libmediawiki.so.1
-%attr(755,root,root) %{_libdir}/libkvkontakte.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libkvkontakte.so.1
+%attr(755,root,root) %{_libdir}/libdigikamgui.so.*.*
 %attr(755,root,root) %{_libdir}/libdigikamcore.so.*.*.*
-%attr(755,root,root) %{_libdir}/kde4/digikamimageplugin_*.so
-%attr(755,root,root) %{_libdir}/kde4/kio_digikamalbums.so
-%attr(755,root,root) %{_libdir}/kde4/kio_digikamdates.so
-%attr(755,root,root) %{_libdir}/kde4/kio_digikammapimages.so
-%attr(755,root,root) %{_libdir}/kde4/kio_digikamsearch.so
-%attr(755,root,root) %{_libdir}/kde4/kio_digikamtags.so
-%attr(755,root,root) %{_libdir}/kde4/kipiplugin_*.so
+%{_datadir}/%{name}
+%{_datadir}/knotifications5/digikam.notifyrc
+%{_datadir}/kxmlgui5/digikam
+%{_datadir}/kxmlgui5/showfoto
+%{_desktopdir}/org.kde.digikam.desktop
+%{_desktopdir}/org.kde.showfoto.desktop
+%{_datadir}/metainfo/org.kde.digikam.appdata.xml
+%{_datadir}/metainfo/org.kde.showfoto.appdata.xml
+%{_datadir}/showfoto
+%{_datadir}/solid/actions/digikam-opencamera.desktop
 %{_mandir}/man1/digitaglinktree.1*
 %{_mandir}/man1/cleanup_digikamdb.1*
-%{_datadir}/appdata/digiKam*.xml
-%{_datadir}/appdata/digikam*.xml
-%{_datadir}/appdata/showfoto.appdata.xml
-%dir %{_datadir}/apps/digikam
-%{_datadir}/apps/digikam/about
-%{_datadir}/apps/digikam/importui.rc
-%{_datadir}/apps/digikam/data
-%{_datadir}/apps/digikam/digikamimageplugin_*.rc
-%{_datadir}/apps/digikam/digikamimagewindowui.rc
-%{_datadir}/apps/digikam/digikamui.rc
-%{_datadir}/apps/digikam/icons
-%{_datadir}/apps/digikam/lighttablewindowui.rc
-%{_datadir}/apps/digikam/queuemgrwindowui.rc
-%{_datadir}/apps/digikam/tips
-%{_datadir}/apps/gpssync
-%{_datadir}/apps/kipi
-%{_datadir}/apps/kipiplugin_*
-%{_datadir}/apps/libkface
-%{_datadir}/apps/libkgeomap
-%{_datadir}/apps/photolayoutseditor
-%{_datadir}/apps/showfoto
-%{_datadir}/kde4/services/digikamalbums.protocol
-%{_datadir}/kde4/services/digikamdates.protocol
-%{_datadir}/kde4/services/digikamimageplugin_*.desktop
-%{_datadir}/kde4/services/digikammapimages.protocol
-%{_datadir}/kde4/services/digikamsearch.protocol
-%{_datadir}/kde4/services/digikamtags.protocol
-%{_datadir}/kde4/services/kipiplugin_*.desktop
-%{_datadir}/apps/digikam/digikam.notifyrc
-%{_datadir}/apps/solid/actions/digikam-opencamera.desktop
-%{_datadir}/kde4/servicetypes/digikamimageplugin.desktop
-%{_datadir}/kde4/servicetypes/photolayoutseditorborderplugin.desktop
-%{_datadir}/kde4/servicetypes/photolayoutseditoreffectplugin.desktop
-%{_datadir}/templates/kipiplugins_photolayoutseditor
-%{_datadir}/config.kcfg/photolayoutseditor.kcfg
 %{_iconsdir}/*/*/actions/*.png
 %{_iconsdir}/*/*/apps/*.png
 %{_iconsdir}/*/*/apps/*.svgz
-%{_desktopdir}/kde4/*.desktop
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libdigikamcore.so
 %attr(755,root,root) %{_libdir}/libdigikamdatabase.so
-%attr(755,root,root) %{_libdir}/libkface.so
-%attr(755,root,root) %{_libdir}/libkgeomap.so
-%attr(755,root,root) %{_libdir}/libkipiplugins.so
-%attr(755,root,root) %{_libdir}/libmediawiki.so
-%attr(755,root,root) %{_libdir}/libkvkontakte.so
-%{_libdir}/cmake/Kface-*
-%{_libdir}/cmake/LibKVkontakte
+%attr(755,root,root) %{_libdir}/libdigikamgui.so

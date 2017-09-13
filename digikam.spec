@@ -43,6 +43,8 @@ BuildRequires:	rpmbuild(macros) >= 1.606
 BuildRequires:	sed >= 4.0
 BuildRequires:	shared-desktop-ontologies-devel >= 0.2
 BuildRequires:	soprano-devel
+Requires:	Qt5Sql-sqldriver-mysql
+Requires:	Qt5Sql-sqldriver-sqlite3
 Obsoletes:	digikamimageplugins
 Obsoletes:	kipi-plugins
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)

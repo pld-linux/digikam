@@ -5,18 +5,19 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	5.6.0
+Version:	5.7.0
 Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://download.kde.org/stable/digikam/%{name}-%{version}.tar.xz
-# Source0-md5:	7d8c1b1b31acac601bf4c61953000e0a
+# Source0-md5:	475e85b052c72763ee1103493956bd68
 Patch0:		sendimages-icedove.diff
 URL:		http://www.digikam.org/
 BuildRequires:	ImageMagick-devel
 BuildRequires:	clapack-devel
 BuildRequires:	cmake >= 2.8.0
 BuildRequires:	eigen3
+BuildRequires:	exiv2-devel >= 0.26
 BuildRequires:	gettext-tools
 BuildRequires:	jasper-devel
 BuildRequires:	java-opencv
@@ -80,7 +81,7 @@ cd build
 	-DENABLE_AKONADICONTACTSUPPORT:BOOL=ON \
 	-DENABLE_APPSTYLES:BOOL=ON \
 	-DENABLE_KFILEMETADATASUPPORT:BOOL=ON \
-	-DENABLE_MEDIAPLAYER:BOOL=ON \
+	-DENABLE_MEDIAPLAYER:BOOL=OFF \
 	-DENABLE_MYSQLSUPPORT:BOOL=ON \
 	-DENABLE_INTERNALMYSQL:BOOL=ON \
 	-DENABLE_OPENCV3:BOOL=ON \

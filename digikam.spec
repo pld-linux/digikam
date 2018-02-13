@@ -11,7 +11,6 @@ License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://download.kde.org/stable/digikam/%{name}-%{version}.tar.xz
 # Source0-md5:	39ae21083ab47acbb8ca89f73716fecb
-Patch0:		sendimages-icedove.diff
 URL:		http://www.digikam.org/
 BuildRequires:	ImageMagick-devel
 BuildRequires:	clapack-devel
@@ -74,7 +73,6 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 install -d build

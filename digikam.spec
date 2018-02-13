@@ -30,6 +30,8 @@ BuildRequires:	kf5-knotifyconfig-devel
 BuildRequires:	kf5-kservice-devel
 BuildRequires:	kf5-solid-devel
 BuildRequires:	kf5-threadweaver-devel
+BuildRequires:	kf5-kwindowsystem-devel
+BuildRequires:	kf5-kxmlgui-devel
 BuildRequires:	lcms-devel
 BuildRequires:	lensfun-devel >= 0.2.6
 BuildRequires:	libf2c-devel >= 20110801

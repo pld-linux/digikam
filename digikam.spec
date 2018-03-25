@@ -5,12 +5,12 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	5.8.0
-Release:	2
+Version:	5.9.0
+Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://download.kde.org/stable/digikam/%{name}-%{version}.tar.xz
-# Source0-md5:	39ae21083ab47acbb8ca89f73716fecb
+# Source0-md5:	7811cc633e7e1770d1d9860fa36ea251
 URL:		http://www.digikam.org/
 BuildRequires:	ImageMagick-devel
 BuildRequires:	clapack-devel

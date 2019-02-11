@@ -1,0 +1,35 @@
+--- digikam-5.9.0/core/cmake/modules/FindExiv2.cmake~	2018-03-19 10:41:56.000000000 +0100
++++ digikam-5.9.0/core/cmake/modules/FindExiv2.cmake	2019-02-11 22:51:15.308354934 +0100
+@@ -54,7 +54,7 @@
+ 
+ # Get the version number from exiv2/version.hpp and store it in the cache:
+ if(EXIV2_INCLUDE_DIR  AND NOT  EXIV2_VERSION)
+-  file(READ ${EXIV2_INCLUDE_DIR}/exiv2/version.hpp EXIV2_VERSION_CONTENT)
++  file(READ ${EXIV2_INCLUDE_DIR}/exiv2/exv_conf.h EXIV2_VERSION_CONTENT)
+   string(REGEX MATCH "#define EXIV2_MAJOR_VERSION +\\( *([0-9]+) *\\)"  _dummy "${EXIV2_VERSION_CONTENT}")
+   set(EXIV2_VERSION_MAJOR "${CMAKE_MATCH_1}")
+ 
+--- digikam-5.9.0/core/libs/dmetadata/metaengine_p.h~	2018-03-19 10:41:58.000000000 +0100
++++ digikam-5.9.0/core/libs/dmetadata/metaengine_p.h	2019-02-11 23:13:30.270882447 +0100
+@@ -70,6 +70,7 @@
+ #include <exiv2/types.hpp>
+ #include <exiv2/exif.hpp>
+ #include <exiv2/xmpsidecar.hpp>
++#include <exiv2/version.hpp>
+ 
+ // Check if Exiv2 support XMP
+ 
+--- digikam-5.9.0/core/libs/dmetadata/metaengine_exif.cpp~	2018-03-19 10:41:58.000000000 +0100
++++ digikam-5.9.0/core/libs/dmetadata/metaengine_exif.cpp	2019-02-11 23:16:52.323399768 +0100
+@@ -1007,7 +1007,11 @@
+ 
+         if (pos == d->exifMetadata().end() || pos->count() != 1 || pos->toLong() != 0)
+         {
++#if EXIV2_TEST_VERSION(0,27,0)
++            throw Exiv2::Error(Exiv2::kerErrorMessage, "Exif.Image.NewSubfileType missing or not set as main image");
++#else
+             throw Exiv2::Error(1, "Exif.Image.NewSubfileType missing or not set as main image");
++#endif
+         }
+ 
+         // Remove sub-IFD tags

@@ -11,6 +11,7 @@ License:	GPL
 Group:		X11/Applications/Graphics
 Source0:	http://download.kde.org/stable/digikam/%{name}-%{version}.tar.xz
 # Source0-md5:	7811cc633e7e1770d1d9860fa36ea251
+Patch0:		exiv2-0.27.patch
 URL:		http://www.digikam.org/
 BuildRequires:	ImageMagick-devel
 BuildRequires:	clapack-devel
@@ -22,8 +23,13 @@ BuildRequires:	jasper-devel
 BuildRequires:	java-opencv
 BuildRequires:	kf5-kcoreaddons-devel
 BuildRequires:	kf5-kdoctools >= 5.38.0
+BuildRequires:	kf5-extra-cmake-modules
+BuildRequires:	ka5-libkipi-devel
+BuildRequires:	kf5-kdoctools-devel
 BuildRequires:	kf5-kfilemetadata-devel
+BuildRequires:	kf5-ki18n-devel
 BuildRequires:	kf5-kiconthemes-devel
+BuildRequires:	kf5-kio-devel
 BuildRequires:	kf5-knotifications-devel
 BuildRequires:	kf5-knotifyconfig-devel
 BuildRequires:	kf5-kservice-devel
@@ -74,6 +80,7 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 install -d build

@@ -1,18 +1,22 @@
 #
+# TODO: fix plugins location, can't find where it i defined in the code
+#
 %define		qtver	4.8.3
 %define		kdever	4.10.0
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	6.0.0
+Version:	7.1.0
 Release:	1
 License:	GPL
 Group:		X11/Applications/Graphics
-Source0:	http://download.kde.org/stable/digikam/%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	7aa9a41b0ed101230b9db7efdf5b1db1
-URL:		http://www.digikam.org/
+Source0:	https://download.kde.org/stable/digikam/%{version}/%{name}-%{version}.tar.xz
+# Source0-md5:	165347a16396f3ef1d96315f683dccf8
+Patch0:		qt-5.15.patch
+URL:		https://www.digikam.org/
 BuildRequires:	ImageMagick-devel
+BuildRequires:	Qt5WebEngine-devel
 BuildRequires:	clapack-devel
 BuildRequires:	cmake >= 2.8.0
 BuildRequires:	eigen3
@@ -79,6 +83,7 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 install -d build
@@ -125,6 +130,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libdigikamdatabase.so.*.*.*
 %attr(755,root,root) %{_libdir}/libdigikamgui.so.*.*
 %attr(755,root,root) %{_libdir}/libdigikamcore.so.*.*.*
+%dir %{_libdir}/plugins
+%dir %{_libdir}/plugins/digikam
+%dir %{_libdir}/plugins/digikam/bqm
+%attr(755,root,root) %{_libdir}/plugins/digikam/bqm/*.so
+%dir %{_libdir}/plugins/digikam/dimg
+%attr(755,root,root) %{_libdir}/plugins/digikam/dimg/*.so
+%dir %{_libdir}/plugins/digikam/editor
+%attr(755,root,root) %{_libdir}/plugins/digikam/editor/*.so
+%dir %{_libdir}/plugins/digikam/generic
+%attr(755,root,root) %{_libdir}/plugins/digikam/generic/*.so
+%dir %{_libdir}/plugins/digikam/rawimport
+%attr(755,root,root) %{_libdir}/plugins/digikam/rawimport/*.so
 %{_datadir}/%{name}
 %{_datadir}/knotifications5/digikam.notifyrc
 %{_datadir}/kxmlgui5/digikam

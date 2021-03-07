@@ -1,0 +1,10 @@
+--- digikam-7.1.0/core/tests/video/qtavcodecs.cpp~	2020-09-03 06:45:12.000000000 +0200
++++ digikam-7.1.0/core/tests/video/qtavcodecs.cpp	2021-03-07 17:49:11.853030674 +0100
+@@ -22,6 +22,7 @@
+  * ============================================================ */
+ 
+ #include <QDebug>
++#include <QPainterPath>
+ 
+ // QtAv includes
+ 

@@ -57,8 +57,8 @@ BuildRequires:	shared-desktop-ontologies-devel >= 0.2
 BuildRequires:	soprano-devel
 Requires:	Qt5Sql-sqldriver-mysql
 Requires:	Qt5Sql-sqldriver-sqlite3
-Obsoletes:	digikamimageplugins
-Obsoletes:	kipi-plugins
+Obsoletes:	digikamimageplugins < 0.9.2
+Obsoletes:	kipi-plugins < 1.10
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description

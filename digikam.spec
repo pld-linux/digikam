@@ -1,10 +1,17 @@
 #
 # TODO: fix plugins location, can't find where it i defined in the code
 #
+# Conditional build:
+%bcond_with	qtwebkit	# use Qt5WebKit instead of Qt5WebEngine
+
 %define		akonadi_ver	4.89.0
 %define		qt_ver		5.9.0
 %define		kf_ver		5.5.0
 
+%ifarch x32
+# Qt5WebEngine not available
+%define		with_qtwebkit	1
+%endif
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
@@ -27,7 +34,8 @@ BuildRequires:	Qt5Network-devel >= %{qt_ver}
 BuildRequires:	Qt5OpenGL-devel >= %{qt_ver}
 BuildRequires:	Qt5PrintSupport-devel >= %{qt_ver}
 BuildRequires:	Qt5Sql-devel >= %{qt_ver}
-BuildRequires:	Qt5WebEngine-devel >= %{qt_ver}
+%{!?with_qtwebkit:BuildRequires:	Qt5WebEngine-devel >= %{qt_ver}}
+%{?with_qtwebkit:BuildRequires:	Qt5WebKit-devel >= %{qt_ver}}
 BuildRequires:	Qt5Widgets-devel >= %{qt_ver}
 BuildRequires:	Qt5X11Extras-devel >= %{qt_ver}
 BuildRequires:	Qt5Xml-devel >= %{qt_ver}
@@ -93,7 +101,8 @@ Requires:	Qt5PrintSupport >= %{qt_ver}
 Requires:	Qt5Sql >= %{qt_ver}
 Requires:	Qt5Sql-sqldriver-mysql >= %{qt_ver}
 Requires:	Qt5Sql-sqldriver-sqlite3 >= %{qt_ver}
-Requires:	Qt5WebEngine >= %{qt_ver}
+%{!?with_qtwebkit:Requires:	Qt5WebEngine >= %{qt_ver}}
+%{?with_qtwebkit:Requires:	Qt5WebKit >= %{qt_ver}}
 Requires:	Qt5Widgets >= %{qt_ver}
 Requires:	Qt5X11Extras >= %{qt_ver}
 Requires:	Qt5Xml >= %{qt_ver}
@@ -171,7 +180,8 @@ cd build
 	-DENABLE_MEDIAPLAYER:BOOL=ON \
 	-DENABLE_MYSQLSUPPORT:BOOL=ON \
 	-DENABLE_INTERNALMYSQL:BOOL=ON \
-	-DENABLE_OPENCV3:BOOL=ON
+	-DENABLE_OPENCV3:BOOL=ON \
+	%{?with_qtwebkit:-DENABLE_QWEBENGINE:BOOL=OFF}
 
 %{__make}
 

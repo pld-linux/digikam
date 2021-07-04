@@ -1,62 +1,133 @@
 #
 # TODO: fix plugins location, can't find where it i defined in the code
 #
-%define		qtver	4.8.3
-%define		kdever	4.10.0
+%define		akonadi_ver	4.89.0
+%define		qt_ver		5.9.0
+%define		kf_ver		5.5.0
 
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	7.1.0
+Version:	7.2.0
 Release:	1
-License:	GPL
+License:	GPL v2+
 Group:		X11/Applications/Graphics
 Source0:	https://download.kde.org/stable/digikam/%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	165347a16396f3ef1d96315f683dccf8
-Patch0:		qt-5.15.patch
+# Source0-md5:	60a03c1c22462b16f56ec28033f05e2d
 URL:		https://www.digikam.org/
-BuildRequires:	ImageMagick-devel
-BuildRequires:	Qt5WebEngine-devel
-BuildRequires:	clapack-devel
-BuildRequires:	cmake >= 2.8.0
-BuildRequires:	eigen3
-BuildRequires:	exiv2-devel >= 0.26
+BuildRequires:	ImageMagick-devel >= 6.7.0
+BuildRequires:	ImageMagick-c++-devel >= 6.7.0
+BuildRequires:	OpenGL-devel
+BuildRequires:	OpenGL-GLU-devel
+BuildRequires:	Qt5Concurrent-devel >= %{qt_ver}
+BuildRequires:	Qt5Core-devel >= %{qt_ver}
+BuildRequires:	Qt5DBus-devel >= %{qt_ver}
+BuildRequires:	Qt5Gui-devel >= %{qt_ver}
+BuildRequires:	Qt5Network-devel >= %{qt_ver}
+BuildRequires:	Qt5OpenGL-devel >= %{qt_ver}
+BuildRequires:	Qt5PrintSupport-devel >= %{qt_ver}
+BuildRequires:	Qt5Sql-devel >= %{qt_ver}
+BuildRequires:	Qt5WebEngine-devel >= %{qt_ver}
+BuildRequires:	Qt5Widgets-devel >= %{qt_ver}
+BuildRequires:	Qt5X11Extras-devel >= %{qt_ver}
+BuildRequires:	Qt5Xml-devel >= %{qt_ver}
+BuildRequires:	Qt5XmlPatterns-devel >= %{qt_ver}
+BuildRequires:	bison >= 2.5.0
+BuildRequires:	boost-devel >= 1.43.0
+BuildRequires:	cmake >= 3.3.2
+BuildRequires:	doxygen >= 1.8.0
+BuildRequires:	eigen3 >= 3.0.0
+BuildRequires:	exiv2-devel >= 0.27.0
+BuildRequires:	expat-devel >= 1:2.0.0
+BuildRequires:	ffmpeg-devel
+BuildRequires:	flex >= 2.5.0
 BuildRequires:	gettext-tools
-BuildRequires:	jasper-devel
-BuildRequires:	java-opencv
-BuildRequires:	kf5-kcoreaddons-devel
+BuildRequires:	jasper-devel >= 1.7.0
+BuildRequires:	ka5-akonadi-contacts-devel >= %{akonadi_ver}
+BuildRequires:	ka5-libksane-devel >= 5.5.0
+BuildRequires:	ka5-marble-devel >= 0.22.0
+BuildRequires:	kf5-extra-cmake-modules >= 5.5.0
+BuildRequires:	kf5-kcalendarcore-devel >= 5.6.40
+BuildRequires:	kf5-kconfig-devel >= %{kf_ver}
+BuildRequires:	kf5-kcontacts-devel >= %{akonadi_ver}
+BuildRequires:	kf5-kcoreaddons-devel >= %{kf_ver}
 BuildRequires:	kf5-kdoctools >= 5.38.0
-BuildRequires:	kf5-extra-cmake-modules
-BuildRequires:	ka5-libkipi-devel
-BuildRequires:	kf5-kdoctools-devel
-BuildRequires:	kf5-kfilemetadata-devel
-BuildRequires:	kf5-ki18n-devel
-BuildRequires:	kf5-kiconthemes-devel
-BuildRequires:	kf5-kio-devel
-BuildRequires:	kf5-knotifications-devel
-BuildRequires:	kf5-knotifyconfig-devel
-BuildRequires:	kf5-kservice-devel
-BuildRequires:	kf5-solid-devel
-BuildRequires:	kf5-threadweaver-devel
-BuildRequires:	kf5-kwindowsystem-devel
-BuildRequires:	kf5-kxmlgui-devel
-BuildRequires:	lcms-devel
+BuildRequires:	kf5-kdoctools-devel >= %{kf_ver}
+BuildRequires:	kf5-kfilemetadata-devel >= %{kf_ver}
+BuildRequires:	kf5-ki18n-devel >= %{kf_ver}
+BuildRequires:	kf5-kiconthemes-devel >= %{kf_ver}
+BuildRequires:	kf5-kio-devel >= %{kf_ver}
+BuildRequires:	kf5-knotifications-devel >= %{kf_ver}
+BuildRequires:	kf5-knotifyconfig-devel >= %{kf_ver}
+BuildRequires:	kf5-kservice-devel >= %{kf_ver}
+BuildRequires:	kf5-kwindowsystem-devel >= %{kf_ver}
+BuildRequires:	kf5-kxmlgui-devel >= %{kf_ver}
+BuildRequires:	kf5-solid-devel >= %{kf_ver}
+BuildRequires:	kf5-threadweaver-devel >= %{kf_ver}
+BuildRequires:	lcms2-devel >= 2.0
 BuildRequires:	lensfun-devel >= 0.2.6
-BuildRequires:	libf2c-devel >= 20110801
-BuildRequires:	libgphoto2-devel
-BuildRequires:	liblqr-devel >= 0.4.0
-BuildRequires:	libpgf-devel
-BuildRequires:	libtiff-devel
-BuildRequires:	opencv-devel
+BuildRequires:	libgphoto2-devel >= 2.5.0
+BuildRequires:	libjpeg-devel >= 8
+BuildRequires:	liblqr-devel >= 0.4.1
+# internal libpgf is used (core/libs/pgfutils/libpgf)
+#BuildRequires:	libpgf-devel
+BuildRequires:	libpng-devel
+BuildRequires:	libstdc++-devel >= 6:4.7
+BuildRequires:	libtiff-devel >= 3.8.2
+BuildRequires:	libx265-devel >= 2.2
+BuildRequires:	libxml2-devel >= 1:2.7.0
+BuildRequires:	libxslt-devel >= 1.1.0
+BuildRequires:	opencv-devel >= 3.3.0
 BuildRequires:	pkgconfig >= 1:0.9.0
-BuildRequires:	qjson-devel >= 0.5
-BuildRequires:	qtav-devel
+BuildRequires:	qtav-devel >= 1.12.0
 BuildRequires:	rpmbuild(macros) >= 1.606
 BuildRequires:	sed >= 4.0
-BuildRequires:	shared-desktop-ontologies-devel >= 0.2
-BuildRequires:	soprano-devel
-Requires:	Qt5Sql-sqldriver-mysql
-Requires:	Qt5Sql-sqldriver-sqlite3
+BuildRequires:	xorg-lib-libX11-devel
+Requires:	Qt5Concurrent >= %{qt_ver}
+Requires:	Qt5Core >= %{qt_ver}
+Requires:	Qt5DBus >= %{qt_ver}
+Requires:	Qt5Gui >= %{qt_ver}
+Requires:	Qt5Network >= %{qt_ver}
+Requires:	Qt5OpenGL >= %{qt_ver}
+Requires:	Qt5PrintSupport >= %{qt_ver}
+Requires:	Qt5Sql >= %{qt_ver}
+Requires:	Qt5Sql-sqldriver-mysql >= %{qt_ver}
+Requires:	Qt5Sql-sqldriver-sqlite3 >= %{qt_ver}
+Requires:	Qt5WebEngine >= %{qt_ver}
+Requires:	Qt5Widgets >= %{qt_ver}
+Requires:	Qt5X11Extras >= %{qt_ver}
+Requires:	Qt5Xml >= %{qt_ver}
+Requires:	Qt5XmlPatterns >= %{qt_ver}
+Requires:	exiv2 >= 0.27.0
+Requires:	jasper-libs >= 1.7.0
+Requires:	ka5-akonadi-contacts >= %{akonadi_ver}
+Requires:	ka5-libksane >= 5.5.0
+Requires:	ka5-marble >= 0.22.0
+Requires:	kf5-kcalendarcore >= 5.6.40
+Requires:	kf5-kconfig >= %{kf_ver}
+Requires:	kf5-kcontacts >= %{akonadi_ver}
+Requires:	kf5-kcoreaddons >= %{kf_ver}
+Requires:	kf5-kfilemetadata >= %{kf_ver}
+Requires:	kf5-ki18n >= %{kf_ver}
+Requires:	kf5-kiconthemes >= %{kf_ver}
+Requires:	kf5-kio >= %{kf_ver}
+Requires:	kf5-knotifications >= %{kf_ver}
+Requires:	kf5-knotifyconfig >= %{kf_ver}
+Requires:	kf5-kservice >= %{kf_ver}
+Requires:	kf5-kwindowsystem >= %{kf_ver}
+Requires:	kf5-kxmlgui >= %{kf_ver}
+Requires:	kf5-solid >= %{kf_ver}
+Requires:	kf5-threadweaver >= %{kf_ver}
+Requires:	lcms2 >= 2.0
+Requires:	lensfun >= 0.2.6
+Requires:	libgphoto2 >= 2.5.0
+Requires:	liblqr >= 0.4.1
+Requires:	libtiff >= 3.8.2
+Requires:	libx265 >= 2.2
+Requires:	libxml2 >= 1:2.7.0
+Requires:	libxslt >= 1.1.0
+Requires:	opencv >= 3.3.0
+Requires:	qtav >= 1.12.0
 Obsoletes:	digikamimageplugins < 0.9.2
 Obsoletes:	kipi-plugins < 1.10
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -74,6 +145,11 @@ Summary:	A KDE frontend for gphoto2 - header files
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2 - pliki nagłówkowe
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	Qt5Core-devel >= %{qt_ver}
+Requires:	Qt5Gui-devel >= %{qt_ver}
+Requires:	Qt5Sql-devel >= %{qt_ver}
+Requires:	Qt5Widgets-devel >= %{qt_ver}
+Requires:	libstdc++-devel >= 6:4.7
 
 %description devel
 A KDE frontend for gphoto2 - header files.
@@ -83,21 +159,19 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 install -d build
 cd build
-%cmake \
+%cmake .. \
+	-DDIGIKAMSC_COMPILE_KIPIPLUGINS=ON \
 	-DENABLE_AKONADICONTACTSUPPORT:BOOL=ON \
 	-DENABLE_APPSTYLES:BOOL=ON \
 	-DENABLE_KFILEMETADATASUPPORT:BOOL=ON \
 	-DENABLE_MEDIAPLAYER:BOOL=ON \
 	-DENABLE_MYSQLSUPPORT:BOOL=ON \
 	-DENABLE_INTERNALMYSQL:BOOL=ON \
-	-DENABLE_OPENCV3:BOOL=ON \
-	-DDIGIKAMSC_COMPILE_KIPIPLUGINS=ON \
-	../
+	-DENABLE_OPENCV3:BOOL=ON
 
 %{__make}
 
@@ -105,14 +179,9 @@ cd build
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} -C build install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	kde_htmldir=%{_kdedocdir} \
-	kde_libs_htmldir=%{_kdedocdir}
+	DESTDIR=$RPM_BUILD_ROOT
 
-%find_lang %{name} --with-kde --all-name
-
-# libkipi belongs to kde4-libkipi and libkipi.mo belongs to kde4-l10n
-%{__sed} -i -e '/.*\/libkipi.mo$/d' %{name}.lang
+%find_lang %{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -122,7 +191,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog CODE_OF_CONDUCT.md COPYING* NEWS PACKAGING README.md README.DEVEL
+%doc AUTHORS CODE_OF_CONDUCT.md COPYING-CMAKE-SCRIPTS ChangeLog NEWS README.md README.DEVEL
 %attr(755,root,root) %{_bindir}/cleanup_digikamdb
 %attr(755,root,root) %{_bindir}/digikam
 %attr(755,root,root) %{_bindir}/digitaglinktree
@@ -133,33 +202,49 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/plugins
 %dir %{_libdir}/plugins/digikam
 %dir %{_libdir}/plugins/digikam/bqm
-%attr(755,root,root) %{_libdir}/plugins/digikam/bqm/*.so
+%attr(755,root,root) %{_libdir}/plugins/digikam/bqm/Bqm_*_Plugin.so
 %dir %{_libdir}/plugins/digikam/dimg
-%attr(755,root,root) %{_libdir}/plugins/digikam/dimg/*.so
+%attr(755,root,root) %{_libdir}/plugins/digikam/dimg/DImg_*_Plugin.so
 %dir %{_libdir}/plugins/digikam/editor
-%attr(755,root,root) %{_libdir}/plugins/digikam/editor/*.so
+%attr(755,root,root) %{_libdir}/plugins/digikam/editor/Editor_*_Plugin.so
 %dir %{_libdir}/plugins/digikam/generic
-%attr(755,root,root) %{_libdir}/plugins/digikam/generic/*.so
+%attr(755,root,root) %{_libdir}/plugins/digikam/generic/Generic_*_Plugin.so
 %dir %{_libdir}/plugins/digikam/rawimport
-%attr(755,root,root) %{_libdir}/plugins/digikam/rawimport/*.so
+%attr(755,root,root) %{_libdir}/plugins/digikam/rawimport/RawImport_*_Plugin.so
 %{_datadir}/%{name}
 %{_datadir}/knotifications5/digikam.notifyrc
 %{_datadir}/kxmlgui5/digikam
 %{_datadir}/kxmlgui5/showfoto
-%{_desktopdir}/org.kde.digikam.desktop
-%{_desktopdir}/org.kde.showfoto.desktop
 %{_datadir}/metainfo/org.kde.digikam.appdata.xml
 %{_datadir}/metainfo/org.kde.showfoto.appdata.xml
 %{_datadir}/showfoto
 %{_datadir}/solid/actions/digikam-opencamera.desktop
+%{_desktopdir}/org.kde.digikam.desktop
+%{_desktopdir}/org.kde.showfoto.desktop
+%{_iconsdir}/hicolor/32x32/actions/albumfolder-*.png
+%{_iconsdir}/hicolor/32x32/actions/overexposure.png
+%{_iconsdir}/hicolor/32x32/actions/tag.png
+%{_iconsdir}/hicolor/32x32/actions/tag-*.png
+%{_iconsdir}/hicolor/32x32/actions/underexposure.png
+%{_iconsdir}/hicolor/*x*/apps/digikam.png
+%{_iconsdir}/hicolor/*x*/apps/dk-*.png
+%{_iconsdir}/hicolor/*x*/apps/expoblending.png
+%{_iconsdir}/hicolor/*x*/apps/panorama.png
+%{_iconsdir}/hicolor/*x*/apps/showfoto.png
+%{_iconsdir}/hicolor/scalable/apps/digikam.svgz
+%{_iconsdir}/hicolor/scalable/apps/dk-*.svgz
+%{_iconsdir}/hicolor/scalable/apps/panorama.svgz
+%{_iconsdir}/hicolor/scalable/apps/showfoto.svgz
 %{_mandir}/man1/digitaglinktree.1*
 %{_mandir}/man1/cleanup_digikamdb.1*
-%{_iconsdir}/*/*/actions/*.png
-%{_iconsdir}/*/*/apps/*.png
-%{_iconsdir}/*/*/apps/*.svgz
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libdigikamcore.so
 %attr(755,root,root) %{_libdir}/libdigikamdatabase.so
 %attr(755,root,root) %{_libdir}/libdigikamgui.so
+%{_includedir}/digikam
+%{_libdir}/cmake/DigikamCore
+%{_libdir}/cmake/DigikamDatabase
+%{_libdir}/cmake/DigikamGui
+%{_libdir}/cmake/DigikamPlugin

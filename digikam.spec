@@ -15,12 +15,12 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	7.2.0
+Version:	7.6.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Graphics
-Source0:	https://download.kde.org/stable/digikam/%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	60a03c1c22462b16f56ec28033f05e2d
+Source0:	https://download.kde.org/stable/digikam/%{version}/digiKam-%{version}.tar.xz
+# Source0-md5:	41cf1973a777d558086402329a137585
 URL:		https://www.digikam.org/
 BuildRequires:	ImageMagick-devel >= 6.7.0
 BuildRequires:	ImageMagick-c++-devel >= 6.7.0
@@ -42,7 +42,7 @@ BuildRequires:	Qt5Xml-devel >= %{qt_ver}
 BuildRequires:	Qt5XmlPatterns-devel >= %{qt_ver}
 BuildRequires:	bison >= 2.5.0
 BuildRequires:	boost-devel >= 1.43.0
-BuildRequires:	cmake >= 3.3.2
+BuildRequires:	cmake >= 3.16
 BuildRequires:	doxygen >= 1.8.0
 BuildRequires:	eigen3 >= 3.0.0
 BuildRequires:	exiv2-devel >= 0.27.0
@@ -75,11 +75,12 @@ BuildRequires:	kf5-threadweaver-devel >= %{kf_ver}
 BuildRequires:	lcms2-devel >= 2.0
 BuildRequires:	lensfun-devel >= 0.2.6
 BuildRequires:	libgphoto2-devel >= 2.5.0
+BuildRequires:	libgomp-devel
 BuildRequires:	libjpeg-devel >= 8
 BuildRequires:	liblqr-devel >= 0.4.1
 # internal libpgf is used (core/libs/pgfutils/libpgf)
 #BuildRequires:	libpgf-devel
-BuildRequires:	libpng-devel
+BuildRequires:	libpng-devel >= 2:1.2.7
 BuildRequires:	libstdc++-devel >= 6:4.7
 BuildRequires:	libtiff-devel >= 3.8.2
 BuildRequires:	libx265-devel >= 2.2
@@ -131,6 +132,7 @@ Requires:	lcms2 >= 2.0
 Requires:	lensfun >= 0.2.6
 Requires:	libgphoto2 >= 2.5.0
 Requires:	liblqr >= 0.4.1
+Requires:	libpng >= 2:1.2.7
 Requires:	libtiff >= 3.8.2
 Requires:	libx265 >= 2.2
 Requires:	libxml2 >= 1:2.7.0
@@ -201,7 +203,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS CODE_OF_CONDUCT.md COPYING-CMAKE-SCRIPTS ChangeLog NEWS README.md README.DEVEL
+%doc AUTHORS CODE_OF_CONDUCT.md COPYING-CMAKE-SCRIPTS ChangeLog NEWS README.md
 %attr(755,root,root) %{_bindir}/cleanup_digikamdb
 %attr(755,root,root) %{_bindir}/digikam
 %attr(755,root,root) %{_bindir}/digitaglinktree

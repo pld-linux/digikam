@@ -15,12 +15,12 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	7.6.0
+Version:	7.10.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Graphics
 Source0:	https://download.kde.org/stable/digikam/%{version}/digiKam-%{version}.tar.xz
-# Source0-md5:	41cf1973a777d558086402329a137585
+# Source0-md5:	52a449c571a7a793320b0342d439427b
 URL:		https://www.digikam.org/
 BuildRequires:	ImageMagick-devel >= 6.7.0
 BuildRequires:	ImageMagick-c++-devel >= 6.7.0
@@ -172,9 +172,7 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 %setup -q
 
 %build
-install -d build
-cd build
-%cmake .. \
+%cmake -B build \
 	-DDIGIKAMSC_COMPILE_KIPIPLUGINS=ON \
 	-DENABLE_AKONADICONTACTSUPPORT:BOOL=ON \
 	-DENABLE_APPSTYLES:BOOL=ON \
@@ -185,7 +183,7 @@ cd build
 	-DENABLE_OPENCV3:BOOL=ON \
 	%{?with_qtwebkit:-DENABLE_QWEBENGINE:BOOL=OFF}
 
-%{__make}
+%{__make} -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT

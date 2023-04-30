@@ -16,7 +16,7 @@ Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	8.0.0
-Release:	0.1
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Graphics
 Source0:	https://download.kde.org/stable/digikam/%{version}/digiKam-%{version}.tar.xz
@@ -205,7 +205,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS CODE_OF_CONDUCT.md COPYING-CMAKE-SCRIPTS ChangeLog NEWS README.md
+%doc AUTHORS CODE_OF_CONDUCT.md ChangeLog NEWS README.md
 %attr(755,root,root) %{_bindir}/cleanup_digikamdb
 %attr(755,root,root) %{_bindir}/digikam
 %attr(755,root,root) %{_bindir}/digitaglinktree

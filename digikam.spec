@@ -5,8 +5,8 @@
 %bcond_with	qtwebkit	# use Qt5WebKit instead of Qt5WebEngine
 
 %define		akonadi_ver	4.89.0
-%define		qt_ver		5.9.0
-%define		kf_ver		5.5.0
+%define		qt_ver		5.14.0
+%define		kf_ver		5.89.0
 
 %ifarch x32
 # Qt5WebEngine not available
@@ -15,12 +15,12 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	7.10.0
-Release:	1
+Version:	8.0.0
+Release:	0.1
 License:	GPL v2+
 Group:		X11/Applications/Graphics
 Source0:	https://download.kde.org/stable/digikam/%{version}/digiKam-%{version}.tar.xz
-# Source0-md5:	52a449c571a7a793320b0342d439427b
+# Source0-md5:	258ad6039c1f98f3d92678a1617832fb
 URL:		https://www.digikam.org/
 BuildRequires:	ImageMagick-devel >= 6.7.0
 BuildRequires:	ImageMagick-c++-devel >= 6.7.0
@@ -31,6 +31,7 @@ BuildRequires:	Qt5Core-devel >= %{qt_ver}
 BuildRequires:	Qt5DBus-devel >= %{qt_ver}
 BuildRequires:	Qt5Gui-devel >= %{qt_ver}
 BuildRequires:	Qt5Network-devel >= %{qt_ver}
+BuildRequires:	Qt5NetworkAuth-devel >= %{qt_ver}
 BuildRequires:	Qt5OpenGL-devel >= %{qt_ver}
 BuildRequires:	Qt5PrintSupport-devel >= %{qt_ver}
 BuildRequires:	Qt5Sql-devel >= %{qt_ver}
@@ -51,6 +52,7 @@ BuildRequires:	ffmpeg-devel
 BuildRequires:	flex >= 2.5.0
 BuildRequires:	gettext-tools
 BuildRequires:	jasper-devel >= 1.7.0
+BuildRequires:	ka5-akonadi-devel >= %{akonadi_ver}
 BuildRequires:	ka5-akonadi-contacts-devel >= %{akonadi_ver}
 BuildRequires:	ka5-libksane-devel >= 5.5.0
 BuildRequires:	ka5-marble-devel >= 0.22.0
@@ -71,6 +73,7 @@ BuildRequires:	kf5-kservice-devel >= %{kf_ver}
 BuildRequires:	kf5-kwindowsystem-devel >= %{kf_ver}
 BuildRequires:	kf5-kxmlgui-devel >= %{kf_ver}
 BuildRequires:	kf5-solid-devel >= %{kf_ver}
+BuildRequires:	kf5-sonnet-devel >= %{kf_ver}
 BuildRequires:	kf5-threadweaver-devel >= %{kf_ver}
 BuildRequires:	lcms2-devel >= 2.0
 BuildRequires:	lensfun-devel >= 0.2.6
@@ -92,6 +95,7 @@ BuildRequires:	qtav-devel >= 1.12.0
 BuildRequires:	rpmbuild(macros) >= 1.606
 BuildRequires:	sed >= 4.0
 BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	zlib-devel
 Requires:	Qt5Concurrent >= %{qt_ver}
 Requires:	Qt5Core >= %{qt_ver}
 Requires:	Qt5DBus >= %{qt_ver}

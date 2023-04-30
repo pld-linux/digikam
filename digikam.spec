@@ -185,6 +185,7 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 	-DENABLE_MYSQLSUPPORT:BOOL=ON \
 	-DENABLE_INTERNALMYSQL:BOOL=ON \
 	-DENABLE_OPENCV3:BOOL=ON \
+	-DBUILD_TESTING:BOOL=OFF \
 	%{?with_qtwebkit:-DENABLE_QWEBENGINE:BOOL=OFF}
 
 %{__make} -C build

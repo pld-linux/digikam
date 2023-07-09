@@ -16,7 +16,7 @@ Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	8.0.0
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications/Graphics
 Source0:	https://download.kde.org/stable/digikam/%{version}/digiKam-%{version}.tar.xz
@@ -241,11 +241,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/hicolor/32x32/actions/tag.png
 %{_iconsdir}/hicolor/32x32/actions/tag-*.png
 %{_iconsdir}/hicolor/32x32/actions/underexposure.png
+%{_iconsdir}/hicolor/*x*/apps/avplayer.png
 %{_iconsdir}/hicolor/*x*/apps/digikam.png
 %{_iconsdir}/hicolor/*x*/apps/dk-*.png
 %{_iconsdir}/hicolor/*x*/apps/expoblending.png
 %{_iconsdir}/hicolor/*x*/apps/panorama.png
 %{_iconsdir}/hicolor/*x*/apps/showfoto.png
+%{_iconsdir}/hicolor/scalable/apps/avplayer.svgz
 %{_iconsdir}/hicolor/scalable/apps/digikam.svgz
 %{_iconsdir}/hicolor/scalable/apps/dk-*.svgz
 %{_iconsdir}/hicolor/scalable/apps/panorama.svgz

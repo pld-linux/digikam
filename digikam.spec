@@ -4,7 +4,8 @@
 # Conditional build:
 %bcond_with	qtwebkit	# use Qt5WebKit instead of Qt5WebEngine
 
-%define		akonadi_ver	4.89.0
+%define		akonadi_ver	5.19.0
+# or 6.2.3
 %define		qt_ver		5.14.0
 %define		kf_ver		5.89.0
 
@@ -15,12 +16,12 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	8.0.0
-Release:	2
+Version:	8.1.0
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Graphics
 Source0:	https://download.kde.org/stable/digikam/%{version}/digiKam-%{version}.tar.xz
-# Source0-md5:	258ad6039c1f98f3d92678a1617832fb
+# Source0-md5:	ee08257df9285252cb4ad0e3720fb908
 URL:		https://www.digikam.org/
 BuildRequires:	ImageMagick-devel >= 6.7.0
 BuildRequires:	ImageMagick-c++-devel >= 6.7.0
@@ -46,7 +47,7 @@ BuildRequires:	boost-devel >= 1.43.0
 BuildRequires:	cmake >= 3.16
 BuildRequires:	doxygen >= 1.8.0
 BuildRequires:	eigen3 >= 3.0.0
-BuildRequires:	exiv2-devel >= 0.27.0
+BuildRequires:	exiv2-devel >= 0.27.1
 BuildRequires:	expat-devel >= 1:2.0.0
 BuildRequires:	ffmpeg-devel
 BuildRequires:	flex >= 2.5.0
@@ -54,10 +55,10 @@ BuildRequires:	gettext-tools
 BuildRequires:	jasper-devel >= 1.7.0
 BuildRequires:	ka5-akonadi-devel >= %{akonadi_ver}
 BuildRequires:	ka5-akonadi-contacts-devel >= %{akonadi_ver}
-BuildRequires:	ka5-libksane-devel >= 5.5.0
+BuildRequires:	ka5-libksane-devel >= 21.12.0
 BuildRequires:	ka5-marble-devel >= 0.22.0
-BuildRequires:	kf5-extra-cmake-modules >= 5.5.0
-BuildRequires:	kf5-kcalendarcore-devel >= 5.6.40
+BuildRequires:	kf5-extra-cmake-modules >= 5.55.0
+BuildRequires:	kf5-kcalendarcore-devel >= 5.89.0
 BuildRequires:	kf5-kconfig-devel >= %{kf_ver}
 BuildRequires:	kf5-kcontacts-devel >= %{akonadi_ver}
 BuildRequires:	kf5-kcoreaddons-devel >= %{kf_ver}
@@ -79,12 +80,13 @@ BuildRequires:	lcms2-devel >= 2.0
 BuildRequires:	lensfun-devel >= 0.2.6
 BuildRequires:	libgphoto2-devel >= 2.5.0
 BuildRequires:	libgomp-devel
+BuildRequires:	libheif-devel >= 1.6.0
 BuildRequires:	libjpeg-devel >= 8
 BuildRequires:	liblqr-devel >= 0.4.1
 # internal libpgf is used (core/libs/pgfutils/libpgf)
 #BuildRequires:	libpgf-devel
 BuildRequires:	libpng-devel >= 2:1.2.7
-BuildRequires:	libstdc++-devel >= 6:4.7
+BuildRequires:	libstdc++-devel >= 6:7
 BuildRequires:	libtiff-devel >= 3.8.2
 BuildRequires:	libx265-devel >= 2.2
 BuildRequires:	libxml2-devel >= 1:2.7.0
@@ -115,9 +117,9 @@ Requires:	Qt5XmlPatterns >= %{qt_ver}
 Requires:	exiv2 >= 0.27.0
 Requires:	jasper-libs >= 1.7.0
 Requires:	ka5-akonadi-contacts >= %{akonadi_ver}
-Requires:	ka5-libksane >= 5.5.0
+Requires:	ka5-libksane >= 21.12.0
 Requires:	ka5-marble >= 0.22.0
-Requires:	kf5-kcalendarcore >= 5.6.40
+Requires:	kf5-kcalendarcore >= 5.89.0
 Requires:	kf5-kconfig >= %{kf_ver}
 Requires:	kf5-kcontacts >= %{akonadi_ver}
 Requires:	kf5-kcoreaddons >= %{kf_ver}
@@ -135,6 +137,7 @@ Requires:	kf5-threadweaver >= %{kf_ver}
 Requires:	lcms2 >= 2.0
 Requires:	lensfun >= 0.2.6
 Requires:	libgphoto2 >= 2.5.0
+Requires:	libheif >= 1.6.0
 Requires:	liblqr >= 0.4.1
 Requires:	libpng >= 2:1.2.7
 Requires:	libtiff >= 3.8.2
@@ -164,7 +167,7 @@ Requires:	Qt5Core-devel >= %{qt_ver}
 Requires:	Qt5Gui-devel >= %{qt_ver}
 Requires:	Qt5Sql-devel >= %{qt_ver}
 Requires:	Qt5Widgets-devel >= %{qt_ver}
-Requires:	libstdc++-devel >= 6:4.7
+Requires:	libstdc++-devel >= 6:7
 
 %description devel
 A KDE frontend for gphoto2 - header files.

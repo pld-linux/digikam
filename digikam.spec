@@ -17,7 +17,7 @@ Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
 Version:	8.1.0
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications/Graphics
 Source0:	https://download.kde.org/stable/digikam/%{version}/digiKam-%{version}.tar.xz
@@ -93,7 +93,6 @@ BuildRequires:	libxml2-devel >= 1:2.7.0
 BuildRequires:	libxslt-devel >= 1.1.0
 BuildRequires:	opencv-devel >= 3.3.0
 BuildRequires:	pkgconfig >= 1:0.9.0
-BuildRequires:	qtav-devel >= 1.12.0
 BuildRequires:	rpmbuild(macros) >= 1.606
 BuildRequires:	sed >= 4.0
 BuildRequires:	xorg-lib-libX11-devel
@@ -145,7 +144,6 @@ Requires:	libx265 >= 2.2
 Requires:	libxml2 >= 1:2.7.0
 Requires:	libxslt >= 1.1.0
 Requires:	opencv >= 3.3.0
-Requires:	qtav >= 1.12.0
 Obsoletes:	digikamimageplugins < 0.9.2
 Obsoletes:	kipi-plugins < 1.10
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)

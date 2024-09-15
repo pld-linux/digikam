@@ -1,0 +1,3304 @@
+From 38f4c12e2dcd3adcee77aef83b6f8e199b3085b1 Mon Sep 17 00:00:00 2001
+From: Gilles Caulier <caulier.gilles@gmail.com>
+Date: Sun, 7 Jul 2024 05:41:39 +0000
+Subject: [PATCH] remove QtWebEngine option which is now always required to
+ compile code remove QtWebkit option which is now obsolete with dropped MinGW
+ support
+
+---
+ Mainpage.dox                                  |   7 -
+ bootstrap.homebrew                            |   1 -
+ bootstrap.linux                               |   1 -
+ bootstrap.macports                            |   1 -
+ bootstrap.tarball                             |   1 -
+ bootstrap.vcpkg                               |   1 -
+ core/CMakeLists.txt                           |   2 -
+ core/app/CMakeLists.txt                       |  13 +-
+ core/app/DigikamCoreTarget.cmake              |  19 +-
+ core/app/DigikamGuiTarget.cmake               |  19 +-
+ core/app/main/main.cpp                        |   4 -
+ core/app/utils/digikam_config.h.cmake.in      |   6 -
+ core/app/utils/digikam_globals.cpp            |   9 -
+ core/app/utils/digikam_globals_bundles.cpp    |   5 -
+ core/app/utils/digikam_globals_p.h            |   7 +-
+ core/app/views/stack/welcomepageview.cpp      |  34 +-
+ core/app/views/stack/welcomepageview.h        |  19 +-
+ core/cmake/rules/RulesOptionDefinitions.cmake |   7 -
+ core/cmake/rules/RulesQtFramework.cmake       |  22 +-
+ core/cmake/rules/RulesWindows.cmake           |  88 +----
+ .../generic/webservices/CMakeLists.txt        |  13 +-
+ .../webservices/flickr/flickrtalker.cpp       |  30 --
+ .../webservices/inaturalist/CMakeLists.txt    |   6 +-
+ .../inaturalist/inatbrowserdlg.cpp            | 111 +-----
+ .../unified/wizard/wsauthenticationpage.cpp   |  52 ---
+ .../unified/wizard/wsauthenticationpage.h     |  50 +--
+ core/libs/dialogs/CMakeLists.txt              |   6 +-
+ core/libs/dialogs/libsinfodlg.cpp             |  15 +-
+ core/libs/dialogs/webbrowserdlg.cpp           |  62 +--
+ core/libs/dplugins/CMakeLists.txt             |  19 +-
+ .../geolocation/itempropertiesgpstab.cpp      |  14 +-
+ core/libs/widgets/mainview/dxmlguiwindow.cpp  |  27 --
+ core/libs/widgets/mainview/dxmlguiwindow_p.h  |   4 +-
+ core/showfoto/main/main.cpp                   |   4 -
+ core/tests/CMakeLists.txt                     |  10 +-
+ core/tests/webservices/o2/CMakeLists.txt      |   4 +-
+ .../geolocation/geoiface/CMakeLists.txt       |  22 +-
+ .../geoiface/backends/backendgooglemaps.cpp   |  11 +-
+ .../geoiface/widgets/htmlwidget_qwebkit.cpp   | 353 ------------------
+ .../geoiface/widgets/htmlwidget_qwebkit.h     |  79 ----
+ project/bundles/3rdparty/CMakeLists.txt       |   5 -
+ .../3rdparty/ext_drmingw/CMakeLists.txt       |  56 ---
+ .../ext_drmingw/drmingw-coreonly.patch        |  48 ---
+ .../3rdparty/ext_liblqr/CMakeLists.txt        |  27 --
+ .../3rdparty/ext_marble/CMakeLists.txt        | 102 -----
+ .../marble-libs-install-appimage.patch        |  24 --
+ .../marble-libs-install-macports.patch        | 134 -------
+ .../ext_marble/marble-libs-install-mxe.patch  | 134 -------
+ .../bundles/3rdparty/ext_qt5/CMakeLists.txt   |   9 -
+ .../3rdparty/ext_qtwebkit/CMakeLists.txt      |  82 ----
+ .../ext_qtwebkit/qtwebkit-fixdeps-linux.patch |  32 --
+ .../qtwebkit-fixrpath-macports.patch          |  13 -
+ .../3rdparty/ext_uchardet/CMakeLists.txt      |  25 --
+ project/bundles/appimage/01-build-host.sh     |  11 +-
+ .../bundles/appimage/02-build-extralibs.sh    |   3 +-
+ project/bundles/appimage/03-build-digikam.sh  |   8 +-
+ project/bundles/appimage/04-build-appimage.sh |  27 +-
+ project/bundles/appimage/config.sh            |   3 -
+ .../appimage/tools/installextralibsdep.sh     |   3 +-
+ .../bundles/appimage/tools/installhostdeps.sh |   4 +-
+ project/bundles/homebrew/01-build-homebrew.sh |   1 -
+ .../bundles/homebrew/02-build-extralibs.sh    |   1 -
+ project/bundles/homebrew/03-build-digikam.sh  |   2 -
+ project/bundles/homebrew/config.sh            |   3 -
+ .../homebrew/tools/installextralibsdep.sh     |   1 -
+ .../homebrew/tools/installmacportsdeps.sh     |   1 -
+ project/bundles/macports/01-build-macports.sh |  13 +-
+ .../bundles/macports/02-build-extralibs.sh    |   1 -
+ project/bundles/macports/03-build-digikam.sh  |   8 -
+ .../bundles/macports/04-build-installer.sh    |  14 -
+ project/bundles/macports/config.sh            |   3 -
+ .../macports/tools/installextralibsdep.sh     |   1 -
+ .../macports/tools/installmacportsdeps.sh     |   1 -
+ project/bundles/vcpkg/01-build-vcpkg.sh       |   1 -
+ project/bundles/vcpkg/02-build-extralibs.sh   |   1 -
+ project/bundles/vcpkg/03-build-digikam.sh     |   2 -
+ 76 files changed, 86 insertions(+), 1876 deletions(-)
+ delete mode 100644 core/utilities/geolocation/geoiface/widgets/htmlwidget_qwebkit.cpp
+ delete mode 100644 core/utilities/geolocation/geoiface/widgets/htmlwidget_qwebkit.h
+ delete mode 100644 project/bundles/3rdparty/ext_drmingw/CMakeLists.txt
+ delete mode 100644 project/bundles/3rdparty/ext_drmingw/drmingw-coreonly.patch
+ delete mode 100644 project/bundles/3rdparty/ext_liblqr/CMakeLists.txt
+ delete mode 100755 project/bundles/3rdparty/ext_marble/CMakeLists.txt
+ delete mode 100644 project/bundles/3rdparty/ext_marble/marble-libs-install-appimage.patch
+ delete mode 100644 project/bundles/3rdparty/ext_marble/marble-libs-install-macports.patch
+ delete mode 100644 project/bundles/3rdparty/ext_marble/marble-libs-install-mxe.patch
+ delete mode 100644 project/bundles/3rdparty/ext_qtwebkit/CMakeLists.txt
+ delete mode 100644 project/bundles/3rdparty/ext_qtwebkit/qtwebkit-fixdeps-linux.patch
+ delete mode 100644 project/bundles/3rdparty/ext_qtwebkit/qtwebkit-fixrpath-macports.patch
+ delete mode 100755 project/bundles/3rdparty/ext_uchardet/CMakeLists.txt
+
+diff --git a/Mainpage.dox b/Mainpage.dox
+index dd62bf6279f..e92ba5add66 100644
+--- a/Mainpage.dox
++++ b/Mainpage.dox
+@@ -282,7 +282,6 @@ The full list of mandatory (X) and (optional) external dependencies required to
+ | Qt::PrintSupport     |      X      | >= 5.14       | >= 6.4        | https://code.qt.io/cgit/qt/qtbase.git/                |                                                        |                                                                                       |
+ | Qt::Svg              |      X      | >= 5.14       | >= 6.4        | https://code.qt.io/cgit/qt/qtsvg.git/                 |                                                        |                                                                                       |
+ | Qt::WebEngine        |      X      | >= 5.14       | >= 6.4        | https://code.qt.io/cgit/qt/qtwebengine.git/           | To render web contents (ENABLE_QWEBENGINE=on)          | To replace Qt5::WebKitWidgets everywhere, excepted for MXE                            |
+-| Qt::WebKitWidgets    |   optional  | >= 5.212      | ---           | https://code.qt.io/cgit/qt/qtwebkit.git/              | To render web contents                                 | Used with MXE only as WebEngine do not compile with MinGW. Not yet ported to Qt6.     |
+ | Qt::XmlPatterns      |   optional  | >= 5.14       | ---           | https://code.qt.io/cgit/qt/qtxmlpatterns.git/         | To parse and validate Xml                              | Used by Rajce plugin. Module removed with Qt6.                                        |
+ | Qt::X11Extras        |   optional  | >= 5.14       | ---           | https://code.qt.io/cgit/qt/qtx11extras.git/           | For color management support under Linux               | Module removed with Qt6.                                                              |
+ | Qt::DBus             |   optional  | >= 5.14       | >= 6.4        | https://code.qt.io/cgit/qt/qtbase.git/                | Optional: only for Linux Desktop                       |                                                                                       |
+@@ -444,7 +443,6 @@ There are two configuration sections : the top level and the core.
+   - \b ENABLE_MEDIAPLAYER                    : Build digiKam with Media Player support (default=ON).
+   - \b ENABLE_DBUS                           : Build digiKam with DBUS support (default=ON).
+   - \b ENABLE_APPSTYLES                      : Build digiKam with support for changing the widget application style (default=OFF).
+-  - \b ENABLE_QWEBENGINE                     : Build digiKam with QWebEngine instead of QWebKit (default=ON).
+   - \b ENABLE_KIO                            : Build digiKam with KIO support (default=ON).
+ 
+  - Database options
+@@ -462,11 +460,6 @@ There are two configuration sections : the top level and the core.
+   - \b ENABLE_SANITIZERS                     : Enable ASAN and UBSAN sanitizers when available (default=OFF).
+   - \b BUILD_WITH_CCACHE                     : Use ccache to speed up compilations (default=OFF)
+ 
+- - Packaging options
+-
+-  - \b ENABLE_DRMINGW                        : Enable the Dr. Mingw crash handler for windows (default=ON).
+-  - \b ENABLE_MINGW_HARDENING_LINKER         : Enable DEP (NX), ASLR, and high-entropy ASLR linker flags for MinGW (default ON).
+-
+ \section setuplocaldev Setup Local Compilation and Run-Time
+ 
+ This section describes how to install digiKam from the git repository, while keeping a system-wide digiKam install.
+diff --git a/bootstrap.homebrew b/bootstrap.homebrew
+index b5114c3ce90..16bb3212762 100755
+--- a/bootstrap.homebrew
++++ b/bootstrap.homebrew
+@@ -78,7 +78,6 @@ cmake -G "$MAKEFILES_TYPE" . \
+       -DENABLE_DBUS=OFF \
+       -DENABLE_KIO=OFF \
+       -DENABLE_APPSTYLES=OFF \
+-      -DENABLE_QWEBENGINE=ON \
+       -DAPPLE_SUPPRESS_X11_WARNING=ON \
+       -DCMAKE_COLOR_MAKEFILE=ON \
+       -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
+diff --git a/bootstrap.linux b/bootstrap.linux
+index 426cafc6c84..6f75cffa179 100755
+--- a/bootstrap.linux
++++ b/bootstrap.linux
+@@ -147,5 +147,4 @@ $CMAKE_BINARY -G "$MAKEFILES_TYPE" . \
+       -DENABLE_MEDIAPLAYER=ON \
+       -DENABLE_DBUS=ON \
+       -DENABLE_APPSTYLES=ON \
+-      -DENABLE_QWEBENGINE=ON \
+       $SOURCEDIR && echo "$MESSAGE"
+diff --git a/bootstrap.macports b/bootstrap.macports
+index 2f38058e4d1..5ec86174709 100755
+--- a/bootstrap.macports
++++ b/bootstrap.macports
+@@ -77,7 +77,6 @@ cmake -G "$MAKEFILES_TYPE" . \
+       -DENABLE_DBUS=OFF \
+       -DENABLE_KIO=OFF \
+       -DENABLE_APPSTYLES=OFF \
+-      -DENABLE_QWEBENGINE=ON \
+       -DAPPLE_SUPPRESS_X11_WARNING=ON \
+       -DCMAKE_COLOR_MAKEFILE=ON \
+       -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
+diff --git a/bootstrap.tarball b/bootstrap.tarball
+index 2540d8027b0..983eb045a4e 100755
+--- a/bootstrap.tarball
++++ b/bootstrap.tarball
+@@ -41,7 +41,6 @@ cmake -G "Unix Makefiles" . \
+       -DENABLE_MEDIAPLAYER=OFF \
+       -DENABLE_DBUS=OFF \
+       -DENABLE_APPSTYLES=OFF \
+-      -DENABLE_QWEBENGINE=OFF \
+       -Wno-dev \
+       .. || exit 1
+ 
+diff --git a/bootstrap.vcpkg b/bootstrap.vcpkg
+index 7cc4e02a6fa..56c791f49b6 100755
+--- a/bootstrap.vcpkg
++++ b/bootstrap.vcpkg
+@@ -81,7 +81,6 @@ cmake .. \
+       -DENABLE_DBUS=OFF \
+       -DENABLE_KIO=OFF \
+       -DENABLE_APPSTYLES=ON \
+-      -DENABLE_QWEBENGINE=ON \
+       ${OPTIONS} \
+       -Wno-dev
+ 
+diff --git a/core/CMakeLists.txt b/core/CMakeLists.txt
+index 6ea9ca31dc9..cbf72ab8649 100644
+--- a/core/CMakeLists.txt
++++ b/core/CMakeLists.txt
+@@ -222,7 +222,6 @@ MACRO_BOOL_TO_01(ENABLE_MEDIAPLAYER                             HAVE_MEDIAPLAYER
+ MACRO_BOOL_TO_01(ENABLE_QTMULTIMEDIA                            HAVE_QTMULTIMEDIA)
+ MACRO_BOOL_TO_01(ENABLE_DBUS                                    HAVE_DBUS)
+ MACRO_BOOL_TO_01(ENABLE_APPSTYLES                               HAVE_APPSTYLE_SUPPORT)
+-MACRO_BOOL_TO_01(ENABLE_QWEBENGINE                              HAVE_QWEBENGINE)
+ MACRO_BOOL_TO_01(ImageMagick_FOUND                              HAVE_IMAGE_MAGICK)
+ MACRO_BOOL_TO_01(HEIF_FOUND                                     HAVE_HEIF)
+ MACRO_BOOL_TO_01(X265_FOUND                                     HAVE_X265)
+@@ -248,7 +247,6 @@ PRINT_COMPONENT_COMPILE_STATUS("MySQL Internal Support"                     ENAB
+ PRINT_COMPONENT_COMPILE_STATUS("Showfoto Support"                           ENABLE_SHOWFOTO)
+ PRINT_COMPONENT_COMPILE_STATUS("DBUS Support"                               ENABLE_DBUS)
+ PRINT_COMPONENT_COMPILE_STATUS("App. Style Support"                         ENABLE_APPSTYLES)
+-PRINT_COMPONENT_COMPILE_STATUS("QWebEngine Support"                         ENABLE_QWEBENGINE)
+ PRINT_COMPONENT_COMPILE_STATUS("Geolocation Support"                        ENABLE_GEOLOCATION)
+ PRINT_COMPONENT_COMPILE_STATUS("Media Player Support"                       ENABLE_MEDIAPLAYER)
+ PRINT_COMPONENT_COMPILE_STATUS("QtMultimedia Support"                       ENABLE_QTMULTIMEDIA)
+diff --git a/core/app/CMakeLists.txt b/core/app/CMakeLists.txt
+index a8a6b9f7c28..2818da113e2 100644
+--- a/core/app/CMakeLists.txt
++++ b/core/app/CMakeLists.txt
+@@ -55,15 +55,10 @@ set(DIGIKAM_TARGET_INCLUDES $<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::PrintSuppor
+                             ${DK_LOCAL_INCLUDES_UTILS}
+ )
+ 
+-if(ENABLE_QWEBENGINE)
+-    set(DIGIKAM_TARGET_INCLUDES
+-        ${DIGIKAM_TARGET_INCLUDES}
+-        $<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebEngineWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+-else()
+-    set(DIGIKAM_TARGET_INCLUDES
+-        ${DIGIKAM_TARGET_INCLUDES}
+-        $<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebKitWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+-endif()
++set(DIGIKAM_TARGET_INCLUDES
++    ${DIGIKAM_TARGET_INCLUDES}
++    $<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebEngineWidgets,INTERFACE_INCLUDE_DIRECTORIES>
++)
+ 
+ if(KF${QT_VERSION_MAJOR}KIO_FOUND)
+     set(DIGIKAM_TARGET_INCLUDES
+diff --git a/core/app/DigikamCoreTarget.cmake b/core/app/DigikamCoreTarget.cmake
+index 70455be0906..684e62f1356 100644
+--- a/core/app/DigikamCoreTarget.cmake
++++ b/core/app/DigikamCoreTarget.cmake
+@@ -218,21 +218,10 @@ if(Qt6_FOUND)
+ 
+ endif()
+ 
+-if(ENABLE_QWEBENGINE)
+-
+-    target_link_libraries(digikamcore
+-                          PRIVATE
+-                          Qt${QT_VERSION_MAJOR}::WebEngineWidgets
+-    )
+-
+-else()
+-
+-    target_link_libraries(digikamcore
+-                          PRIVATE
+-                          Qt${QT_VERSION_MAJOR}::WebKitWidgets
+-    )
+-
+-endif()
++target_link_libraries(digikamcore
++                      PRIVATE
++                      Qt${QT_VERSION_MAJOR}::WebEngineWidgets
++)
+ 
+ if(ENABLE_DBUS)
+ 
+diff --git a/core/app/DigikamGuiTarget.cmake b/core/app/DigikamGuiTarget.cmake
+index ee822c71659..877ad806e69 100644
+--- a/core/app/DigikamGuiTarget.cmake
++++ b/core/app/DigikamGuiTarget.cmake
+@@ -265,21 +265,10 @@ target_link_libraries(digikamgui
+                       ${FFMPEG_LIBRARIES}
+ )
+ 
+-if(ENABLE_QWEBENGINE)
+-
+-    target_link_libraries(digikamgui
+-                          PRIVATE
+-                          Qt${QT_VERSION_MAJOR}::WebEngineWidgets
+-    )
+-
+-else()
+-
+-    target_link_libraries(digikamgui
+-                          PRIVATE
+-                          Qt${QT_VERSION_MAJOR}::WebKitWidgets
+-    )
+-
+-endif()
++target_link_libraries(digikamgui
++                      PRIVATE
++                      Qt${QT_VERSION_MAJOR}::WebEngineWidgets
++)
+ 
+ if(ENABLE_DBUS)
+ 
+diff --git a/core/app/main/main.cpp b/core/app/main/main.cpp
+index fc2d0fcbf03..bac2525e117 100644
+--- a/core/app/main/main.cpp
++++ b/core/app/main/main.cpp
+@@ -169,12 +169,8 @@ extern "C" MAIN_EXPORT int MAIN_FN(int argc, char** argv)
+ 
+     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::RoundPreferFloor);
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+ 
+-#endif
+-
+     QApplication app(argc, argv);
+ 
+     digikamSetDebugFilterRules(system.enableLogging);
+diff --git a/core/app/utils/digikam_config.h.cmake.in b/core/app/utils/digikam_config.h.cmake.in
+index eaaccb1fc79..6b91b012b39 100644
+--- a/core/app/utils/digikam_config.h.cmake.in
++++ b/core/app/utils/digikam_config.h.cmake.in
+@@ -104,16 +104,10 @@
+ /* Define to 1 if system use QtMultimedia */
+ #cmakedefine HAVE_QTMULTIMEDIA 1
+ 
+-/* Define to 1 if system use QtWebEngine */
+-#cmakedefine HAVE_QWEBENGINE 1
+-
+ /* Define to 1 if system use QtXmlPatterns */
+ #cmakedefine HAVE_QTXMLPATTERNS 1
+ 
+ /* Define to 1 if ImageMagick codecs are supported */
+ #cmakedefine HAVE_IMAGE_MAGICK 1
+ 
+-/* Defines to 1 if the Dr. Mingw crash handler should be used */
+-#cmakedefine HAVE_DRMINGW 1
+-
+ #define LIBEXEC_INSTALL_DIR "${KDE_INSTALL_FULL_LIBEXECDIR}"
+diff --git a/core/app/utils/digikam_globals.cpp b/core/app/utils/digikam_globals.cpp
+index 7dacb8f443a..0d8e60f6023 100644
+--- a/core/app/utils/digikam_globals.cpp
++++ b/core/app/utils/digikam_globals.cpp
+@@ -319,17 +319,8 @@ void openOnlineDocumentation(const QString& section, const QString& chapter, con
+         }
+     }
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     WebBrowserDlg* const browser = new WebBrowserDlg(url, qApp->activeWindow());
+     browser->show();
+-
+-#else
+-
+-    QDesktopServices::openUrl(url);
+-
+-#endif
+-
+ }
+ 
+ } // namespace Digikam
+diff --git a/core/app/utils/digikam_globals_bundles.cpp b/core/app/utils/digikam_globals_bundles.cpp
+index a1d53462369..334293e8481 100644
+--- a/core/app/utils/digikam_globals_bundles.cpp
++++ b/core/app/utils/digikam_globals_bundles.cpp
+@@ -225,13 +225,8 @@ void loadStdQtTranslationFiles(QApplication& app)
+             QLatin1String("qtquickcontrols"),
+             QLatin1String("qtquickcontrols2"),
+             QLatin1String("qtmultimedia"),
+-
+-#ifdef HAVE_QWEBENGINE
+-
+             QLatin1String("qtwebengine"),
+ 
+-#endif
+-
+ #ifdef HAVE_QTXMLPATTERNS
+ 
+             QLatin1String("qtxmlpatterns"),
+diff --git a/core/app/utils/digikam_globals_p.h b/core/app/utils/digikam_globals_p.h
+index 08af9816b8f..122d2e6bdb8 100644
+--- a/core/app/utils/digikam_globals_p.h
++++ b/core/app/utils/digikam_globals_p.h
+@@ -38,12 +38,6 @@
+ #include <QMimeType>
+ #include <QMimeDatabase>
+ 
+-#ifdef HAVE_QWEBENGINE
+-#   include "webbrowserdlg.h"
+-#else
+-#   include <QDesktopServices>
+-#endif
+-
+ // KDE includes
+ 
+ #include <ki18n_version.h>
+@@ -65,6 +59,7 @@
+ #include "digikam_debug.h"
+ #include "drawdecoder.h"
+ #include "rawcameradlg.h"
++#include "webbrowserdlg.h"
+ 
+ // Windows includes
+ 
+diff --git a/core/app/views/stack/welcomepageview.cpp b/core/app/views/stack/welcomepageview.cpp
+index b3f9078126f..b328ad0bacf 100644
+--- a/core/app/views/stack/welcomepageview.cpp
++++ b/core/app/views/stack/welcomepageview.cpp
+@@ -25,9 +25,7 @@
+ #include <QApplication>
+ #include <QStandardPaths>
+ 
+-#ifdef HAVE_QWEBENGINE
+-#   include <QtWebEngineWidgetsVersion>
+-#endif
++#include <QtWebEngineWidgetsVersion>
+ 
+ // KDE includes
+ 
+@@ -44,8 +42,6 @@
+ namespace Digikam
+ {
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+ WelcomePageViewPage::WelcomePageViewPage(QObject* const parent)
+     : QWebEnginePage(parent)
+ {
+@@ -67,51 +63,23 @@ bool WelcomePageViewPage::acceptNavigationRequest(const QUrl& url, QWebEnginePag
+ 
+ WelcomePageView::WelcomePageView(QWidget* const parent)
+     : QWebEngineView(parent)
+-
+-#else
+-
+-WelcomePageView::WelcomePageView(QWidget* const parent)
+-    : QWebView(parent)
+-
+-#endif
+-
+ {
+     setFocusPolicy(Qt::WheelFocus);
+ 
+-#ifndef HAVE_QWEBENGINE
+-
+-    page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+-    setRenderHint(QPainter::TextAntialiasing);
+-
+-#endif
+-
+     setContextMenuPolicy(Qt::NoContextMenu);
+     setContentsMargins(QMargins());
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     WelcomePageViewPage* const wpage = new WelcomePageViewPage(this);
+     setPage(wpage);
+ 
+     settings()->setAttribute(QWebEngineSettings::WebGLEnabled, false);
+     settings()->setAttribute(QWebEngineSettings::Accelerated2dCanvasEnabled, false);
+ 
+-#endif
+-
+     // ------------------------------------------------------------
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     connect(wpage, SIGNAL(linkClicked(QUrl)),
+             this, SLOT(slotUrlOpen(QUrl)));
+ 
+-#else
+-
+-    connect(this, SIGNAL(linkClicked(QUrl)),
+-            this, SLOT(slotUrlOpen(QUrl)));
+-
+-#endif
+-
+     connect(ThemeManager::instance(), SIGNAL(signalThemeChanged()),
+             this, SLOT(slotThemeChanged()));
+ 
+diff --git a/core/app/views/stack/welcomepageview.h b/core/app/views/stack/welcomepageview.h
+index e3fcf1dea84..118ac8a696a 100644
+--- a/core/app/views/stack/welcomepageview.h
++++ b/core/app/views/stack/welcomepageview.h
+@@ -27,13 +27,9 @@
+ #include <QWidget>
+ #include <QLabel>
+ 
+-#ifdef HAVE_QWEBENGINE
+-#   include <QWebEngineView>
+-#   include <QWebEnginePage>
+-#   include <QWebEngineSettings>
+-#else
+-#   include <qwebview.h>
+-#endif
++#include <QWebEngineView>
++#include <QWebEnginePage>
++#include <QWebEngineSettings>
+ 
+ // Local includes
+ 
+@@ -42,8 +38,6 @@
+ namespace Digikam
+ {
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+ class WelcomePageViewPage : public QWebEnginePage
+ {
+     Q_OBJECT
+@@ -65,13 +59,6 @@ Q_SIGNALS:
+ // -------------------------------------------------------------------
+ 
+ class WelcomePageView : public QWebEngineView
+-
+-#else
+-
+-class WelcomePageView : public QWebView
+-
+-#endif
+-
+ {
+     Q_OBJECT
+ 
+diff --git a/core/cmake/rules/RulesOptionDefinitions.cmake b/core/cmake/rules/RulesOptionDefinitions.cmake
+index 6cc7dd746b9..f700eb386c4 100644
+--- a/core/cmake/rules/RulesOptionDefinitions.cmake
++++ b/core/cmake/rules/RulesOptionDefinitions.cmake
+@@ -10,7 +10,6 @@ option(ENABLE_GEOLOCATION                "Build digiKam with Geolocation support
+ option(ENABLE_MEDIAPLAYER                "Build digiKam with Media Player support (default=ON)"                               ON)
+ option(ENABLE_DBUS                       "Build digiKam with DBUS support (default=ON)"                                       ON)
+ option(ENABLE_APPSTYLES                  "Build digiKam with support for changing the widget application style (default=OFF)" OFF)
+-option(ENABLE_QWEBENGINE                 "Build digiKam with QWebEngine (default=ON)"                                         ON)
+ option(ENABLE_KIO                        "Build digiKam with KIO support (default=ON)"                                        ON)
+ 
+ # Database options:
+@@ -25,9 +24,3 @@ option(ENABLE_DIGIKAM_MODELTEST          "Enable ModelTest on some models for de
+ option(ENABLE_SANITIZERS                 "Enable ASAN and UBSAN sanitizers when available (default=OFF)"                      OFF)
+ option(BUILD_WITH_CCACHE                 "Use ccache to speed up compilations"                                                OFF)
+ option(BUILD_WITH_QT6                    "Build with Qt6, else Qt5"                                                           OFF)
+-
+-# Packaging options:
+-if(MINGW)
+-    option(ENABLE_DRMINGW                "Enable the Dr. MinGW crash handler support for windows (default ON)"                ON)
+-    option(ENABLE_MINGW_HARDENING_LINKER "Enable DEP (NX), ASLR, and high-entropy ASLR linker flags for MinGW (default ON)"   ON)
+-endif()
+diff --git a/core/cmake/rules/RulesQtFramework.cmake b/core/cmake/rules/RulesQtFramework.cmake
+index 6f233ccfbc1..9fa839c414c 100644
+--- a/core/cmake/rules/RulesQtFramework.cmake
++++ b/core/cmake/rules/RulesQtFramework.cmake
+@@ -18,23 +18,11 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED
+              Svg
+ )
+ 
+-if(ENABLE_QWEBENGINE)
+-
+-    find_package(Qt${QT_VERSION_MAJOR} REQUIRED
+-                                       NO_MODULE
+-                                       COMPONENTS
+-                                       WebEngineWidgets
+-    )
+-
+-else()
+-
+-    find_package(Qt${QT_VERSION_MAJOR} REQUIRED
+-                                       NO_MODULE
+-                                       COMPONENTS
+-                                       WebKitWidgets
+-    )
+-
+-endif()
++find_package(Qt${QT_VERSION_MAJOR} REQUIRED
++                                   NO_MODULE
++                                   COMPONENTS
++                                   WebEngineWidgets
++)
+ 
+ find_package(Qt${QT_VERSION_MAJOR}
+              OPTIONAL_COMPONENTS
+diff --git a/core/cmake/rules/RulesWindows.cmake b/core/cmake/rules/RulesWindows.cmake
+index 4a5ef1f6fea..0e7c5267833 100644
+--- a/core/cmake/rules/RulesWindows.cmake
++++ b/core/cmake/rules/RulesWindows.cmake
+@@ -4,100 +4,46 @@
+ # SPDX-License-Identifier: BSD-3-Clause
+ #
+ 
+-if(WIN32)
+-
+-    if(MINGW)
+-
+-        # For LibRaw
+-
+-        find_library(WSOCK32_LIBRARY  wsock32)
+-        find_library(WS2_32_LIBRARY   ws2_32)
+-        find_library(BCRYPT_LIBRARY   bcrypt)
+-
+-        # For MediaPlayer
+-
+-        find_library(NETAPI32_LIBRARY netapi32)
+-        find_library(USEENV_LIBRARY   userenv)
+-        find_library(PSAPI_LIBRARY    psapi)
+-
+-    else()  # MSVC
+-
+-        # For LibRaw
+-
+-        set(WSOCK32_LIBRARY  wsock32)
+-        set(WS2_32_LIBRARY   ws2_32)
+-        set(BCRYPT_LIBRARY   bcrypt)
+-
+-        # For MediaPlayer
+-
+-        set(NETAPI32_LIBRARY netapi32)
+-        set(USEENV_LIBRARY   userenv)
+-        set(PSAPI_LIBRARY    psapi)
+-
+-    endif()
+-
+-endif()
+-
+-if(MINGW)
+-
+-    # NOTE: cross-compilation rules inspired from https://phabricator.kde.org/T3917
+-
+-    if(ENABLE_MINGW_HARDENING_LINKER)
+-
+-        set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS}    -Wl,--dynamicbase -Wl,--nxcompat -Wl,--disable-auto-image-base")
+-        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--dynamicbase -Wl,--nxcompat -Wl,--disable-auto-image-base")
+-        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--dynamicbase -Wl,--nxcompat -Wl,--disable-auto-image-base")
+-
+-        if ("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
+-
+-            # Enable high-entropy ASLR for 64-bit
+-            # The image base has to be >4GB for HEASLR to be enabled.
+-            # The values used here are kind of arbitrary.
+-
+-            set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS}    -Wl,--high-entropy-va -Wl,--image-base,0x140000000")
+-            set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--high-entropy-va -Wl,--image-base,0x180000000")
+-            set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--high-entropy-va -Wl,--image-base,0x180000000")
+-
+-        endif()
+-
+-        message(STATUS "MinGW linker Security Flags enabled")
++if(MSVC)
+ 
+-    else()
++    # For LibRaw
+ 
+-        message(WARNING "MinGW Linker Security Flags not enabled!")
++    set(WSOCK32_LIBRARY  wsock32)
++    set(WS2_32_LIBRARY   ws2_32)
++    set(BCRYPT_LIBRARY   bcrypt)
+ 
+-    endif()
++    # For MediaPlayer
+ 
+-endif()
++    set(NETAPI32_LIBRARY netapi32)
++    set(USEENV_LIBRARY   userenv)
++    set(PSAPI_LIBRARY    psapi)
+ 
+-# Increase the stack size to prevent crashes with GMic-qt.
++    # Increase the stack size to prevent crashes with GMic-qt.
+ 
+-if(MSVC)
+     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:16777216")
+     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /STACK:16777216")
+     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /STACK:16777216")
+-elseif(MINGW)
+-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--stack,16777216")
+-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--stack,16777216")
+-    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--stack,16777216")
+-endif()
+ 
+-# Disable indeep warnings from Visual Studio C++
+-
+-if(MSVC)
++    # Disable indeep warnings from Visual Studio C++
+ 
+     # To disable warnings about no suitable definition provided for explicit template instantiation request.
+     add_compile_options(/wd4661)
++
+     # To disable warnings about deprecated POSIX methods().
+     add_compile_options(/wd4996)
++
+     # To disable warnings about qualifier applied to reference type ignored.
+     add_compile_options(/wd4181)
++
+     # To disable warnings about 'storage-class-keyword' no longer supported as storage class.
+     add_compile_options(/wd5033)
++
+     # To disable warnings about size_t to uint conversion data lost.
+     add_compile_options(/wd4267)
++
+     # To disable warnings about truncation from double to float.
+     add_compile_options(/wd4305)
++
+     # To disable warnings about linking object specified multiple times.
+     add_link_options(/ignore:4197)
+ 
+diff --git a/core/dplugins/generic/webservices/CMakeLists.txt b/core/dplugins/generic/webservices/CMakeLists.txt
+index e4c85aae094..caba110c7d6 100644
+--- a/core/dplugins/generic/webservices/CMakeLists.txt
++++ b/core/dplugins/generic/webservices/CMakeLists.txt
+@@ -6,17 +6,8 @@
+ 
+ include_directories(${CMAKE_SOURCE_DIR}/core/libs/dplugins/webservices/o2/src)
+ 
+-if(ENABLE_QWEBENGINE)
+-
+-    include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebEngineWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+-    set(QWEB_BACKEND Qt${QT_VERSION_MAJOR}::WebEngineWidgets)
+-
+-else()
+-
+-    include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebKitWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+-    set(QWEB_BACKEND Qt${QT_VERSION_MAJOR}::WebKitWidgets)
+-
+-endif()
++include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebEngineWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
++set(QWEB_BACKEND Qt${QT_VERSION_MAJOR}::WebEngineWidgets)
+ 
+ add_subdirectory(box)
+ add_subdirectory(dropbox)
+diff --git a/core/dplugins/generic/webservices/flickr/flickrtalker.cpp b/core/dplugins/generic/webservices/flickr/flickrtalker.cpp
+index ab0cd070d0a..6372a0ceb48 100644
+--- a/core/dplugins/generic/webservices/flickr/flickrtalker.cpp
++++ b/core/dplugins/generic/webservices/flickr/flickrtalker.cpp
+@@ -275,8 +275,6 @@ void FlickrTalker::slotOpenBrowser(const QUrl& url)
+ {
+     qCDebug(DIGIKAM_WEBSERVICES_LOG) << "Open Browser... (" << url << ")";
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     delete d->browser;
+     d->browser = new WebBrowserDlg(url, d->parent, true);
+     d->browser->setModal(true);
+@@ -288,34 +286,6 @@ void FlickrTalker::slotOpenBrowser(const QUrl& url)
+             this, SIGNAL(signalBusy(bool)));
+ 
+     d->browser->show();
+-
+-#else
+-
+-    QDesktopServices::openUrl(url);
+-    QPointer<QInputDialog> textDlg = new QInputDialog(d->parent);
+-
+-    textDlg->setWindowTitle(i18nc("@title:window", "Enter Flickr Login URL"));
+-    textDlg->setLabelText(i18n("Copy the full URL from the external browser "
+-                               "that contains the \"oauth_token\" entry:"));
+-    textDlg->resize(770, textDlg->sizeHint().height());
+-    textDlg->setInputMode(QInputDialog::TextInput);
+-    textDlg->setTextEchoMode(QLineEdit::Normal);
+-    textDlg->setModal(true);
+-
+-    if (textDlg->exec() != QDialog::Accepted)
+-    {
+-        Q_EMIT signalBusy(false);
+-
+-        delete textDlg;
+-
+-        return;
+-    }
+-
+-    slotCatchUrl(QUrl(textDlg->textValue().trimmed()));
+-    delete textDlg;
+-
+-#endif
+-
+ }
+ 
+ QString FlickrTalker::getMaxAllowedFileSize()
+diff --git a/core/dplugins/generic/webservices/inaturalist/CMakeLists.txt b/core/dplugins/generic/webservices/inaturalist/CMakeLists.txt
+index a35f1a01ee2..b0a3648e8fc 100644
+--- a/core/dplugins/generic/webservices/inaturalist/CMakeLists.txt
++++ b/core/dplugins/generic/webservices/inaturalist/CMakeLists.txt
+@@ -15,11 +15,7 @@ include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::Widgets,INTERFACE_I
+                     $<TARGET_PROPERTY:KF${QT_VERSION_MAJOR}::I18n,INTERFACE_INCLUDE_DIRECTORIES>
+ )
+ 
+-if(ENABLE_QWEBENGINE)
+-    include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebEngineWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+-else()
+-    include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebKitWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+-endif()
++include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebEngineWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+ 
+ # --------------------------------------------------------------------------------
+ 
+diff --git a/core/dplugins/generic/webservices/inaturalist/inatbrowserdlg.cpp b/core/dplugins/generic/webservices/inaturalist/inatbrowserdlg.cpp
+index 5bd09cff1b9..7da2840e3e2 100644
+--- a/core/dplugins/generic/webservices/inaturalist/inatbrowserdlg.cpp
++++ b/core/dplugins/generic/webservices/inaturalist/inatbrowserdlg.cpp
+@@ -27,16 +27,10 @@
+ #include <QJsonDocument>
+ #include <QHash>
+ 
+-#ifdef HAVE_QWEBENGINE
+-#   include <QWebEngineView>
+-#   include <QWebEnginePage>
+-#   include <QWebEngineProfile>
+-#   include <QWebEngineCookieStore>
+-#else
+-#   include <qwebview.h>
+-#   include <QWebFrame>
+-#   include <QNetworkCookieJar>
+-#endif
++#include <QWebEngineView>
++#include <QWebEnginePage>
++#include <QWebEngineProfile>
++#include <QWebEngineCookieStore>
+ 
+ // KDE includes
+ 
+@@ -57,30 +51,6 @@ using namespace Digikam;
+ namespace DigikamGenericINatPlugin
+ {
+ 
+-#ifndef HAVE_QWEBENGINE
+-
+-/**
+- * Derived class that exposes protected function allCookies().
+- */
+-class Q_DECL_HIDDEN InatBrowserCookieJar : public QNetworkCookieJar
+-{
+-public:
+-
+-    explicit InatBrowserCookieJar(QObject* const parent = nullptr)
+-        : QNetworkCookieJar(parent)
+-    {
+-    }
+-
+-    ~InatBrowserCookieJar() = default;
+-
+-    QList<QNetworkCookie> getAllCookies() const
+-    {
+-        return allCookies();
+-    }
+-};
+-
+-#endif // !defined HAVE_QWEBENGINE
+-
+ class Q_DECL_HIDDEN INatBrowserDlg::Private
+ {
+ public:
+@@ -90,17 +60,7 @@ public:
+ public:
+ 
+     const QUrl                        home          = QUrl(QLatin1String("https://www.inaturalist.org/users/api_token"));
+-
+-#ifdef HAVE_QWEBENGINE
+-
+     QWebEngineView*                   browser       = nullptr;
+-
+-#else
+-
+-    QWebView*                         browser       = nullptr;
+-
+-#endif
+-
+     QString                           username;
+     QToolBar*                         toolbar       = nullptr;
+     bool                              apiKeyFound   = false;
+@@ -117,8 +77,6 @@ INatBrowserDlg::INatBrowserDlg(const QString& username,
+     setModal(false);
+     d->username = username;
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     d->browser                             = new QWebEngineView(this);
+     QWebEngineCookieStore* const cookieJar = d->browser->page()->profile()->cookieStore();
+     cookieJar->deleteAllCookies();
+@@ -129,15 +87,6 @@ INatBrowserDlg::INatBrowserDlg(const QString& username,
+     connect(cookieJar, SIGNAL(cookieRemoved(QNetworkCookie)),
+             this, SLOT(slotCookieRemoved(QNetworkCookie)));
+ 
+-#else
+-
+-    d->browser                         = new QWebView(this);
+-    d->browser->settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
+-    QNetworkCookieJar* const cookieJar = new InatBrowserCookieJar();
+-    d->browser->page()->networkAccessManager()->setCookieJar(cookieJar);
+-
+-#endif
+-
+     QDateTime now(QDateTime::currentDateTime());
+ 
+     for (const auto& cookie : cookies)
+@@ -146,16 +95,7 @@ INatBrowserDlg::INatBrowserDlg(const QString& username,
+         {
+             qCDebug(DIGIKAM_WEBSERVICES_LOG) << "Setting cookie" << cookie;
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+             cookieJar->setCookie(cookie);
+-
+-#else
+-
+-            cookieJar->insertCookie(cookie);
+-
+-#endif
+-
+         }
+     }
+ 
+@@ -164,22 +104,11 @@ INatBrowserDlg::INatBrowserDlg(const QString& username,
+     d->toolbar = new QToolBar(this);
+     d->toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     d->toolbar->addAction(d->browser->pageAction(QWebEnginePage::Back));
+     d->toolbar->addAction(d->browser->pageAction(QWebEnginePage::Forward));
+     d->toolbar->addAction(d->browser->pageAction(QWebEnginePage::Reload));
+     d->toolbar->addAction(d->browser->pageAction(QWebEnginePage::Stop));
+ 
+-#else
+-
+-    d->toolbar->addAction(d->browser->pageAction(QWebPage::Back));
+-    d->toolbar->addAction(d->browser->pageAction(QWebPage::Forward));
+-    d->toolbar->addAction(d->browser->pageAction(QWebPage::Reload));
+-    d->toolbar->addAction(d->browser->pageAction(QWebPage::Stop));
+-
+-#endif
+-
+     QAction* const gohome  = new QAction(QIcon::fromTheme(QLatin1String("go-home")),
+                                          i18n("Home"), this);
+     gohome->setToolTip(i18n("Go back to Home page"));
+@@ -244,22 +173,12 @@ void INatBrowserDlg::slotLoadingFinished(bool status)
+ 
+     if      (status && (url == d->home.toString()))
+     {
+-
+-#ifdef HAVE_QWEBENGINE
+-
+         d->browser->page()->toPlainText(
+             [this](const QString& text)
+                 {
+                     Q_EMIT signalWebText(text);
+                 }
+         );
+-
+-#else
+-
+-        Q_EMIT signalWebText(d->browser->page()->mainFrame()->toPlainText());
+-
+-#endif
+-
+     }
+     else if (
+              !d->username.isEmpty() &&
+@@ -270,16 +189,7 @@ void INatBrowserDlg::slotLoadingFinished(bool status)
+                                                "email\").value=\"%1\";")).
+                          arg(d->username);
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+         d->browser->page()->runJavaScript(script);
+-
+-#else
+-
+-        d->browser->page()->mainFrame()->evaluateJavaScript(script);
+-
+-#endif
+-
+     }
+ }
+ 
+@@ -295,22 +205,9 @@ void INatBrowserDlg::slotWebText(const QString& text)
+         doc.object().contains(key)
+        )
+     {
+-
+-#ifdef HAVE_QWEBENGINE
+-
+         Q_EMIT signalApiToken(doc.object()[key].toString(),
+                               filterCookies(d->cookies.values(), false));
+ 
+-#else
+-
+-        const InatBrowserCookieJar* jar = dynamic_cast<const InatBrowserCookieJar*>
+-            (d->browser->page()->networkAccessManager()->cookieJar());
+-
+-        Q_EMIT signalApiToken(doc.object()[key].toString(),
+-                              filterCookies(jar->getAllCookies(), false));
+-
+-#endif
+-
+         d->apiKeyFound = true;
+         close();
+     }
+diff --git a/core/dplugins/generic/webservices/unified/wizard/wsauthenticationpage.cpp b/core/dplugins/generic/webservices/unified/wizard/wsauthenticationpage.cpp
+index 289ec710da0..1df357e5734 100644
+--- a/core/dplugins/generic/webservices/unified/wizard/wsauthenticationpage.cpp
++++ b/core/dplugins/generic/webservices/unified/wizard/wsauthenticationpage.cpp
+@@ -40,41 +40,18 @@
+ namespace DigikamGenericUnifiedPlugin
+ {
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+ WSAuthenticationPage::WSAuthenticationPage(QObject* const parent, QWebEngineProfile* profile, const QString& callbackUrl)
+     : QWebEnginePage(profile, parent),
+       m_callbackUrl (callbackUrl)
+ {
+ }
+ 
+-#else
+-
+-WSAuthenticationPage::WSAuthenticationPage(QObject* const parent, const QString& callbackUrl)
+-    : QWebPage     (parent),
+-      m_callbackUrl(callbackUrl)
+-{
+-    connect(mainFrame(), SIGNAL(urlChanged(QUrl)),
+-            this, SLOT(slotUrlChanged(QUrl)));
+-}
+-
+-#endif // #ifdef HAVE_QWEBENGINE
+-
+ void WSAuthenticationPage::setCallbackUrl(const QString& url)
+ {
+     m_callbackUrl = url;
+ }
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+ bool WSAuthenticationPage::acceptNavigationRequest(const QUrl& url, QWebEnginePage::NavigationType /*type*/, bool /*isMainFrame*/)
+-
+-#else
+-
+-bool WSAuthenticationPage::slotUrlChanged(const QUrl& url)
+-
+-#endif // #ifdef HAVE_QWEBENGINE
+-
+ {
+     QString urlString = url.toString();
+     qCDebug(DIGIKAM_WEBSERVICES_LOG) << "urlString: " << urlString;
+@@ -98,38 +75,17 @@ bool WSAuthenticationPage::slotUrlChanged(const QUrl& url)
+ 
+ // ----------------------------------------------------------------------------
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+ WSAuthenticationPageView::WSAuthenticationPageView(QWidget* const parent,
+                                                    WSAuthentication* const wsAuth,
+                                                    const QString& callbackUrl)
+     : QWebEngineView    (parent),
+       m_WSAuthentication(wsAuth)
+-
+-#else
+-
+-WSAuthenticationPageView::WSAuthenticationPageView(QWidget* const parent,
+-                                                   WSAuthentication* const wsAuth,
+-                                                   const QString& callbackUrl)
+-    : QWebView          (parent),
+-      m_WSAuthentication(wsAuth)
+-
+-#endif // #ifdef HAVE_QWEBENGINE
+-
+ {
+     adjustSize();
+     setMinimumSize(QSize(850, 800));
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     WSAuthenticationPage* const wpage = new WSAuthenticationPage(this, new QWebEngineProfile, callbackUrl);
+ 
+-#else
+-
+-    WSAuthenticationPage* const wpage = new WSAuthenticationPage(this, callbackUrl);
+-
+-#endif // #ifdef HAVE_QWEBENGINE
+-
+     setPage(wpage);
+ 
+     connect(wpage, SIGNAL(callbackCatched(QString)),
+@@ -175,16 +131,8 @@ void WSAuthenticationPageView::slotOpenBrowser(const QUrl& url)
+ {
+     WSAuthenticationPage* const page = dynamic_cast<WSAuthenticationPage*>(this->page());
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     page->setUrl(url);
+ 
+-#else
+-
+-    page->mainFrame()->setUrl(url);
+-
+-#endif
+-
+     /*
+      * Here we show the web browser again after creation, because when this slot is triggered,
+      * user has to login. Therefore the login page has to be shown.
+diff --git a/core/dplugins/generic/webservices/unified/wizard/wsauthenticationpage.h b/core/dplugins/generic/webservices/unified/wizard/wsauthenticationpage.h
+index 8f2b918ed01..e44a3b43783 100644
+--- a/core/dplugins/generic/webservices/unified/wizard/wsauthenticationpage.h
++++ b/core/dplugins/generic/webservices/unified/wizard/wsauthenticationpage.h
+@@ -23,17 +23,10 @@
+ #include <QUrl>
+ #include <QMap>
+ 
+-#ifdef HAVE_QWEBENGINE
+-#   include <QWebEngineView>
+-#   include <QWebEnginePage>
+-#   include <QWebEngineProfile>
+-#   include <QWebEngineCookieStore>
+-#else
+-#   include <qwebview.h>
+-#   include <qwebpage.h>
+-#   include <qwebframe.h>
+-#   include <QNetworkRequest>
+-#endif
++#include <QWebEngineView>
++#include <QWebEnginePage>
++#include <QWebEngineProfile>
++#include <QWebEngineCookieStore>
+ 
+ // Local includes
+ 
+@@ -46,47 +39,20 @@ using namespace Digikam;
+ namespace DigikamGenericUnifiedPlugin
+ {
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+ class WSAuthenticationPage : public QWebEnginePage
+-
+-#else
+-
+-class WSAuthenticationPage : public QWebPage
+-
+-#endif // #ifdef HAVE_QWEBENGINE
+-
+ {
+     Q_OBJECT
+ 
+ public:
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     explicit WSAuthenticationPage(QObject* const parent, QWebEngineProfile* profile, const QString& callbackUrl);
+ 
+-#else
+-
+-    explicit WSAuthenticationPage(QObject* const parent, const QString& callbackUrl);
+-
+-#endif // #ifdef HAVE_QWEBENGINE
+-
+     virtual ~WSAuthenticationPage() = default;
+ 
+     void setCallbackUrl(const QString& url);
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     bool acceptNavigationRequest(const QUrl& url, QWebEnginePage::NavigationType type, bool isMainFrame);
+ 
+-#else
+-
+-private Q_SLOTS:
+-
+-    bool slotUrlChanged(const QUrl& url);
+-
+-#endif // #ifdef HAVE_QWEBENGINE
+-
+ Q_SIGNALS:
+ 
+     void callbackCatched(const QString&);
+@@ -98,15 +64,7 @@ private:
+ 
+ // -------------------------------------------------------------------
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+ class WSAuthenticationPageView : public QWebEngineView
+-
+-#else
+-
+-class WSAuthenticationPageView : public QWebView
+-
+-#endif
+ {
+     Q_OBJECT
+ 
+diff --git a/core/libs/dialogs/CMakeLists.txt b/core/libs/dialogs/CMakeLists.txt
+index 4953799ef85..d6d1004dbf5 100644
+--- a/core/libs/dialogs/CMakeLists.txt
++++ b/core/libs/dialogs/CMakeLists.txt
+@@ -28,11 +28,7 @@ if(KF${QT_VERSION_MAJOR}Sonnet_FOUND)
+     include_directories($<TARGET_PROPERTY:KF${QT_VERSION_MAJOR}::SonnetCore,INTERFACE_INCLUDE_DIRECTORIES>)
+ endif()
+ 
+-if(ENABLE_QWEBENGINE)
+-    include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebEngineWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+-else()
+-    include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebKitWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+-endif()
++include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebEngineWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+ 
+ set(libdialogs_SRCS
+     ${CMAKE_CURRENT_SOURCE_DIR}/dprogressdlg.cpp
+diff --git a/core/libs/dialogs/libsinfodlg.cpp b/core/libs/dialogs/libsinfodlg.cpp
+index 77645d833f4..ed2c0cd7e65 100644
+--- a/core/libs/dialogs/libsinfodlg.cpp
++++ b/core/libs/dialogs/libsinfodlg.cpp
+@@ -26,11 +26,7 @@
+ #include <QFile>
+ #include <QTextStream>
+ 
+-#ifdef HAVE_QWEBENGINE
+-#   include <QtWebEngineWidgetsVersion>
+-#else
+-#   include <QtWebKitWidgetsVersion>
+-#endif
++#include <QtWebEngineWidgetsVersion>
+ 
+ // KDE includes
+ 
+@@ -247,18 +243,9 @@ LibsInfoDlg::LibsInfoDlg(QWidget* const parent)
+ 
+ #endif
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     new QTreeWidgetItem(m_libraries, QStringList() <<
+                         i18nc(CONTEXT, "Qt WebEngine version") <<           QLatin1String(QTWEBENGINEWIDGETS_VERSION_STR));
+ 
+-#else
+-
+-    new QTreeWidgetItem(m_libraries, QStringList() <<
+-                        i18nc(CONTEXT, "Qt WebKit version") <<              QLatin1String(QTWEBKITWIDGETS_VERSION_STR));
+-
+-#endif
+-
+ #ifdef HAVE_QMULTIMEDIA
+ 
+     new QTreeWidgetItem(m_features, QStringList() <<
+diff --git a/core/libs/dialogs/webbrowserdlg.cpp b/core/libs/dialogs/webbrowserdlg.cpp
+index a888652c8db..07a666d6ef8 100644
+--- a/core/libs/dialogs/webbrowserdlg.cpp
++++ b/core/libs/dialogs/webbrowserdlg.cpp
+@@ -24,16 +24,11 @@
+ #include <QToolBar>
+ #include <QDesktopServices>
+ #include <QNetworkCookieJar>
+-
+-#ifdef HAVE_QWEBENGINE
+-#   include <QWebEngineView>
+-#   include <QWebEnginePage>
+-#   include <QWebEngineProfile>
+-#   include <QWebEngineCookieStore>
+-#   include <QWebEngineFindTextResult>
+-#else
+-#   include <qwebview.h>
+-#endif
++#include <QWebEngineView>
++#include <QWebEnginePage>
++#include <QWebEngineProfile>
++#include <QWebEngineCookieStore>
++#include <QWebEngineFindTextResult>
+ 
+ // KDE includes
+ 
+@@ -61,17 +56,7 @@ public:
+ public:
+ 
+     QUrl               home;
+-
+-#ifdef HAVE_QWEBENGINE
+-
+     QWebEngineView*    browser      = nullptr;
+-
+-#else
+-
+-    QWebView*          browser      = nullptr;
+-
+-#endif
+-
+     QToolBar*          toolbar      = nullptr;
+     StatusProgressBar* progressbar  = nullptr;
+     SearchTextBar*     searchbar    = nullptr;
+@@ -86,40 +71,19 @@ WebBrowserDlg::WebBrowserDlg(const QUrl& url, QWidget* const parent, bool hideDe
+ 
+     d->home    = url;
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     d->browser = new QWebEngineView(this);
+     d->browser->page()->profile()->cookieStore()->deleteAllCookies();
+ 
+-#else
+-
+-    d->browser = new QWebView(this);
+-    d->browser->settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
+-    d->browser->page()->networkAccessManager()->setCookieJar(new QNetworkCookieJar());
+-
+-#endif
+-
+     // --------------------------
+ 
+     d->toolbar = new QToolBar(this);
+     d->toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     d->toolbar->addAction(d->browser->pageAction(QWebEnginePage::Back));
+     d->toolbar->addAction(d->browser->pageAction(QWebEnginePage::Forward));
+     d->toolbar->addAction(d->browser->pageAction(QWebEnginePage::Reload));
+     d->toolbar->addAction(d->browser->pageAction(QWebEnginePage::Stop));
+ 
+-#else
+-
+-    d->toolbar->addAction(d->browser->pageAction(QWebPage::Back));
+-    d->toolbar->addAction(d->browser->pageAction(QWebPage::Forward));
+-    d->toolbar->addAction(d->browser->pageAction(QWebPage::Reload));
+-    d->toolbar->addAction(d->browser->pageAction(QWebPage::Stop));
+-
+-#endif
+-
+     QAction* const gohome  = new QAction(QIcon::fromTheme(QLatin1String("go-home")),
+                                          i18n("Home"), this);
+     gohome->setToolTip(i18n("Go back to Home page"));
+@@ -250,9 +214,7 @@ void WebBrowserDlg::slotLoadingFinished(bool b)
+ void WebBrowserDlg::slotSearchTextChanged(const SearchTextSettings& settings)
+ {
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+-#   if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
++#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+ 
+     d->browser->findText(settings.text,
+                          (settings.caseSensitive == Qt::CaseSensitive) ? QWebEnginePage::FindCaseSensitively
+@@ -263,7 +225,7 @@ void WebBrowserDlg::slotSearchTextChanged(const SearchTextSettings& settings)
+                             }
+                         );
+ 
+-#   else
++#else
+ 
+     d->browser->findText(settings.text,
+                          (settings.caseSensitive == Qt::CaseSensitive) ? QWebEnginePage::FindCaseSensitively
+@@ -274,16 +236,6 @@ void WebBrowserDlg::slotSearchTextChanged(const SearchTextSettings& settings)
+                             }
+                         );
+ 
+-#   endif
+-
+-#else
+-
+-    bool found = d->browser->findText(
+-                    settings.text,
+-                    (settings.caseSensitive == Qt::CaseInsensitive) ? QWebPage::FindCaseSensitively
+-                                                                    : QWebPage::FindFlags());
+-    d->searchbar->slotSearchResult(found);
+-
+ #endif
+ 
+ }
+diff --git a/core/libs/dplugins/CMakeLists.txt b/core/libs/dplugins/CMakeLists.txt
+index 341519efcf2..915c316044e 100644
+--- a/core/libs/dplugins/CMakeLists.txt
++++ b/core/libs/dplugins/CMakeLists.txt
+@@ -19,11 +19,7 @@ include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::Widgets,INTERFACE_I
+                     ${CMAKE_SOURCE_DIR}/core/libs/dplugins/webservices/o2/src
+ )
+ 
+-if(ENABLE_QWEBENGINE)
+     include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebEngineWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+-else()
+-    include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebKitWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+-endif()
+ 
+ if(KF${QT_VERSION_MAJOR}KIO_FOUND)
+     include_directories($<TARGET_PROPERTY:KF${QT_VERSION_MAJOR}::KIOCore,INTERFACE_INCLUDE_DIRECTORIES>
+@@ -75,17 +71,10 @@ set(libdpluginsinterface_SRCS
+     ${CMAKE_CURRENT_SOURCE_DIR}/webservices/wssettings.cpp
+ )
+ 
+-#if(ENABLE_QWEBENGINE)
+-#    set(libdpluginsinterface_SRCS
+-#        ${libdpluginsinterface_SRCS}
+-#        ${CMAKE_CURRENT_SOURCE_DIR}/webservices/webwidget_qwebengine.cpp
+-#       )
+-#else()
+-#    set(libdpluginsinterface_SRCS
+-#        ${libdpluginsinterface_SRCS}
+-#        ${CMAKE_CURRENT_SOURCE_DIR}/webservices/webwidget.cpp
+-#       )
+-#endif()
++#set(libdpluginsinterface_SRCS
++#    ${libdpluginsinterface_SRCS}
++#    ${CMAKE_CURRENT_SOURCE_DIR}/webservices/webwidget_qwebengine.cpp
++#)
+ 
+ # Used by digikamcore
+ add_library(core_dpluginsinterface_obj OBJECT ${libdpluginsinterface_SRCS})
+diff --git a/core/libs/properties/geolocation/itempropertiesgpstab.cpp b/core/libs/properties/geolocation/itempropertiesgpstab.cpp
+index ff26533250d..2def1227bda 100644
+--- a/core/libs/properties/geolocation/itempropertiesgpstab.cpp
++++ b/core/libs/properties/geolocation/itempropertiesgpstab.cpp
+@@ -56,10 +56,7 @@
+ #include "itemgpsmodelhelper.h"
+ #include "dexpanderbox.h"
+ #include "digikam_config.h"
+-
+-#ifdef HAVE_QWEBENGINE
+-#   include "webbrowserdlg.h"
+-#endif
++#include "webbrowserdlg.h"
+ 
+ namespace Digikam
+ {
+@@ -304,17 +301,8 @@ void ItemPropertiesGPSTab::slotGPSDetails()
+ 
+     qCDebug(DIGIKAM_GENERAL_LOG) << url;
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     WebBrowserDlg* const browser = new WebBrowserDlg(QUrl(url), this);
+     browser->show();
+-
+-#else
+-
+-    QDesktopServices::openUrl(QUrl(url));
+-
+-#endif
+-
+ }
+ 
+ void ItemPropertiesGPSTab::slotCopyGPSDetails()
+diff --git a/core/libs/widgets/mainview/dxmlguiwindow.cpp b/core/libs/widgets/mainview/dxmlguiwindow.cpp
+index 4cfc8bcdbb1..df90292ee45 100644
+--- a/core/libs/widgets/mainview/dxmlguiwindow.cpp
++++ b/core/libs/widgets/mainview/dxmlguiwindow.cpp
+@@ -414,51 +414,24 @@ void DXmlGuiWindow::slotDonateMoney()
+ {
+     QUrl url(QLatin1String("https://www.digikam.org/donate/"));
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     WebBrowserDlg* const browser = new WebBrowserDlg(url, qApp->activeWindow());
+     browser->show();
+-
+-#else
+-
+-    QDesktopServices::openUrl(url);
+-
+-#endif
+-
+ }
+ 
+ void DXmlGuiWindow::slotRecipesBook()
+ {
+     QUrl url(QLatin1String("https://www.digikam.org/recipes_book/"));
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     WebBrowserDlg* const browser = new WebBrowserDlg(url, qApp->activeWindow());
+     browser->show();
+-
+-#else
+-
+-    QDesktopServices::openUrl(url);
+-
+-#endif
+-
+ }
+ 
+ void DXmlGuiWindow::slotContribute()
+ {
+     QUrl url(QLatin1String("https://www.digikam.org/contribute/"));
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     WebBrowserDlg* const browser = new WebBrowserDlg(url, qApp->activeWindow());
+     browser->show();
+-
+-#else
+-
+-    QDesktopServices::openUrl(url);
+-
+-#endif
+-
+ }
+ 
+ void DXmlGuiWindow::setupIconTheme()
+diff --git a/core/libs/widgets/mainview/dxmlguiwindow_p.h b/core/libs/widgets/mainview/dxmlguiwindow_p.h
+index d7f3c477932..fcc9f97f2a4 100644
+--- a/core/libs/widgets/mainview/dxmlguiwindow_p.h
++++ b/core/libs/widgets/mainview/dxmlguiwindow_p.h
+@@ -48,9 +48,7 @@
+ #include <QDesktopServices>
+ #include <QDialogButtonBox>
+ 
+-#ifdef HAVE_QWEBENGINE
+-#   include "webbrowserdlg.h"
+-#endif
++#include "webbrowserdlg.h"
+ 
+ // KDE includes
+ 
+diff --git a/core/showfoto/main/main.cpp b/core/showfoto/main/main.cpp
+index 8594b780688..8d20c94e44c 100644
+--- a/core/showfoto/main/main.cpp
++++ b/core/showfoto/main/main.cpp
+@@ -154,12 +154,8 @@ extern "C" MAIN_EXPORT int MAIN_FN(int argc, char** argv)
+ 
+     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::RoundPreferFloor);
+ 
+-#ifdef HAVE_QWEBENGINE
+-
+     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+ 
+-#endif
+-
+     QApplication app(argc, argv);
+ 
+     digikamSetDebugFilterRules(system.enableLogging);
+diff --git a/core/tests/CMakeLists.txt b/core/tests/CMakeLists.txt
+index 037a6dd2d0a..41486f4ab6a 100644
+--- a/core/tests/CMakeLists.txt
++++ b/core/tests/CMakeLists.txt
+@@ -19,15 +19,7 @@ include_directories(${DK_LOCAL_INCLUDES}
+ # -------------------------------------------------------------------------------
+ # Unit-tests common dependencies
+ 
+-if(ENABLE_QWEBENGINE)
+-
+-    set(_extra_deps ${_extra_deps} Qt${QT_VERSION_MAJOR}::WebEngineWidgets)
+-
+-else()
+-
+-    set(_extra_deps ${_extra_deps} Qt${QT_VERSION_MAJOR}::WebKitWidgets)
+-
+-endif()
++set(_extra_deps ${_extra_deps} Qt${QT_VERSION_MAJOR}::WebEngineWidgets)
+ 
+ if(ENABLE_DBUS)
+ 
+diff --git a/core/tests/webservices/o2/CMakeLists.txt b/core/tests/webservices/o2/CMakeLists.txt
+index 01dd3d73e77..502a6017eb7 100644
+--- a/core/tests/webservices/o2/CMakeLists.txt
++++ b/core/tests/webservices/o2/CMakeLists.txt
+@@ -22,10 +22,8 @@ if(NOT APPLE)
+ 
+     add_subdirectory(fbdemo)
+ 
+-    if(ENABLE_QWEBENGINE)
+ # NOTE: Do not compile anymore on CI
+-#        add_subdirectory(fbinter)
+-    endif()
++#   add_subdirectory(fbinter)
+ 
+ endif()
+ 
+diff --git a/core/utilities/geolocation/geoiface/CMakeLists.txt b/core/utilities/geolocation/geoiface/CMakeLists.txt
+index 664d5c02567..6621ad739c2 100644
+--- a/core/utilities/geolocation/geoiface/CMakeLists.txt
++++ b/core/utilities/geolocation/geoiface/CMakeLists.txt
+@@ -23,12 +23,7 @@ if(${ENABLE_GEOLOCATION})
+ 
+ endif()
+ 
+-if(ENABLE_QWEBENGINE)
+-    include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebEngineWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+-else()
+-    include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebKitWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+-endif()
+-
++include_directories($<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebEngineWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+ 
+ set(libgeoiface_SRCS
+                      ${CMAKE_CURRENT_SOURCE_DIR}/correlator/track_correlator.cpp
+@@ -109,17 +104,10 @@ if(${ENABLE_GEOLOCATION})
+ 
+ endif()
+ 
+-if(ENABLE_QWEBENGINE)
+-    set(libgeoiface_SRCS
+-        ${libgeoiface_SRCS}
+-        ${CMAKE_CURRENT_SOURCE_DIR}/widgets/htmlwidget_qwebengine.cpp
+-       )
+-else()
+-    set(libgeoiface_SRCS
+-        ${libgeoiface_SRCS}
+-        ${CMAKE_CURRENT_SOURCE_DIR}/widgets/htmlwidget_qwebkit.cpp
+-       )
+-endif()
++set(libgeoiface_SRCS
++    ${libgeoiface_SRCS}
++    ${CMAKE_CURRENT_SOURCE_DIR}/widgets/htmlwidget_qwebengine.cpp
++)
+ 
+ if(NOT Qt6_FOUND)
+ 
+diff --git a/core/utilities/geolocation/geoiface/backends/backendgooglemaps.cpp b/core/utilities/geolocation/geoiface/backends/backendgooglemaps.cpp
+index 60173ef9d29..438d790d676 100644
+--- a/core/utilities/geolocation/geoiface/backends/backendgooglemaps.cpp
++++ b/core/utilities/geolocation/geoiface/backends/backendgooglemaps.cpp
+@@ -48,16 +48,7 @@
+ #include "mapwidget.h"
+ #include "abstractmarkertiler.h"
+ #include "geomodelhelper.h"
+-
+-#ifdef HAVE_QWEBENGINE
+-
+-#   include "htmlwidget_qwebengine.h"
+-
+-#else
+-
+-#   include "htmlwidget_qwebkit.h"
+-
+-#endif
++#include "htmlwidget_qwebengine.h"
+ 
+ namespace Digikam
+ {
+diff --git a/core/utilities/geolocation/geoiface/widgets/htmlwidget_qwebkit.cpp b/core/utilities/geolocation/geoiface/widgets/htmlwidget_qwebkit.cpp
+deleted file mode 100644
+index 0aac4bc3a6c..00000000000
+--- a/core/utilities/geolocation/geoiface/widgets/htmlwidget_qwebkit.cpp
++++ /dev/null
+@@ -1,353 +0,0 @@
+-/* ============================================================
+- *
+- * This file is a part of digiKam project
+- * https://www.digikam.org
+- *
+- * Date        : 2009-12-01
+- * Description : Widget for displaying HTML in the backends - QtWebKit version
+- *
+- * SPDX-FileCopyrightText: 2010-2024 by Gilles Caulier <caulier dot gilles at gmail dot com>
+- * SPDX-FileCopyrightText: 2009-2011 by Michael G. Hansen <mike at mghansen dot de>
+- * SPDX-FileCopyrightText: 2015      by Mohamed_Anwer <m_dot_anwer at gmx dot com>
+- *
+- * SPDX-License-Identifier: GPL-2.0-or-later
+- *
+- * ============================================================ */
+-
+-#include "htmlwidget_qwebkit.h"
+-
+-// Qt includes
+-
+-#include <QTimer>
+-#include <QResizeEvent>
+-#include <QWebSettings>
+-#include <qwebframe.h>
+-
+-// Local includes
+-
+-#include "digikam_debug.h"
+-
+-namespace Digikam
+-{
+-
+-class Q_DECL_HIDDEN HTMLWidget::Private
+-{
+-public:
+-
+-    Private() = default;
+-
+-    QWidget*       parent           = nullptr;
+-    bool           isReady          = false;
+-
+-    bool           selectionStatus  = false;
+-    GeoCoordinates firstSelectionPoint;
+-    GeoCoordinates intermediateSelectionPoint;
+-    QPoint         firstSelectionScreenPoint;
+-    QPoint         intermediateSelectionScreenPoint;
+-};
+-
+-HTMLWidget::HTMLWidget(QWidget* const parent)
+-    : QWebView(parent),
+-      d       (new Private)
+-{
+-    d->parent = parent;
+-    setAcceptDrops(false);
+-    setFocusPolicy(Qt::WheelFocus);
+-    setRenderHint(QPainter::TextAntialiasing);
+-    page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+-
+-    settings()->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
+-    settings()->setAttribute(QWebSettings::LocalContentCanAccessFileUrls, true);
+-    settings()->setAttribute(QWebSettings::JavascriptCanOpenWindows, true);
+-    settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
+-
+-    d->parent->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+-
+-    connect(this, SIGNAL(loadProgress(int)),
+-            this, SLOT(progress(int)));
+-
+-    connect(this, SIGNAL(loadFinished(bool)),
+-            this, SLOT(slotHTMLCompleted(bool)));
+-
+-    connect(this, SIGNAL(statusBarMessage(QString)),
+-            this, SLOT(slotScanForJSMessages(QString)));
+-
+-    if (d->parent)
+-    {
+-        d->parent->installEventFilter(this);
+-    }
+-}
+-
+-HTMLWidget::~HTMLWidget()
+-{
+-    delete d;
+-}
+-
+-void HTMLWidget::progress(int progress)
+-{
+-    qCDebug(DIGIKAM_GEOIFACE_LOG) << "Maps Loading Progress: " << progress << "%";
+-}
+-
+-void HTMLWidget::slotHTMLCompleted(bool ok)
+-{
+-    qCDebug(DIGIKAM_GEOIFACE_LOG) << "Map Loading Completed: " << ok;
+-    d->isReady = ok;
+-
+-    Q_EMIT signalJavaScriptReady();
+-}
+-
+-void HTMLWidget::mousePressEvent(QMouseEvent* e)
+-{
+-    slotScanForJSMessages(QLatin1String("(event)"));
+-    QWebView::mousePressEvent(e);
+-}
+-
+-void HTMLWidget::mouseReleaseEvent(QMouseEvent* e)
+-{
+-    if (s->currentMouseMode == MouseModeRegionSelection)
+-    {
+-        if (!d->firstSelectionPoint.hasCoordinates())
+-        {
+-            runScript2Coordinates(QString::fromLatin1("kgeomapPixelToLatLng(%1, %2);")
+-                                  .arg(e->x())
+-                                  .arg(e->y()),
+-                                  &d->firstSelectionPoint);
+-
+-            d->firstSelectionScreenPoint = QPoint(e->x(), e->y());
+-        }
+-        else
+-        {
+-            runScript2Coordinates(QString::fromLatin1("kgeomapPixelToLatLng(%1, %2);")
+-                                  .arg(e->x())
+-                                  .arg(e->y()),
+-                                  &d->intermediateSelectionPoint);
+-
+-            d->intermediateSelectionScreenPoint = QPoint(e->x(), e->y());
+-
+-            qreal lonWest, latNorth, lonEast, latSouth;
+-
+-            if (d->firstSelectionScreenPoint.x() < d->intermediateSelectionScreenPoint.x())
+-            {
+-                lonWest  = d->firstSelectionPoint.lon();
+-                lonEast  = d->intermediateSelectionPoint.lon();
+-            }
+-            else
+-            {
+-                lonEast  = d->firstSelectionPoint.lon();
+-                lonWest  = d->intermediateSelectionPoint.lon();
+-            }
+-
+-            if (d->firstSelectionScreenPoint.y() < d->intermediateSelectionScreenPoint.y())
+-            {
+-                latNorth = d->firstSelectionPoint.lat();
+-                latSouth = d->intermediateSelectionPoint.lat();
+-            }
+-            else
+-            {
+-                latNorth = d->intermediateSelectionPoint.lat();
+-                latSouth = d->firstSelectionPoint.lat();
+-            }
+-
+-            runScript(QLatin1String("kgeomapRemoveTemporarySelectionRectangle();"));
+-            runScript(QString::fromLatin1("kgeomapSetSelectionRectangle(%1, %2, %3, %4);")
+-                     .arg(lonWest)
+-                     .arg(latNorth)
+-                     .arg(lonEast)
+-                     .arg(latSouth));
+-
+-            const GeoCoordinates::Pair selectionCoordinates(
+-                    GeoCoordinates(latNorth, lonWest),
+-                    GeoCoordinates(latSouth, lonEast));
+-
+-            d->firstSelectionPoint.clear();
+-            d->intermediateSelectionPoint.clear();
+-
+-            Q_EMIT selectionHasBeenMade(selectionCoordinates);
+-        }
+-    }
+-
+-    slotScanForJSMessages(QLatin1String("(event)"));
+-    QWebView::mouseReleaseEvent(e);
+-}
+-
+-void HTMLWidget::mouseMoveEvent(QMouseEvent *e)
+-{
+-    if (
+-        (s->currentMouseMode == MouseModeRegionSelection) &&
+-        d->firstSelectionPoint.hasCoordinates()
+-       )
+-    {
+-        runScript2Coordinates(QString::fromLatin1("kgeomapPixelToLatLng(%1, %2);")
+-                              .arg(e->x())
+-                              .arg(e->y()),
+-                              &d->intermediateSelectionPoint);
+-
+-        d->intermediateSelectionScreenPoint = QPoint(e->x(), e->y());
+-
+-        qCDebug(DIGIKAM_GEOIFACE_LOG) << d->firstSelectionScreenPoint << QLatin1Char(' ')
+-                                      << d->intermediateSelectionScreenPoint;
+-
+-        qreal lonWest, latNorth, lonEast, latSouth;
+-
+-        if (d->firstSelectionScreenPoint.x() < d->intermediateSelectionScreenPoint.x())
+-        {
+-            lonWest  = d->firstSelectionPoint.lon();
+-            lonEast  = d->intermediateSelectionPoint.lon();
+-        }
+-        else
+-        {
+-            lonEast  = d->firstSelectionPoint.lon();
+-            lonWest  = d->intermediateSelectionPoint.lon();
+-        }
+-
+-        if (d->firstSelectionScreenPoint.y() < d->intermediateSelectionScreenPoint.y())
+-        {
+-            latNorth = d->firstSelectionPoint.lat();
+-            latSouth = d->intermediateSelectionPoint.lat();
+-        }
+-        else
+-        {
+-            latNorth = d->intermediateSelectionPoint.lat();
+-            latSouth = d->firstSelectionPoint.lat();
+-        }
+-
+-        runScript(QString::fromLatin1("kgeomapSetTemporarySelectionRectangle(%1, %2, %3, %4);")
+-                  .arg(lonWest)
+-                  .arg(latNorth)
+-                  .arg(lonEast)
+-                  .arg(latSouth));
+-    }
+-
+-    QWebView::mouseMoveEvent(e);
+-}
+-
+-void HTMLWidget::slotScanForJSMessages(const QString& message)
+-{
+-    if (message != QLatin1String("(event)"))
+-    {
+-        return;
+-    }
+-
+-    //qCDebug(DIGIKAM_GEOIFACE_LOG) << message;
+-
+-    const QString eventBufferString = runScript(QLatin1String("kgeomapReadEventStrings();")).toString();
+-
+-    if (eventBufferString.isEmpty())
+-    {
+-        return;
+-    }
+-
+-    const QStringList events = eventBufferString.split(QLatin1Char('|'));
+-
+-    Q_EMIT signalHTMLEvents(events);
+-}
+-
+-/**
+- * @brief Wrapper around executeScript to catch more errors
+- */
+-QVariant HTMLWidget::runScript(const QString& scriptCode, bool /*async*/)
+-{
+-    GEOIFACE_ASSERT(d->isReady);
+-
+-    if (!d->isReady)
+-    {
+-        return QVariant();
+-    }
+-
+-    //qCDebug(DIGIKAM_GEOIFACE_LOG) << scriptCode;
+-
+-    return page()->mainFrame()->evaluateJavaScript(scriptCode);
+-}
+-
+-/**
+- * @brief Execute a script which returns coordinates and parse these
+- */
+-bool HTMLWidget::runScript2Coordinates(const QString& scriptCode, GeoCoordinates* const coordinates)
+-{
+-    const QVariant scriptResult = runScript(scriptCode);
+-
+-    return GeoIfaceHelperParseLatLonString(scriptResult.toString(), coordinates);
+-}
+-
+-bool HTMLWidget::eventFilter(QObject* object, QEvent* event)
+-{
+-    if (d->parent && (object == d->parent))
+-    {
+-        if (event->type() == QEvent::Resize)
+-        {
+-            QResizeEvent* const resizeEvent = dynamic_cast<QResizeEvent*>(event);
+-
+-            if (resizeEvent)
+-            {
+-                resize(resizeEvent->size());
+-            }
+-        }
+-    }
+-
+-    return false;
+-}
+-
+-void HTMLWidget::setSelectionRectangle(const GeoCoordinates::Pair& searchCoordinates)
+-{
+-    if (!searchCoordinates.first.hasCoordinates())
+-    {
+-        runScript(QLatin1String("kgeomapRemoveSelectionRectangle();"));
+-        return;
+-    }
+-
+-    qreal West  = searchCoordinates.first.lon();
+-    qreal North = searchCoordinates.first.lat();
+-    qreal East  = searchCoordinates.second.lon();
+-    qreal South = searchCoordinates.second.lat();
+-
+-    runScript(QString::fromLatin1("kgeomapSetSelectionRectangle(%1, %2, %3, %4);")
+-              .arg(West).arg(North).arg(East).arg(South));
+-}
+-
+-void HTMLWidget::removeSelectionRectangle()
+-{
+-    runScript(QLatin1String("kgeomapRemoveSelectionRectangle();"));
+-}
+-
+-void HTMLWidget::mouseModeChanged(const GeoMouseModes mouseMode)
+-{
+-    const bool inSelectionMode = (mouseMode == MouseModeRegionSelection);
+-
+-    if (inSelectionMode)
+-    {
+-        d->firstSelectionPoint.clear();
+-        d->intermediateSelectionPoint.clear();
+-        runScript(QString::fromLatin1("kgeomapSelectionModeStatus(%1);").arg(inSelectionMode));
+-    }
+-    else
+-    {
+-        runScript(QString::fromLatin1("kgeomapSelectionModeStatus(%1);").arg(inSelectionMode));
+-    }
+-}
+-
+-void HTMLWidget::centerOn(const qreal west, const qreal north,
+-                          const qreal east, const qreal south,
+-                          const bool useSaneZoomLevel)
+-{
+-/*
+-    qCDebug(DIGIKAM_GEOIFACE_LOG) << "West:" << west
+-                                  << " North:" << north
+-                                  << " East:" << east
+-                                  << " South:" << south;
+-*/
+-    runScript(QString::fromLatin1("kgeomapSetMapBoundaries(%1, %2, %3, %4, %5);")
+-              .arg(west)
+-              .arg(north)
+-              .arg(east)
+-              .arg(south)
+-              .arg(useSaneZoomLevel ? 1 : 0));
+-}
+-
+-void HTMLWidget::setSharedGeoIfaceObject(GeoIfaceSharedData* const sharedData)
+-{
+-    s = sharedData;
+-}
+-
+-} // namespace Digikam
+-
+-#include "moc_htmlwidget_qwebkit.cpp"
+diff --git a/core/utilities/geolocation/geoiface/widgets/htmlwidget_qwebkit.h b/core/utilities/geolocation/geoiface/widgets/htmlwidget_qwebkit.h
+deleted file mode 100644
+index efeb70bb7fb..00000000000
+--- a/core/utilities/geolocation/geoiface/widgets/htmlwidget_qwebkit.h
++++ /dev/null
+@@ -1,79 +0,0 @@
+-/* ============================================================
+- *
+- * This file is a part of digiKam project
+- * https://www.digikam.org
+- *
+- * Date        : 2009-12-01
+- * Description : Widget for displaying HTML in the backends - QtWebKit version
+- *
+- * SPDX-FileCopyrightText: 2010-2024 by Gilles Caulier <caulier dot gilles at gmail dot com>
+- * SPDX-FileCopyrightText: 2009-2011 by Michael G. Hansen <mike at mghansen dot de>
+- * SPDX-FileCopyrightText: 2015      by Mohamed_Anwer <m_dot_anwer at gmx dot com>
+- *
+- * SPDX-License-Identifier: GPL-2.0-or-later
+- *
+- * ============================================================ */
+-
+-#pragma once
+-
+-// Qt includes
+-
+-#include <qwebview.h>
+-
+-// Local includes
+-
+-#include "geoifacecommon.h"
+-#include "geoifacetypes.h"
+-#include "geocoordinates.h"
+-
+-namespace Digikam
+-{
+-
+-class HTMLWidget : public QWebView
+-{
+-    Q_OBJECT
+-
+-public:
+-
+-    explicit HTMLWidget(QWidget* const parent = nullptr);
+-    ~HTMLWidget();
+-
+-    void loadInitialHTML(const QString& initialHTML);
+-    QVariant runScript(const QString& scriptCode, bool async = true);
+-    bool runScript2Coordinates(const QString& scriptCode, GeoCoordinates* const coordinates);
+-    void mouseModeChanged(const GeoMouseModes mouseMode);
+-    void setSelectionRectangle(const GeoCoordinates::Pair& searchCoordinates);
+-    void removeSelectionRectangle();
+-    void centerOn(const qreal west, const qreal north, const qreal east, const qreal south,
+-                  const bool useSaneZoomLevel = true);
+-    void setSharedGeoIfaceObject(GeoIfaceSharedData* const sharedData);
+-
+-protected:
+-
+-    bool eventFilter(QObject* object, QEvent* event)    override;
+-    void mousePressEvent(QMouseEvent* e)                override;
+-    void mouseReleaseEvent(QMouseEvent* e)              override;
+-    void mouseMoveEvent(QMouseEvent* e)                 override;
+-
+-protected Q_SLOTS:
+-
+-    void slotHTMLCompleted(bool ok);
+-    void slotScanForJSMessages(const QString& message);
+-    void progress(int progress);
+-
+-Q_SIGNALS:
+-
+-    void signalHTMLEvents(const QStringList& events);
+-    void signalMessageEvent(const QString& message);
+-    void signalJavaScriptReady();
+-    void selectionHasBeenMade(const Digikam::GeoCoordinates::Pair& coordinatesRect);
+-
+-private:
+-
+-    class Private;
+-    Private* const      d = nullptr;
+-
+-    GeoIfaceSharedData* s = nullptr;
+-};
+-
+-} // namespace Digikam
+diff --git a/project/bundles/3rdparty/CMakeLists.txt b/project/bundles/3rdparty/CMakeLists.txt
+index cc9de55c297..0ccff475cea 100644
+--- a/project/bundles/3rdparty/CMakeLists.txt
++++ b/project/bundles/3rdparty/CMakeLists.txt
+@@ -192,7 +192,6 @@ add_subdirectory(ext_libde265)
+ add_subdirectory(ext_libaom)
+ add_subdirectory(ext_libavif)
+ add_subdirectory(ext_libicu)
+-add_subdirectory(ext_liblqr)
+ add_subdirectory(ext_libjxl)
+ add_subdirectory(ext_sane)
+ add_subdirectory(ext_exiv2)
+@@ -201,12 +200,9 @@ add_subdirectory(ext_opencv)
+ add_subdirectory(ext_openssl)
+ add_subdirectory(ext_lensfun)
+ add_subdirectory(ext_qt${ENABLE_QTVERSION})
+-add_subdirectory(ext_qtwebkit)
+ add_subdirectory(ext_fcitx-qt)
+ add_subdirectory(ext_ffmpeg)
+-add_subdirectory(ext_drmingw)
+ add_subdirectory(ext_imagemagick)
+-add_subdirectory(ext_uchardet)
+ 
+ add_subdirectory(ext_kf${ENABLE_QTVERSION})
+ add_subdirectory(ext_mosaicwall)
+@@ -219,6 +215,5 @@ if (${ENABLE_QTVERSION} MATCHES "5")
+     add_subdirectory(ext_plasma-wayland-protocols)
+     add_subdirectory(ext_libksane)
+     add_subdirectory(ext_breeze)
+-    add_subdirectory(ext_marble)
+ 
+ endif()
+diff --git a/project/bundles/3rdparty/ext_drmingw/CMakeLists.txt b/project/bundles/3rdparty/ext_drmingw/CMakeLists.txt
+deleted file mode 100644
+index 0891995ba4f..00000000000
+--- a/project/bundles/3rdparty/ext_drmingw/CMakeLists.txt
++++ /dev/null
+@@ -1,56 +0,0 @@
+-# Script to install DrMinGw run-time for digiKam bundle.
+-#
+-# Copyright (c) 2015-2024 by Gilles Caulier  <caulier dot gilles at gmail dot com>
+-#
+-# Redistribution and use is allowed according to the terms of the BSD license.
+-# For details see the accompanying COPYING-CMAKE-SCRIPTS file.
+-#
+-
+-set(PREFIX_ext_drmingw "${EXTPREFIX}")
+-
+-# Compile DrMingw source code
+-
+-ExternalProject_Add(ext_drmingw
+-
+-    DOWNLOAD_DIR ${EXTERNALS_DOWNLOAD_DIR}
+-
+-    GIT_REPOSITORY https://github.com/jrfonseca/drmingw.git
+-    GIT_TAG 0.9.8
+-
+-    INSTALL_DIR ${EXTPREFIX_drmingw}
+-
+-    PATCH_COMMAND ${PATCH_COMMAND} -p1 -i ${CMAKE_CURRENT_SOURCE_DIR}/drmingw-coreonly.patch
+-
+-#    CONFIGURE_COMMAND git submodule update --init &&
+-    CONFIGURE_COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/../../../../bootstrap.mxe <SOURCE_DIR>/. &&
+-                      <SOURCE_DIR>/bootstrap.mxe ${MXE_BUILDROOT} RelWithDebInfo -DBUILD_TESTING=OFF -DCMAKE_DISABLE_FIND_PACKAGE_PythonInterp=1 -DCMAKE_DISABLE_FIND_PACKAGE_WinDbg=1
+-
+-    BUILD_COMMAND cd <SOURCE_DIR>/build.mxe && $(MAKE)
+-
+-    INSTALL_COMMAND cd <SOURCE_DIR>/build.mxe && make install/fast &&
+-                    ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/build.mxe/thirdparty/libz.dll ${PREFIX_ext_drmingw}/bin/
+-
+-    UPDATE_COMMAND ""
+-    BUILD_IN_SOURCE 1
+-    ALWAYS 0
+-)
+-
+-# Deploying DrMingw run-time dependencies
+-
+-ExternalProject_Add(ext_drmingw_deps
+-    DOWNLOAD_DIR ${EXTERNALS_DOWNLOAD_DIR}
+-    URL https://github.com/jrfonseca/drmingw/releases/download/0.9.8/drmingw-0.9.8-win64.7z
+-    URL_HASH MD5=a72f81732204f49753a985e6ebfa31c1
+-
+-    INSTALL_DIR ${PREFIX_ext_drmingw}
+-    CONFIGURE_COMMAND ""
+-    BUILD_COMMAND ""
+-    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/bin/dbghelp.dll ${PREFIX_ext_drmingw}/bin/
+-            COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/bin/dbgcore.dll ${PREFIX_ext_drmingw}/bin/
+-            COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/bin/symsrv.dll ${PREFIX_ext_drmingw}/bin/
+-            COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/bin/symsrv.yes ${PREFIX_ext_drmingw}/bin/
+-
+-    UPDATE_COMMAND ""
+-)
+-
+-add_dependencies(ext_drmingw ext_drmingw_deps)
+diff --git a/project/bundles/3rdparty/ext_drmingw/drmingw-coreonly.patch b/project/bundles/3rdparty/ext_drmingw/drmingw-coreonly.patch
+deleted file mode 100644
+index dfdc5acbc66..00000000000
+--- a/project/bundles/3rdparty/ext_drmingw/drmingw-coreonly.patch
++++ /dev/null
+@@ -1,48 +0,0 @@
+-diff --git a/CMakeLists.txt b/CMakeLists.txt
+-index b50b739..f34f0d8 100644
+---- a/CMakeLists.txt
+-+++ b/CMakeLists.txt
+-@@ -148,8 +148,8 @@ include_directories (${CMAKE_CURRENT_SOURCE_DIR}/include)
+- install (FILES include/exchndl.h DESTINATION include)
+- 
+- add_subdirectory (src)
+--add_subdirectory (sample)
+--add_subdirectory (tests)
+-+#add_subdirectory (sample)
+-+#add_subdirectory (tests)
+- 
+- 
+- ##############################################################################
+-diff --git a/cmake/StaticCRT.cmake b/cmake/StaticCRT.cmake
+-index 1e9c90a..6cb5b06 100644
+---- a/cmake/StaticCRT.cmake
+-+++ b/cmake/StaticCRT.cmake
+-@@ -19,17 +19,17 @@ if (MINGW)
+-         endif ()
+- 
+-         # Statically link Posix threads when detected.
+--        execute_process (
+--            COMMAND "${CMAKE_COMMAND}" -E echo "#include <thread>\n#ifdef _GLIBCXX_HAS_GTHREADS\n#error _GLIBCXX_HAS_GTHREADS\n#endif"
+--            COMMAND "${CMAKE_CXX_COMPILER}" -x c++ -E -
+--            RESULT_VARIABLE STATUS_CXX11_THREADS
+--            OUTPUT_QUIET
+--            ERROR_QUIET
+--        )
+--        if (NOT STATUS_CXX11_THREADS EQUAL 0)
+--            # https://stackoverflow.com/a/28001271
+--            set (CMAKE_CXX_STANDARD_LIBRARIES "-Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic ${CMAKE_CXX_STANDARD_LIBRARIES}")
+--        endif ()
+-+#        execute_process (
+-+#            COMMAND "${CMAKE_COMMAND}" -E echo "#include <thread>\n#ifdef _GLIBCXX_HAS_GTHREADS\n#error _GLIBCXX_HAS_GTHREADS\n#endif"
+-+#            COMMAND "${CMAKE_CXX_COMPILER}" -x c++ -E -
+-+#            RESULT_VARIABLE STATUS_CXX11_THREADS
+-+#            OUTPUT_QUIET
+-+#            ERROR_QUIET
+-+#        )
+-+#        if (NOT STATUS_CXX11_THREADS EQUAL 0)
+-+#            # https://stackoverflow.com/a/28001271
+-+#            set (CMAKE_CXX_STANDARD_LIBRARIES "-Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic ${CMAKE_CXX_STANDARD_LIBRARIES}")
+-+#        endif ()
+-     endif ()
+- endif ()
+- 
+diff --git a/project/bundles/3rdparty/ext_liblqr/CMakeLists.txt b/project/bundles/3rdparty/ext_liblqr/CMakeLists.txt
+deleted file mode 100644
+index 46159d86b39..00000000000
+--- a/project/bundles/3rdparty/ext_liblqr/CMakeLists.txt
++++ /dev/null
+@@ -1,27 +0,0 @@
+-# Script to build liblqr for digiKam bundle.
+-#
+-# SPDX-FileCopyrightText: 2015-2024 by Gilles Caulier  <caulier dot gilles at gmail dot com>
+-#
+-# SPDX-License-Identifier: BSD-3-Clause
+-#
+-#
+-
+-SET(EXTPREFIX_liblqr "${EXTPREFIX}")
+-
+-ExternalProject_Add(ext_liblqr
+-    DOWNLOAD_DIR ${EXTERNALS_DOWNLOAD_DIR}
+-
+-#    URL https://github.com/carlobaldassi/liblqr/archive/v0.4.2.tar.gz
+-#    URL_MD5 f7b4ecddd8a038f057e236347fd7767c
+-
+-    GIT_REPOSITORY https://github.com/carlobaldassi/liblqr.git
+-#    PATCH_COMMAND ${PATCH_COMMAND} -p1 -i ${CMAKE_CURRENT_SOURCE_DIR}/liblqr-appimage.patch
+-
+-
+-    INSTALL_DIR ${EXTPREFIX_liblqr}
+-    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix ${EXTPREFIX_liblqr}
+-
+-    UPDATE_COMMAND ""
+-    BUILD_IN_SOURCE 1
+-    ALWAYS 0
+-)
+diff --git a/project/bundles/3rdparty/ext_marble/CMakeLists.txt b/project/bundles/3rdparty/ext_marble/CMakeLists.txt
+deleted file mode 100755
+index 67913b99fde..00000000000
+--- a/project/bundles/3rdparty/ext_marble/CMakeLists.txt
++++ /dev/null
+@@ -1,102 +0,0 @@
+-# Script to build Marble for digiKam bundle.
+-#
+-# SPDX-FileCopyrightText: 2015-2024 by Gilles Caulier  <caulier dot gilles at gmail dot com>
+-#
+-# SPDX-License-Identifier: BSD-3-Clause
+-#
+-#
+-
+-set(EXTPREFIX_marble "${EXTPREFIX}" )
+-
+-GetKF5ApplicationMd5Sums(marble ${KA_VERSION})
+-
+-if(MINGW)
+-
+-    ExternalProject_Add(ext_marble
+-                        DOWNLOAD_DIR ${EXTERNALS_DOWNLOAD_DIR}
+-                        URL https://download.kde.org/stable/release-service/${KA_VERSION}/src/marble-${KA_VERSION}.tar.xz
+-                        URL_MD5 ${KF5_APPLICATION_MD5SUM}
+-
+-                        INSTALL_DIR ${EXTPREFIX_marble}
+-                        PATCH_COMMAND ${PATCH_COMMAND} -p1 -i ${CMAKE_CURRENT_SOURCE_DIR}/marble-libs-install-mxe.patch &&
+-                                      cp ${CMAKE_CURRENT_SOURCE_DIR}/../../mxe/fixqtwebkitincludes.sh <SOURCE_DIR>/. &&
+-                                      <SOURCE_DIR>/fixqtwebkitincludes.sh
+-
+-                        CMAKE_ARGS -DMXE_TOOLCHAIN=${MXE_TOOLCHAIN}
+-                                   -DCMAKE_BUILD_TYPE=${GLOBAL_BUILD_TYPE}
+-                                   -DCMAKE_COLOR_MAKEFILE=ON
+-                                   -DCMAKE_INSTALL_PREFIX=${EXTPREFIX_marble}
+-                                   -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
+-                                   -DCMAKE_TOOLCHAIN_FILE=${MXE_TOOLCHAIN}
+-                                   -DCMAKE_FIND_PREFIX_PATH=${CMAKE_PREFIX_PATH}
+-                                   -DCMAKE_SYSTEM_INCLUDE_PATH=${CMAKE_PREFIX_PATH}/include
+-                                   -DCMAKE_INCLUDE_PATH=${CMAKE_PREFIX_PATH}/include
+-                                   -DCMAKE_LIBRARY_PATH=${CMAKE_PREFIX_PATH}/lib
+-                                   -DZLIB_ROOT=${CMAKE_PREFIX_PATH}
+-                                   ${GLOBAL_PROFILE}
+-                                   "${argoptions}"
+-                                   -DWITH_DESIGNER_PLUGIN=OFF
+-                                   -DBUILD_MARBLE_TESTS=OFF
+-                                   -DBUILD_MARBLE_TOOLS=OFF
+-                                   -DBUILD_MARBLE_EXAMPLES=OFF
+-                                   -DBUILD_MARBLE_APPS=OFF
+-                                   -DBUILD_WITH_DBUS=OFF
+-                                   -DBUILD_TESTING=OFF
+-                                   -Wno-dev
+-
+-                        UPDATE_COMMAND ""
+-                        ALWAYS 0
+-    )
+-
+-elseif(APPLE)
+-
+-    ExternalProject_Add(ext_marble
+-                        DOWNLOAD_DIR ${EXTERNALS_DOWNLOAD_DIR}
+-                        URL https://download.kde.org/stable/release-service/${KA_VERSION}/src/marble-${KA_VERSION}.tar.xz
+-                        URL_MD5 ${KF5_APPLICATION_MD5SUM}
+-
+-                        PATCH_COMMAND ${PATCH_COMMAND} -p1 -i ${CMAKE_CURRENT_SOURCE_DIR}/marble-libs-install-macports.patch &&
+-                                      cp ${CMAKE_CURRENT_SOURCE_DIR}/../../macports/fixbundledatapath.sh <SOURCE_DIR>/. &&
+-                                      <SOURCE_DIR>/fixbundledatapath.sh
+-
+-                        CONFIGURE_COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/../../../../bootstrap.macports <SOURCE_DIR>/. &&
+-                                          <SOURCE_DIR>/bootstrap.macports ${EXTPREFIX_marble} debug x86_64 "-DWITH_DESIGNER_PLUGIN=OFF -DBUILD_MARBLE_TESTS=OFF -DBUILD_MARBLE_TOOLS=OFF -DBUILD_MARBLE_EXAMPLES=OFF -DBUILD_MARBLE_APPS=OFF -DBUILD_WITH_DBUS=OFF -DQTONLY=ON -DBUILD_TESTING=OFF -Wno-dev"
+-
+-                        BUILD_COMMAND cd <SOURCE_DIR>/build && $(MAKE)
+-
+-                        INSTALL_COMMAND cd <SOURCE_DIR>/build && make install/fast
+-
+-                        BUILD_IN_SOURCE 1
+-
+-                        UPDATE_COMMAND ""
+-                        ALWAYS 0
+-        )
+-
+-else() # Linux
+-
+-    ExternalProject_Add(ext_marble
+-                        DOWNLOAD_DIR ${EXTERNALS_DOWNLOAD_DIR}
+-                        URL https://download.kde.org/stable/release-service/${KA_VERSION}/src/marble-${KA_VERSION}.tar.xz
+-                        URL_MD5 ${KF5_APPLICATION_MD5SUM}
+-
+-                        INSTALL_DIR ${EXTPREFIX_marble}
+-                        PATCH_COMMAND ${PATCH_COMMAND} -p1 -i ${CMAKE_CURRENT_SOURCE_DIR}/marble-libs-install-appimage.patch
+-
+-                        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTPREFIX_marble}
+-                                   -DCMAKE_BUILD_TYPE=${GLOBAL_BUILD_TYPE}
+-                                   ${GLOBAL_PROFILE}
+-                                   -DCMAKE_SYSTEM_PREFIX_PATH=${EXTPREFIX_marble}
+-                                   -DWITH_DESIGNER_PLUGIN=OFF
+-                                   -DBUILD_MARBLE_TESTS=OFF
+-                                   -DBUILD_MARBLE_TOOLS=OFF
+-                                   -DBUILD_MARBLE_EXAMPLES=OFF
+-                                   -DBUILD_MARBLE_APPS=OFF
+-                                   -DBUILD_WITH_DBUS=OFF
+-                                   -DBUILD_TESTING=OFF
+-                                   -Wno-dev
+-
+-                        UPDATE_COMMAND ""
+-                        ALWAYS 0
+-    )
+-
+-endif()
+diff --git a/project/bundles/3rdparty/ext_marble/marble-libs-install-appimage.patch b/project/bundles/3rdparty/ext_marble/marble-libs-install-appimage.patch
+deleted file mode 100644
+index ce88f2e6de9..00000000000
+--- a/project/bundles/3rdparty/ext_marble/marble-libs-install-appimage.patch
++++ /dev/null
+@@ -1,24 +0,0 @@
+-diff --git a/src/lib/marble/MarbleDirs.cpp b/src/lib/marble/MarbleDirs.cpp
+-index 61bc4b67c..365f0aeae 100644
+---- a/src/lib/marble/MarbleDirs.cpp
+-+++ b/src/lib/marble/MarbleDirs.cpp
+-@@ -121,6 +121,9 @@ QStringList MarbleDirs::pluginEntryList( const QString& relativePath, QDir::Filt
+- 
+- QString MarbleDirs::systemPath()
+- {
+-+	QString path = QCoreApplication::applicationDirPath() + QDir::separator() + "data";
+-+	//qDebug() << "Marble data path: " << path;
+-+	return path;
+-     if (!runTimeMarbleDataPath.isEmpty()) {
+-         return runTimeMarbleDataPath;
+-     }
+-@@ -179,6 +182,9 @@ QString MarbleDirs::systemPath()
+- 
+- QString MarbleDirs::pluginSystemPath()
+- {
+-+	QString path = QCoreApplication::applicationDirPath() + QDir::separator() + "plugins";
+-+	//qDebug() << "Marble plugins path: " << path;
+-+	return path;
+-     if (!runTimeMarblePluginPath.isEmpty()) {
+-         return runTimeMarblePluginPath;
+-     }
+diff --git a/project/bundles/3rdparty/ext_marble/marble-libs-install-macports.patch b/project/bundles/3rdparty/ext_marble/marble-libs-install-macports.patch
+deleted file mode 100644
+index ad1987ee2c0..00000000000
+--- a/project/bundles/3rdparty/ext_marble/marble-libs-install-macports.patch
++++ /dev/null
+@@ -1,134 +0,0 @@
+-diff --git a/CMakeLists.txt b/CMakeLists.txt
+-index 92c50c2e2..c2652de7b 100644
+---- a/CMakeLists.txt
+-+++ b/CMakeLists.txt
+-@@ -204,7 +204,7 @@ elseif(APPLE)
+-       # for Mac OS X, everything is put inside an application bundle
+-       SET (CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/)
+-       # path for library references
+--      SET (CMAKE_INSTALL_NAME_DIR @executable_path/lib)
+-+      SET (CMAKE_INSTALL_NAME_DIR ${CMAKE_INSTALL_PREFIX}/lib)
+-       # install the Info.plist file
+-       install(FILES src/mac/Info.plist DESTINATION ${CMAKE_INSTALL_PREFIX}/Marble.app/Contents)
+-       #SET (lib_dir ${CMAKE_INSTALL_PREFIX}/Marble.app/Contents/MacOS/lib)
+-diff --git a/src/lib/astro/CMakeLists.txt b/src/lib/astro/CMakeLists.txt
+-index 27c4e4f62..ead8ccda7 100644
+---- a/src/lib/astro/CMakeLists.txt
+-+++ b/src/lib/astro/CMakeLists.txt
+-@@ -73,7 +73,7 @@ endif()
+- 
+- if (APPLE)
+-     # TODO: find how to install & deploy library, headers and config files as bundle for development
+--    return()
+-+#    return()
+- endif()
+- 
+- 
+-@@ -92,24 +92,24 @@ endif()
+- 
+- ########### CMake Config files ###############
+- 
+--include(CMakePackageConfigHelpers)
+--
+--set(ASTRO_INSTALL_CMAKECONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/${ASTRO_CMAKECONFIGNAME})
+--
+--configure_package_config_file(AstroConfig.cmake.in
+--    ${CMAKE_CURRENT_BINARY_DIR}/${ASTRO_CMAKECONFIGNAME}Config.cmake
+--    INSTALL_DESTINATION ${ASTRO_INSTALL_CMAKECONFIGDIR}
+--)
+--
+--install(FILES
+--    ${CMAKE_CURRENT_BINARY_DIR}/${ASTRO_CMAKECONFIGNAME}Config.cmake
+--    ${CMAKE_CURRENT_BINARY_DIR}/${ASTRO_CMAKECONFIGNAME}ConfigVersion.cmake
+--
+--    DESTINATION ${ASTRO_INSTALL_CMAKECONFIGDIR}
+--)
+--
+--install(
+--    EXPORT AstroTargets
+--    FILE ${ASTRO_CMAKECONFIGNAME}Targets.cmake
+--    DESTINATION ${ASTRO_INSTALL_CMAKECONFIGDIR}
+--)
+-+#include(CMakePackageConfigHelpers)
+-+#
+-+#set(ASTRO_INSTALL_CMAKECONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/${ASTRO_CMAKECONFIGNAME})
+-+#
+-+#configure_package_config_file(AstroConfig.cmake.in
+-+#    ${CMAKE_CURRENT_BINARY_DIR}/${ASTRO_CMAKECONFIGNAME}Config.cmake
+-+#    INSTALL_DESTINATION ${ASTRO_INSTALL_CMAKECONFIGDIR}
+-+#)
+-+#
+-+#install(FILES
+-+#    ${CMAKE_CURRENT_BINARY_DIR}/${ASTRO_CMAKECONFIGNAME}Config.cmake
+-+#    ${CMAKE_CURRENT_BINARY_DIR}/${ASTRO_CMAKECONFIGNAME}ConfigVersion.cmake
+-+#
+-+#    DESTINATION ${ASTRO_INSTALL_CMAKECONFIGDIR}
+-+#)
+-+#
+-+#install(
+-+#    EXPORT AstroTargets
+-+#    FILE ${ASTRO_CMAKECONFIGNAME}Targets.cmake
+-+#    DESTINATION ${ASTRO_INSTALL_CMAKECONFIGDIR}
+-+#)
+-diff --git a/src/lib/marble/CMakeLists.txt b/src/lib/marble/CMakeLists.txt
+-index 51691b61c..454b46ed5 100644
+---- a/src/lib/marble/CMakeLists.txt
+-+++ b/src/lib/marble/CMakeLists.txt
+-@@ -469,7 +469,7 @@ endif()
+- 
+- if (APPLE)
+-     # TODO: find how to install & deploy library, headers and config files as bundle for development
+--    return()
+-+#    return()
+- endif()
+- 
+- if (MARBLE_NO_WEBKITWIDGETS)
+-@@ -649,27 +649,27 @@ install( FILES
+- 
+- ########### CMake Config files ###############
+- 
+--include(CMakePackageConfigHelpers)
+--
+--set(MARBLE_INSTALL_CMAKECONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/${MARBLE_CMAKECONFIGNAME})
+--
+--configure_package_config_file(MarbleConfig.cmake.in
+--    ${CMAKE_CURRENT_BINARY_DIR}/${MARBLE_CMAKECONFIGNAME}Config.cmake
+--    INSTALL_DESTINATION ${MARBLE_INSTALL_CMAKECONFIGDIR}
+--)
+--
+--install(FILES
+--    ${CMAKE_CURRENT_BINARY_DIR}/${MARBLE_CMAKECONFIGNAME}Config.cmake
+--    ${CMAKE_CURRENT_BINARY_DIR}/${MARBLE_CMAKECONFIGNAME}ConfigVersion.cmake
+--
+--    DESTINATION ${MARBLE_INSTALL_CMAKECONFIGDIR}
+--)
+--
+--install(
+--    EXPORT MarbleTargets
+--    FILE ${MARBLE_CMAKECONFIGNAME}Targets.cmake
+--    DESTINATION ${MARBLE_INSTALL_CMAKECONFIGDIR}
+--)
+-+#include(CMakePackageConfigHelpers)
+-+#
+-+#set(MARBLE_INSTALL_CMAKECONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/${MARBLE_CMAKECONFIGNAME})
+-+#
+-+#configure_package_config_file(MarbleConfig.cmake.in
+-+#    ${CMAKE_CURRENT_BINARY_DIR}/${MARBLE_CMAKECONFIGNAME}Config.cmake
+-+#    INSTALL_DESTINATION ${MARBLE_INSTALL_CMAKECONFIGDIR}
+-+#)
+-+#
+-+#install(FILES
+-+#    ${CMAKE_CURRENT_BINARY_DIR}/${MARBLE_CMAKECONFIGNAME}Config.cmake
+-+#    ${CMAKE_CURRENT_BINARY_DIR}/${MARBLE_CMAKECONFIGNAME}ConfigVersion.cmake
+-+#
+-+#    DESTINATION ${MARBLE_INSTALL_CMAKECONFIGDIR}
+-+#)
+-+#
+-+#install(
+-+#    EXPORT MarbleTargets
+-+#    FILE ${MARBLE_CMAKECONFIGNAME}Targets.cmake
+-+#    DESTINATION ${MARBLE_INSTALL_CMAKECONFIGDIR}
+-+#)
+- 
+- ########### Qt Pri file ###############
+- 
+diff --git a/project/bundles/3rdparty/ext_marble/marble-libs-install-mxe.patch b/project/bundles/3rdparty/ext_marble/marble-libs-install-mxe.patch
+deleted file mode 100644
+index ad1987ee2c0..00000000000
+--- a/project/bundles/3rdparty/ext_marble/marble-libs-install-mxe.patch
++++ /dev/null
+@@ -1,134 +0,0 @@
+-diff --git a/CMakeLists.txt b/CMakeLists.txt
+-index 92c50c2e2..c2652de7b 100644
+---- a/CMakeLists.txt
+-+++ b/CMakeLists.txt
+-@@ -204,7 +204,7 @@ elseif(APPLE)
+-       # for Mac OS X, everything is put inside an application bundle
+-       SET (CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/)
+-       # path for library references
+--      SET (CMAKE_INSTALL_NAME_DIR @executable_path/lib)
+-+      SET (CMAKE_INSTALL_NAME_DIR ${CMAKE_INSTALL_PREFIX}/lib)
+-       # install the Info.plist file
+-       install(FILES src/mac/Info.plist DESTINATION ${CMAKE_INSTALL_PREFIX}/Marble.app/Contents)
+-       #SET (lib_dir ${CMAKE_INSTALL_PREFIX}/Marble.app/Contents/MacOS/lib)
+-diff --git a/src/lib/astro/CMakeLists.txt b/src/lib/astro/CMakeLists.txt
+-index 27c4e4f62..ead8ccda7 100644
+---- a/src/lib/astro/CMakeLists.txt
+-+++ b/src/lib/astro/CMakeLists.txt
+-@@ -73,7 +73,7 @@ endif()
+- 
+- if (APPLE)
+-     # TODO: find how to install & deploy library, headers and config files as bundle for development
+--    return()
+-+#    return()
+- endif()
+- 
+- 
+-@@ -92,24 +92,24 @@ endif()
+- 
+- ########### CMake Config files ###############
+- 
+--include(CMakePackageConfigHelpers)
+--
+--set(ASTRO_INSTALL_CMAKECONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/${ASTRO_CMAKECONFIGNAME})
+--
+--configure_package_config_file(AstroConfig.cmake.in
+--    ${CMAKE_CURRENT_BINARY_DIR}/${ASTRO_CMAKECONFIGNAME}Config.cmake
+--    INSTALL_DESTINATION ${ASTRO_INSTALL_CMAKECONFIGDIR}
+--)
+--
+--install(FILES
+--    ${CMAKE_CURRENT_BINARY_DIR}/${ASTRO_CMAKECONFIGNAME}Config.cmake
+--    ${CMAKE_CURRENT_BINARY_DIR}/${ASTRO_CMAKECONFIGNAME}ConfigVersion.cmake
+--
+--    DESTINATION ${ASTRO_INSTALL_CMAKECONFIGDIR}
+--)
+--
+--install(
+--    EXPORT AstroTargets
+--    FILE ${ASTRO_CMAKECONFIGNAME}Targets.cmake
+--    DESTINATION ${ASTRO_INSTALL_CMAKECONFIGDIR}
+--)
+-+#include(CMakePackageConfigHelpers)
+-+#
+-+#set(ASTRO_INSTALL_CMAKECONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/${ASTRO_CMAKECONFIGNAME})
+-+#
+-+#configure_package_config_file(AstroConfig.cmake.in
+-+#    ${CMAKE_CURRENT_BINARY_DIR}/${ASTRO_CMAKECONFIGNAME}Config.cmake
+-+#    INSTALL_DESTINATION ${ASTRO_INSTALL_CMAKECONFIGDIR}
+-+#)
+-+#
+-+#install(FILES
+-+#    ${CMAKE_CURRENT_BINARY_DIR}/${ASTRO_CMAKECONFIGNAME}Config.cmake
+-+#    ${CMAKE_CURRENT_BINARY_DIR}/${ASTRO_CMAKECONFIGNAME}ConfigVersion.cmake
+-+#
+-+#    DESTINATION ${ASTRO_INSTALL_CMAKECONFIGDIR}
+-+#)
+-+#
+-+#install(
+-+#    EXPORT AstroTargets
+-+#    FILE ${ASTRO_CMAKECONFIGNAME}Targets.cmake
+-+#    DESTINATION ${ASTRO_INSTALL_CMAKECONFIGDIR}
+-+#)
+-diff --git a/src/lib/marble/CMakeLists.txt b/src/lib/marble/CMakeLists.txt
+-index 51691b61c..454b46ed5 100644
+---- a/src/lib/marble/CMakeLists.txt
+-+++ b/src/lib/marble/CMakeLists.txt
+-@@ -469,7 +469,7 @@ endif()
+- 
+- if (APPLE)
+-     # TODO: find how to install & deploy library, headers and config files as bundle for development
+--    return()
+-+#    return()
+- endif()
+- 
+- if (MARBLE_NO_WEBKITWIDGETS)
+-@@ -649,27 +649,27 @@ install( FILES
+- 
+- ########### CMake Config files ###############
+- 
+--include(CMakePackageConfigHelpers)
+--
+--set(MARBLE_INSTALL_CMAKECONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/${MARBLE_CMAKECONFIGNAME})
+--
+--configure_package_config_file(MarbleConfig.cmake.in
+--    ${CMAKE_CURRENT_BINARY_DIR}/${MARBLE_CMAKECONFIGNAME}Config.cmake
+--    INSTALL_DESTINATION ${MARBLE_INSTALL_CMAKECONFIGDIR}
+--)
+--
+--install(FILES
+--    ${CMAKE_CURRENT_BINARY_DIR}/${MARBLE_CMAKECONFIGNAME}Config.cmake
+--    ${CMAKE_CURRENT_BINARY_DIR}/${MARBLE_CMAKECONFIGNAME}ConfigVersion.cmake
+--
+--    DESTINATION ${MARBLE_INSTALL_CMAKECONFIGDIR}
+--)
+--
+--install(
+--    EXPORT MarbleTargets
+--    FILE ${MARBLE_CMAKECONFIGNAME}Targets.cmake
+--    DESTINATION ${MARBLE_INSTALL_CMAKECONFIGDIR}
+--)
+-+#include(CMakePackageConfigHelpers)
+-+#
+-+#set(MARBLE_INSTALL_CMAKECONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/${MARBLE_CMAKECONFIGNAME})
+-+#
+-+#configure_package_config_file(MarbleConfig.cmake.in
+-+#    ${CMAKE_CURRENT_BINARY_DIR}/${MARBLE_CMAKECONFIGNAME}Config.cmake
+-+#    INSTALL_DESTINATION ${MARBLE_INSTALL_CMAKECONFIGDIR}
+-+#)
+-+#
+-+#install(FILES
+-+#    ${CMAKE_CURRENT_BINARY_DIR}/${MARBLE_CMAKECONFIGNAME}Config.cmake
+-+#    ${CMAKE_CURRENT_BINARY_DIR}/${MARBLE_CMAKECONFIGNAME}ConfigVersion.cmake
+-+#
+-+#    DESTINATION ${MARBLE_INSTALL_CMAKECONFIGDIR}
+-+#)
+-+#
+-+#install(
+-+#    EXPORT MarbleTargets
+-+#    FILE ${MARBLE_CMAKECONFIGNAME}Targets.cmake
+-+#    DESTINATION ${MARBLE_INSTALL_CMAKECONFIGDIR}
+-+#)
+- 
+- ########### Qt Pri file ###############
+- 
+diff --git a/project/bundles/3rdparty/ext_qt5/CMakeLists.txt b/project/bundles/3rdparty/ext_qt5/CMakeLists.txt
+index 2a3a7475cfb..60d38e9b595 100644
+--- a/project/bundles/3rdparty/ext_qt5/CMakeLists.txt
++++ b/project/bundles/3rdparty/ext_qt5/CMakeLists.txt
+@@ -8,14 +8,6 @@
+ 
+ SET(EXTPREFIX_qt "${EXTPREFIX}")
+ 
+-IF(NOT ENABLE_QTWEBENGINE)
+-    SET(DROP_QTWEBENGINE_DEPS
+-        -skip qtwebengine                 # No need Chromium browser support (QtWebkit instead)
+-        -skip qtwebchannel                # QtWebChannel support ==> QWebEngine dependency
+-        -skip qtquickcontrols             # QtQuick support      ==> QWebEngine dependency
+-        )
+-ENDIF()
+-
+ # NOTE: even if OpenSSL libs paths are passed as arguments, an hardcoded patch is necessary else linking fail.
+ 
+ ExternalProject_Add(ext_qt5
+@@ -87,7 +79,6 @@ ExternalProject_Add(ext_qt5
+                   -skip qtwebsockets                # No need websocket support
+                   -skip qtwebview                   # QML extension for QWebEngine
+                   -skip qtwinextras                 # For Windows devices only
+-                  ${DROP_QTWEBENGINE_DEPS}
+ 
+     UPDATE_COMMAND ""
+     BUILD_IN_SOURCE 1
+diff --git a/project/bundles/3rdparty/ext_qtwebkit/CMakeLists.txt b/project/bundles/3rdparty/ext_qtwebkit/CMakeLists.txt
+deleted file mode 100644
+index cfc1b1bc597..00000000000
+--- a/project/bundles/3rdparty/ext_qtwebkit/CMakeLists.txt
++++ /dev/null
+@@ -1,82 +0,0 @@
+-# Script to build QtWebkit for digiKam bundle.
+-#
+-# SPDX-FileCopyrightText: 2015-2024 by Gilles Caulier  <caulier dot gilles at gmail dot com>
+-#
+-# SPDX-License-Identifier: BSD-3-Clause
+-#
+-#
+-
+-set(EXTPREFIX_qtwebkit "${EXTPREFIX}")
+-
+-set(QtWebKit_Conf  -DENABLE_GEOLOCATION=OFF
+-                   -DENABLE_DEVICE_ORIENTATION=OFF
+-                   -DENABLE_QT_WEBCHANNEL=OFF
+-                   -DENABLE_MEDIA_SOURCE=OFF
+-                   -DENABLE_VIDEO=OFF
+-                   -DENABLE_WEB_AUDIO=OFF
+-                   -DENABLE_PRINT_SUPPORT=OFF
+-                   -DENABLE_QT_GESTURE_EVENTS=OFF
+-                   -DENABLE_INSPECTOR_UI=ON
+-                   -DENABLE_API_TESTS=OFF
+-                   -DENABLE_TOOLS=OFF
+-                   -DENABLE_JIT=OFF
+-                   -DUSE_GSTREAMER=OFF
+-                   -DUSE_MEDIA_FOUNDATION=OFF
+-                   -DUSE_QT_MULTIMEDIA=OFF
+-                   -DUSE_LIBHYPHEN=OFF
+-                   -DUSE_SYSTEM_MALLOC=1
+-                   -DUSE_WOFF2=ON
+-                   -DPORT=Qt
+-)
+-
+-JoinListAsString("${QtWebKit_Conf}" " " BASH_OPTIONS)
+-
+-if(APPLE)
+-
+-    ExternalProject_Add(ext_qtwebkit
+-        DOWNLOAD_DIR ${EXTERNALS_DOWNLOAD_DIR}
+-
+-        URL https://download.qt.io/snapshots/ci/qtwebkit/5.212/latest/src/submodules/qtwebkit-everywhere-src-5.13.1.tar.xz
+-        # NOTE: this is a CI tarball, it change each month. So no MD5 sum to use here.
+-        #URL_MD5 8070564af80809459bf6336431a9890b
+-
+-        PATCH_COMMAND ${PATCH_COMMAND} -p1 -i ${CMAKE_CURRENT_SOURCE_DIR}/qtwebkit-fixrpath-macports.patch
+-
+-        CONFIGURE_COMMAND cp -f ${CMAKE_CURRENT_SOURCE_DIR}/../../../../bootstrap.macports <SOURCE_DIR>/. &&
+-                          <SOURCE_DIR>/bootstrap.macports ${EXTPREFIX_qtwebkit} MinSizeRel x86_64 ${BASH_OPTIONS}
+-
+-        BUILD_COMMAND cd <SOURCE_DIR>/build && $(MAKE)
+-
+-        INSTALL_COMMAND cd <SOURCE_DIR>/build && make install/fast
+-
+-        UPDATE_COMMAND ""
+-        BUILD_IN_SOURCE 1
+-        ALWAYS 0
+-    )
+-
+-else() # Linux
+-
+-    ExternalProject_Add(ext_qtwebkit
+-        DOWNLOAD_DIR ${EXTERNALS_DOWNLOAD_DIR}
+-
+-        URL https://download.qt.io/snapshots/ci/qtwebkit/5.212/latest/src/submodules/qtwebkit-everywhere-src-5.13.1.tar.xz
+-        # NOTE: this is a CI tarball, it change each month. So no MD5 sum to use here.
+-        #URL_MD5 8070564af80809459bf6336431a9890b
+-
+-        INSTALL_DIR ${EXTPREFIX_qtwebkit}
+-
+-        PATCH_COMMAND ${PATCH_COMMAND} -p1 -i ${CMAKE_CURRENT_SOURCE_DIR}/qtwebkit-fixdeps-linux.patch
+-
+-        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTPREFIX_qtwebkit}
+-                   -DCMAKE_BUILD_TYPE=MinSizeRel
+-                   ${GLOBAL_PROFILE}
+-                   -DCMAKE_SYSTEM_PREFIX_PATH=${EXTPREFIX}
+-                   ${QtWebKit_Conf}
+-                   -Wno-dev
+-
+-        UPDATE_COMMAND ""
+-        BUILD_IN_SOURCE 1
+-        ALWAYS 0
+-    )
+-
+-endif()
+diff --git a/project/bundles/3rdparty/ext_qtwebkit/qtwebkit-fixdeps-linux.patch b/project/bundles/3rdparty/ext_qtwebkit/qtwebkit-fixdeps-linux.patch
+deleted file mode 100644
+index 8aba85321ef..00000000000
+--- a/project/bundles/3rdparty/ext_qtwebkit/qtwebkit-fixdeps-linux.patch
++++ /dev/null
+@@ -1,32 +0,0 @@
+-diff --git a/Source/cmake/OptionsQt.cmake b/Source/cmake/OptionsQt.cmake
+-index 003fdca41..f0db91f77 100644
+---- a/Source/cmake/OptionsQt.cmake
+-+++ b/Source/cmake/OptionsQt.cmake
+-@@ -501,7 +501,7 @@ if (MACOS_FORCE_SYSTEM_XML_LIBRARIES)
+-         set(LIBXSLT_LIBRARIES xslt)
+-     endif ()
+- else ()
+--    find_package(LibXml2 2.8.0 REQUIRED)
+-+    find_package(LibXml2 2.7.0 REQUIRED)
+-     if (ENABLE_XSLT)
+-         find_package(LibXslt 1.1.7 REQUIRED)
+-     endif ()
+-diff --git a/Source/WTF/wtf/PlatformQt.cmake b/Source/WTF/wtf/PlatformQt.cmake
+-index 684119455b3..0b9de24c895 100644
+---- a/Source/WTF/wtf/PlatformQt.cmake
+-+++ b/Source/WTF/wtf/PlatformQt.cmake
+-@@ -77,3 +77,14 @@ if (APPLE)
+-         ${COREFOUNDATION_LIBRARY}
+-     )
+- endif ()
+-+
+-+if (UNIX)
+-+    check_function_exists(clock_gettime CLOCK_GETTIME_EXISTS)
+-+    if (NOT CLOCK_GETTIME_EXISTS)
+-+        set(CMAKE_REQUIRED_LIBRARIES rt)
+-+        check_function_exists(clock_gettime CLOCK_GETTIME_REQUIRES_LIBRT)
+-+        if (CLOCK_GETTIME_REQUIRES_LIBRT)
+-+            list(APPEND WTF_LIBRARIES rt)
+-+        endif ()
+-+    endif ()
+-+endif ()
+diff --git a/project/bundles/3rdparty/ext_qtwebkit/qtwebkit-fixrpath-macports.patch b/project/bundles/3rdparty/ext_qtwebkit/qtwebkit-fixrpath-macports.patch
+deleted file mode 100644
+index f94c36746b1..00000000000
+--- a/project/bundles/3rdparty/ext_qtwebkit/qtwebkit-fixrpath-macports.patch
++++ /dev/null
+@@ -1,13 +0,0 @@
+-diff --git a/Source/cmake/OptionsQt.cmake b/Source/cmake/OptionsQt.cmake
+-index 13419a20ab5..7159205105e 100644
+---- a/Source/cmake/OptionsQt.cmake
+-+++ b/Source/cmake/OptionsQt.cmake
+-@@ -147,7 +147,7 @@ macro(QTWEBKIT_GENERATE_MOC_FILES_H _target)
+-     endforeach ()
+- endmacro()
+- 
+--set(CMAKE_MACOSX_RPATH ON)
+-+#set(CMAKE_MACOSX_RPATH ON)
+- 
+- add_definitions(-DBUILDING_QT__=1)
+- add_definitions(-DQT_NO_EXCEPTIONS)
+diff --git a/project/bundles/3rdparty/ext_uchardet/CMakeLists.txt b/project/bundles/3rdparty/ext_uchardet/CMakeLists.txt
+deleted file mode 100755
+index 8342537391d..00000000000
+--- a/project/bundles/3rdparty/ext_uchardet/CMakeLists.txt
++++ /dev/null
+@@ -1,25 +0,0 @@
+-# Script to build UcharDet for digiKam bundle.
+-#
+-# SPDX-FileCopyrightText: 2015-2024 by Gilles Caulier  <caulier dot gilles at gmail dot com>
+-#
+-# SPDX-License-Identifier: BSD-3-Clause
+-#
+-#
+-
+-SET(EXTPREFIX_uchardet "${EXTPREFIX}")
+-
+-ExternalProject_Add(ext_uchardet
+-    DOWNLOAD_DIR ${EXTERNALS_DOWNLOAD_DIR}
+-
+-    GIT_REPOSITORY https://github.com/freedesktop/uchardet
+-    GIT_TAG v0.0.7
+-
+-    INSTALL_DIR ${EXTPREFIX_uchardet}
+-
+-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTPREFIX_uchardet}
+-               -DCMAKE_BUILD_TYPE=${GLOBAL_BUILD_TYPE}
+-               ${GLOBAL_PROFILE}
+-
+-    UPDATE_COMMAND ""
+-    ALWAYS 0
+-)
+diff --git a/project/bundles/appimage/01-build-host.sh b/project/bundles/appimage/01-build-host.sh
+index f8c317f3360..5d72686e7a2 100755
+--- a/project/bundles/appimage/01-build-host.sh
++++ b/project/bundles/appimage/01-build-host.sh
+@@ -81,8 +81,7 @@ cmake $ORIG_WD/../3rdparty \
+       -DKA_VERSION=$DK_KA_VERSION \
+       -DKP_VERSION=$DK_KP_VERSION \
+       -DKDE_VERSION=$DK_KDE_VERSION \
+-      -DENABLE_QTVERSION=$DK_QTVERSION \
+-      -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE
++      -DENABLE_QTVERSION=$DK_QTVERSION
+ 
+ # Install new cmake recent version and shared lib
+ 
+@@ -107,9 +106,7 @@ cmake $ORIG_WD/../3rdparty \
+       -DKA_VERSION=$DK_KA_VERSION \
+       -DKP_VERSION=$DK_KP_VERSION \
+       -DKDE_VERSION=$DK_KDE_VERSION \
+-      -DENABLE_QTVERSION=$DK_QTVERSION \
+-      -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+-      -DQTWEBENGINE_VERSION=$DK_QTWEBENGINEVERSION
++      -DENABLE_QTVERSION=$DK_QTVERSION
+ 
+ # Low level libraries and Qt dependencies
+ # NOTE: The order to compile each component here is very important.
+@@ -121,10 +118,6 @@ cmake --build . --config RelWithDebInfo --target ext_openssl         -- -j$CPU_C
+ 
+ cmake --build . --config RelWithDebInfo --target ext_qt$DK_QTVERSION -- -j$CPU_CORES    # depend of tiff, png, jpeg
+ 
+-if [[ $DK_QTWEBENGINE = 0 ]] ; then
+-    cmake --build . --config RelWithDebInfo --target ext_qtwebkit    -- -j$CPU_CORES    # depend of Qt and libicu
+-fi
+-
+ # Clean up previous openssl install
+ 
+ rm -fr /usr/local/lib/libssl.a    || true
+diff --git a/project/bundles/appimage/02-build-extralibs.sh b/project/bundles/appimage/02-build-extralibs.sh
+index 73c0048c582..fda578a3368 100755
+--- a/project/bundles/appimage/02-build-extralibs.sh
++++ b/project/bundles/appimage/02-build-extralibs.sh
+@@ -51,8 +51,7 @@ cmake $ORIG_WD/../3rdparty \
+       -DKA_VERSION=$DK_KA_VERSION \
+       -DKP_VERSION=$DK_KP_VERSION \
+       -DKDE_VERSION=$DK_KDE_VERSION \
+-      -DENABLE_QTVERSION=$DK_QTVERSION \
+-      -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE
++      -DENABLE_QTVERSION=$DK_QTVERSION
+ 
+ # NOTE: The order to compile each component here is very important.
+ 
+diff --git a/project/bundles/appimage/03-build-digikam.sh b/project/bundles/appimage/03-build-digikam.sh
+index 1cd1f400179..d9fa6c6e361 100755
+--- a/project/bundles/appimage/03-build-digikam.sh
++++ b/project/bundles/appimage/03-build-digikam.sh
+@@ -54,8 +54,7 @@ cmake $ORIG_WD/../3rdparty \
+       -DKP_VERSION=$DK_KP_VERSION \
+       -DKA_VERSION=$DK_KA_VERSION \
+       -DKDE_VERSION=$DK_KDE_VERSION \
+-      -DENABLE_QTVERSION=$DK_QTVERSION \
+-      -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE
++      -DENABLE_QTVERSION=$DK_QTVERSION
+ 
+ cmake --build . --config RelWithDebInfo --target ext_exiv2         -- -j$CPU_CORES
+ cp $DOWNLOAD_DIR/exiv2_manifest.txt $ORIG_WD/data/
+@@ -153,7 +152,7 @@ cmake -G "Unix Makefiles" .. \
+       -DENABLE_MEDIAPLAYER=ON \
+       -DENABLE_DBUS=OFF \
+       -DENABLE_APPSTYLES=ON \
+-      -DENABLE_QWEBENGINE=$DK_QTWEBENGINE \
++      -DENABLE_QWEBENGINE=ON \
+       -DENABLE_FACESENGINE_DNN=ON \
+       -DENABLE_KIO=OFF \
+       -DENABLE_LEGACY=OFF \
+@@ -210,8 +209,7 @@ cmake $ORIG_WD/../3rdparty \
+       -DKP_VERSION=$DK_KP_VERSION \
+       -DKA_VERSION=$DK_KA_VERSION \
+       -DKDE_VERSION=$DK_KDE_VERSION \
+-      -DENABLE_QTVERSION=$DK_QTVERSION \
+-      -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE
++      -DENABLE_QTVERSION=$DK_QTVERSION
+ 
+ cmake --build . --config RelWithDebInfo --target ext_gmic_qt    -- -j$CPU_CORES
+ cmake --build . --config RelWithDebInfo --target ext_mosaicwall -- -j$CPU_CORES
+diff --git a/project/bundles/appimage/04-build-appimage.sh b/project/bundles/appimage/04-build-appimage.sh
+index 706ddd2d76e..c8da181f9d0 100755
+--- a/project/bundles/appimage/04-build-appimage.sh
++++ b/project/bundles/appimage/04-build-appimage.sh
+@@ -182,15 +182,9 @@ cp -r /usr/share/metainfo/org.kde.showfoto.appdata.xml    ./usr/share/metainfo
+ cp -r /usr/share/applications/org.kde.digikam.desktop     ./usr/share/applications
+ cp -r /usr/share/applications/org.kde.showfoto.desktop    ./usr/share/applications
+ 
+-# NOTE: no resources data are provided with QtWebKit
++echo -e "------------- Copy QWebEngine bin data files\n"
+ 
+-if [[ $DK_QTWEBENGINE = 1 ]] ; then
+-
+-    echo -e "------------- Copy QWebEngine bin data files\n"
+-
+-    cp -r /usr/resources ./usr
+-
+-fi
++cp -r /usr/resources ./usr
+ 
+ echo -e "------------- Copy libgphoto2 drivers\n"
+ 
+@@ -324,22 +318,9 @@ else
+ 
+ fi
+ 
+-if [[ $DK_QTWEBENGINE = 1 ]] ; then
+-
+-    echo -e "------------- Copy QtWebEngine runtime process\n"
+-
+-    [[ -e /usr/libexec/QtWebEngineProcess ]] && cp /usr/libexec/QtWebEngineProcess ./usr/bin
++echo -e "------------- Copy QtWebEngine runtime process\n"
+ 
+-else
+-
+-    echo -e "------------- Copy QtWebKit runtime process\n"
+-
+-    [[ -e /usr/libexec/QtWebNetworkProcess ]] && cp /usr/libexec/QtWebNetworkProcess ./usr/bin
+-    [[ -e /usr/libexec/QtWebProcess ]]        && cp /usr/libexec/QtWebProcess        ./usr/bin
+-    [[ -e /usr/libexec/QtWebStorageProcess ]] && cp /usr/libexec/QtWebStorageProcess ./usr/bin
+-    [[ -e /usr/libexec/QtWebPluginProcess ]]  && cp /usr/libexec/QtWebPluginProcess  ./usr/bin
+-
+-fi
++[[ -e /usr/libexec/QtWebEngineProcess ]] && cp /usr/libexec/QtWebEngineProcess ./usr/bin
+ 
+ echo -e "------------- Copy Solid binary\n"
+ 
+diff --git a/project/bundles/appimage/config.sh b/project/bundles/appimage/config.sh
+index 08489ea939e..57603d9b047 100644
+--- a/project/bundles/appimage/config.sh
++++ b/project/bundles/appimage/config.sh
+@@ -46,9 +46,6 @@ DK_QTVERSION="6"
+ # Installer will include or not digiKam debug symbols
+ DK_DEBUG=0
+ 
+-# Option to use QtWebEngine instead QtWebkit
+-DK_QTWEBENGINE=1
+-
+ # Installer sub version to differentiates newer updates of the installer itself, even if the underlying application hasn’t changed.
+ #DK_SUBVER="-01"
+ 
+diff --git a/project/bundles/appimage/tools/installextralibsdep.sh b/project/bundles/appimage/tools/installextralibsdep.sh
+index 444aab05fa6..a71ef2c19cf 100755
+--- a/project/bundles/appimage/tools/installextralibsdep.sh
++++ b/project/bundles/appimage/tools/installextralibsdep.sh
+@@ -44,8 +44,7 @@ cmake $ORIG_WD/../3rdparty \
+       -DEXTERNALS_DOWNLOAD_DIR=$DOWNLOAD_DIR \
+       -DKA_VERSION=$DK_KA_VERSION \
+       -DKDE_VERSION=$DK_KDE_VERSION \
+-      -DENABLE_QTVERSION=$DK_QTVERSION \
+-      -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE
++      -DENABLE_QTVERSION=$DK_QTVERSION
+ 
+ cmake --build . --config RelWithDebInfo --target ext_$1 -- -j$CPU_CORES
+ 
+diff --git a/project/bundles/appimage/tools/installhostdeps.sh b/project/bundles/appimage/tools/installhostdeps.sh
+index e0ac83c271f..f681882edf8 100755
+--- a/project/bundles/appimage/tools/installhostdeps.sh
++++ b/project/bundles/appimage/tools/installhostdeps.sh
+@@ -43,9 +43,7 @@ cmake $ORIG_WD/../3rdparty \
+       -DEXTERNALS_DOWNLOAD_DIR=$DOWNLOAD_DIR \
+       -DKA_VERSION=$DK_KA_VERSION \
+       -DKDE_VERSION=$DK_KDE_VERSION \
+-      -DENABLE_QTVERSION=$DK_QTVERSION \
+-      -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+-      -DQTWEBENGINE_VERSION=$DK_QTWEBENGINEVERSION
++      -DENABLE_QTVERSION=$DK_QTVERSION
+ 
+ cmake --build . --config RelWithDebInfo --target ext_$1 -- -j$CPU_CORES
+ 
+diff --git a/project/bundles/homebrew/01-build-homebrew.sh b/project/bundles/homebrew/01-build-homebrew.sh
+index 19b16074f65..22e9cc86533 100755
+--- a/project/bundles/homebrew/01-build-homebrew.sh
++++ b/project/bundles/homebrew/01-build-homebrew.sh
+@@ -177,7 +177,6 @@ rm -rf $BUILDING_DIR/* || true
+ #       -DKP_VERSION=$DK_KP_VERSION \
+ #       -DKDE_VERSION=$DK_KDE_VERSION \
+ #       -DENABLE_QTVERSION=$DK_QTVERSION \
+-#       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+ #       -Wno-dev
+ #
+ #cmake --build . --config RelWithDebInfo --target ext_libjxl      -- -j$CPU_CORES
+diff --git a/project/bundles/homebrew/02-build-extralibs.sh b/project/bundles/homebrew/02-build-extralibs.sh
+index 38099b33663..0d88896d472 100755
+--- a/project/bundles/homebrew/02-build-extralibs.sh
++++ b/project/bundles/homebrew/02-build-extralibs.sh
+@@ -85,7 +85,6 @@ cmake $ORIG_WD/../3rdparty \
+        -DKP_VERSION=$DK_KP_VERSION \
+        -DKDE_VERSION=$DK_KDE_VERSION \
+        -DENABLE_QTVERSION=$DK_QTVERSION \
+-       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+        -Wno-dev
+ 
+ # NOTE: The order to compile each component here is very important.
+diff --git a/project/bundles/homebrew/03-build-digikam.sh b/project/bundles/homebrew/03-build-digikam.sh
+index 4023fc36552..442df03b6bd 100755
+--- a/project/bundles/homebrew/03-build-digikam.sh
++++ b/project/bundles/homebrew/03-build-digikam.sh
+@@ -62,7 +62,6 @@ rm -rf $BUILDING_DIR/* || true
+ #       -DKA_VERSION=$DK_KA_VERSION \
+ #       -DKDE_VERSION=$DK_KDE_VERSION \
+ #       -DENABLE_QTVERSION=$DK_QTVERSION \
+-#       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+ #       -DMACOSX_DEPLOYMENT_TARGET=$OSX_MIN_TARGET \
+ #       -Wno-dev
+ 
+@@ -203,7 +202,6 @@ cmake $ORIG_WD/../3rdparty \
+        -DKA_VERSION=$DK_KA_VERSION \
+        -DKDE_VERSION=$DK_KDE_VERSION \
+        -DENABLE_QTVERSION=$DK_QTVERSION \
+-       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+        -Wno-dev
+ 
+ cmake --build . --config RelWithDebInfo --target ext_gmic_qt    -- -j$CPU_CORES
+diff --git a/project/bundles/homebrew/config.sh b/project/bundles/homebrew/config.sh
+index a65a80dd98a..41b819d3376 100644
+--- a/project/bundles/homebrew/config.sh
++++ b/project/bundles/homebrew/config.sh
+@@ -103,9 +103,6 @@ DK_VERSION=master
+ # Installer will include or not digiKam debug symbols
+ DK_DEBUG=0
+ 
+-# Option to use QtWebEngine instead QtWebkit
+-DK_QTWEBENGINE=1
+-
+ # Sign bundles with GPG. Passphrase must be hosted in ~/.gnupg/dkorg-gpg-pwd.txt
+ DK_SIGN=0
+ 
+diff --git a/project/bundles/homebrew/tools/installextralibsdep.sh b/project/bundles/homebrew/tools/installextralibsdep.sh
+index 788be7de073..5a4fbc88778 100755
+--- a/project/bundles/homebrew/tools/installextralibsdep.sh
++++ b/project/bundles/homebrew/tools/installextralibsdep.sh
+@@ -65,7 +65,6 @@ cmake $ORIG_WD/../3rdparty \
+        -DKA_VERSION=$DK_KA_VERSION \
+        -DKDE_VERSION=$DK_KDE_VERSION \
+        -DENABLE_QTVERSION=$DK_QTVERSION \
+-       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+        -Wno-dev
+ 
+ cmake --build . --config RelWithDebInfo --target ext_$1 -- -j$CPU_CORES
+diff --git a/project/bundles/homebrew/tools/installmacportsdeps.sh b/project/bundles/homebrew/tools/installmacportsdeps.sh
+index 1bad601b731..f1a9c4ec1e5 100755
+--- a/project/bundles/homebrew/tools/installmacportsdeps.sh
++++ b/project/bundles/homebrew/tools/installmacportsdeps.sh
+@@ -70,7 +70,6 @@ cmake $ORIG_WD/../3rdparty \
+        -DKA_VERSION=$DK_KA_VERSION \
+        -DKDE_VERSION=$DK_KDE_VERSION \
+        -DENABLE_QTVERSION=$DK_QTVERSION \
+-       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+        -Wno-dev
+ 
+ cmake --build . --config RelWithDebInfo --target ext_$1     -- -j$CPU_CORES
+diff --git a/project/bundles/macports/01-build-macports.sh b/project/bundles/macports/01-build-macports.sh
+index 859547d8655..9c7c0cf8612 100755
+--- a/project/bundles/macports/01-build-macports.sh
++++ b/project/bundles/macports/01-build-macports.sh
+@@ -319,7 +319,6 @@ cmake $ORIG_WD/../3rdparty \
+        -DKP_VERSION=$DK_KP_VERSION \
+        -DKDE_VERSION=$DK_KDE_VERSION \
+        -DENABLE_QTVERSION=$DK_QTVERSION \
+-       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+        -DARCH_TARGET=$ARCH_TARGET \
+        -Wno-dev
+ 
+@@ -341,16 +340,7 @@ if [[ $DK_QTVERSION = 5 ]] ; then
+     port install qt$DK_QTVERSION-qtnetworkauth
+     port install qt$DK_QTVERSION-sqlite-plugin
+     port install qt$DK_QTVERSION-mysql-plugin $MP_MARIADB_VARIANT
+-
+-    if [[ $DK_QTWEBENGINE = 1 ]] ; then
+-
+-        port install qt$DK_QTVERSION-qtwebengine
+-
+-    else
+-
+-        port install qt$DK_QTVERSION-qtwebkit
+-
+-    fi
++    port install qt$DK_QTVERSION-qtwebengine
+ 
+ else
+ 
+@@ -366,7 +356,6 @@ else
+            -DKP_VERSION=$DK_KP_VERSION \
+            -DKDE_VERSION=$DK_KDE_VERSION \
+            -DENABLE_QTVERSION=$DK_QTVERSION \
+-           -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+            -DARCH_TARGET=$ARCH_TARGET \
+            -Wno-dev
+ 
+diff --git a/project/bundles/macports/02-build-extralibs.sh b/project/bundles/macports/02-build-extralibs.sh
+index a94632c1a69..3b1b2ec70a5 100755
+--- a/project/bundles/macports/02-build-extralibs.sh
++++ b/project/bundles/macports/02-build-extralibs.sh
+@@ -69,7 +69,6 @@ cmake $ORIG_WD/../3rdparty \
+        -DKP_VERSION=$DK_KP_VERSION \
+        -DKDE_VERSION=$DK_KDE_VERSION \
+        -DENABLE_QTVERSION=$DK_QTVERSION \
+-       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+        -Wno-dev
+ 
+ # NOTE: The order to compile each component here is very important.
+diff --git a/project/bundles/macports/03-build-digikam.sh b/project/bundles/macports/03-build-digikam.sh
+index 11c6398f609..6028cd0b497 100755
+--- a/project/bundles/macports/03-build-digikam.sh
++++ b/project/bundles/macports/03-build-digikam.sh
+@@ -62,7 +62,6 @@ cmake $ORIG_WD/../3rdparty \
+        -DKA_VERSION=$DK_KA_VERSION \
+        -DKDE_VERSION=$DK_KDE_VERSION \
+        -DENABLE_QTVERSION=$DK_QTVERSION \
+-       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+        -DMACOSX_DEPLOYMENT_TARGET=$OSX_MIN_TARGET \
+        -Wno-dev
+ 
+@@ -141,12 +140,6 @@ sed -e "s/DBUILD_TESTING=ON/DBUILD_TESTING=OFF/g"               ./bootstrap.macp
+ sed -e "s/DENABLE_DBUS=ON/DENABLE_DBUS=OFF/g"                   ./bootstrap.macports > ./tmp.macports ; mv -f ./tmp.macports ./bootstrap.macports
+ sed -e "s/DENABLE_APPSTYLES=OFF/DENABLE_APPSTYLES=ON/g"         ./bootstrap.macports > ./tmp.macports ; mv -f ./tmp.macports ./bootstrap.macports
+ 
+-if [[ $DK_QTWEBENGINE = 0 ]] ; then
+-
+-    sed -e "s/DENABLE_QWEBENGINE=ON/DENABLE_QWEBENGINE=OFF/g"   ./bootstrap.macports > ./tmp.macports ; mv -f ./tmp.macports ./bootstrap.macports
+-
+-fi
+-
+ chmod +x ./bootstrap.macports
+ 
+ cp -f $ORIG_WD/fixbundledatapath.sh $DK_BUILDTEMP/digikam-$DK_VERSION
+@@ -208,7 +201,6 @@ cmake $ORIG_WD/../3rdparty \
+        -DKA_VERSION=$DK_KA_VERSION \
+        -DKDE_VERSION=$DK_KDE_VERSION \
+        -DENABLE_QTVERSION=$DK_QTVERSION \
+-       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+        -Wno-dev
+ 
+ cmake --build . --config RelWithDebInfo --target ext_gmic_qt    -- -j$CPU_CORES
+diff --git a/project/bundles/macports/04-build-installer.sh b/project/bundles/macports/04-build-installer.sh
+index 01231e0deef..32253d0fd6c 100755
+--- a/project/bundles/macports/04-build-installer.sh
++++ b/project/bundles/macports/04-build-installer.sh
+@@ -283,20 +283,6 @@ echo "---------- Copying Qt Web Backend files..."
+ #       libexec/qt5/lib/QtWebEngineCore.framework/Versions/5/Helpers/QtWebEngineProcess.app/Contents/MacOS
+ #       instead of libexec/qt5/libexec/. No needs to make extra rules for this runtime process.
+ 
+-if [[ $DK_QTWEBENGINE = 0 ]] ; then
+-
+-    # Rules for QtWebKit runtime process
+-
+-    mkdir -p $TEMPROOT/libexec/qt5/libexec/
+-
+-    # QtWebKit runtime process
+-
+-    [[ -e $INSTALL_PREFIX/libexec/qt5/libexec/QtWebNetworkProcess ]] && cp -a "$INSTALL_PREFIX/libexec/qt5/libexec/QtWebNetworkProcess" "$TEMPROOT/libexec/qt5/libexec/"
+-    [[ -e $INSTALL_PREFIX/libexec/qt5/libexec/QtWebProcess ]]        && cp -a "$INSTALL_PREFIX/libexec/qt5/libexec/QtWebProcess"        "$TEMPROOT/libexec/qt5/libexec/"
+-    [[ -e $INSTALL_PREFIX/libexec/qt5/libexec/QtWebStorageProcess ]] && cp -a "$INSTALL_PREFIX/libexec/qt5/libexec/QtWebStorageProcess" "$TEMPROOT/libexec/qt5/libexec/"
+-
+-fi
+-
+ echo "---------- Copying i18n..."
+ 
+ i18nprefix=$INSTALL_PREFIX/share/
+diff --git a/project/bundles/macports/config.sh b/project/bundles/macports/config.sh
+index aa9f0577512..153fecbaa92 100644
+--- a/project/bundles/macports/config.sh
++++ b/project/bundles/macports/config.sh
+@@ -129,9 +129,6 @@ DK_VERSION=master
+ # Installer will include or not digiKam debug symbols
+ DK_DEBUG=0
+ 
+-# Option to use QtWebEngine instead QtWebkit
+-DK_QTWEBENGINE=1
+-
+ # Sign bundles with GPG. Passphrase must be hosted in ~/.gnupg/dkorg-gpg-pwd.txt
+ DK_SIGN=0
+ 
+diff --git a/project/bundles/macports/tools/installextralibsdep.sh b/project/bundles/macports/tools/installextralibsdep.sh
+index 788be7de073..5a4fbc88778 100755
+--- a/project/bundles/macports/tools/installextralibsdep.sh
++++ b/project/bundles/macports/tools/installextralibsdep.sh
+@@ -65,7 +65,6 @@ cmake $ORIG_WD/../3rdparty \
+        -DKA_VERSION=$DK_KA_VERSION \
+        -DKDE_VERSION=$DK_KDE_VERSION \
+        -DENABLE_QTVERSION=$DK_QTVERSION \
+-       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+        -Wno-dev
+ 
+ cmake --build . --config RelWithDebInfo --target ext_$1 -- -j$CPU_CORES
+diff --git a/project/bundles/macports/tools/installmacportsdeps.sh b/project/bundles/macports/tools/installmacportsdeps.sh
+index 1bad601b731..f1a9c4ec1e5 100755
+--- a/project/bundles/macports/tools/installmacportsdeps.sh
++++ b/project/bundles/macports/tools/installmacportsdeps.sh
+@@ -70,7 +70,6 @@ cmake $ORIG_WD/../3rdparty \
+        -DKA_VERSION=$DK_KA_VERSION \
+        -DKDE_VERSION=$DK_KDE_VERSION \
+        -DENABLE_QTVERSION=$DK_QTVERSION \
+-       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+        -Wno-dev
+ 
+ cmake --build . --config RelWithDebInfo --target ext_$1     -- -j$CPU_CORES
+diff --git a/project/bundles/vcpkg/01-build-vcpkg.sh b/project/bundles/vcpkg/01-build-vcpkg.sh
+index caba528d271..eb67c364900 100755
+--- a/project/bundles/vcpkg/01-build-vcpkg.sh
++++ b/project/bundles/vcpkg/01-build-vcpkg.sh
+@@ -193,7 +193,6 @@ cmake $ORIG_WD/../3rdparty \
+       -DKP_VERSION=$DK_KP_VERSION \
+       -DKDE_VERSION=$DK_KDE_VERSION \
+       -DENABLE_QTVERSION=$DK_QTVERSION \
+-      -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+       -Wno-dev
+ 
+ cmake --build . --config RelWithDebInfo --target ext_exiv2 --parallel
+diff --git a/project/bundles/vcpkg/02-build-extralibs.sh b/project/bundles/vcpkg/02-build-extralibs.sh
+index b451383bf35..fdb05828bf8 100755
+--- a/project/bundles/vcpkg/02-build-extralibs.sh
++++ b/project/bundles/vcpkg/02-build-extralibs.sh
+@@ -58,7 +58,6 @@ cmake $ORIG_WD/../3rdparty \
+       -DKP_VERSION=$DK_KP_VERSION \
+       -DKDE_VERSION=$DK_KDE_VERSION \
+       -DENABLE_QTVERSION=$DK_QTVERSION \
+-      -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+       -Wno-dev
+ 
+ # NOTE: The order to compile each component here is very important.
+diff --git a/project/bundles/vcpkg/03-build-digikam.sh b/project/bundles/vcpkg/03-build-digikam.sh
+index d7299ee22fb..03f7e751d25 100755
+--- a/project/bundles/vcpkg/03-build-digikam.sh
++++ b/project/bundles/vcpkg/03-build-digikam.sh
+@@ -81,7 +81,6 @@ cmake $ORIG_WD/../3rdparty \
+       -DKA_VERSION=$DK_KA_VERSION \
+       -DKDE_VERSION=$DK_KDE_VERSION \
+       -DENABLE_QTVERSION=$DK_QTVERSION \
+-      -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+       -Wno-dev
+ 
+ cmake --build . --config RelWithDebInfo --target ext_lensfun --parallel
+@@ -232,7 +231,6 @@ cmake $ORIG_WD/../3rdparty \
+       -DKA_VERSION=$DK_KA_VERSION \
+       -DKDE_VERSION=$DK_KDE_VERSION \
+       -DENABLE_QTVERSION=$DK_QTVERSION \
+-      -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+       -Wno-dev
+ 
+ cmake --build . --config RelWithDebInfo --target ext_mosaicwall --parallel
+-- 
+GitLab
+

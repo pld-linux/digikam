@@ -23,6 +23,7 @@ License:	GPL v2+
 Group:		X11/Applications/Graphics
 Source0:	https://download.kde.org/stable/digikam/%{version}/digiKam-%{version}.tar.xz
 # Source0-md5:	eb16222b62193462c99df04d0a5c9901
+Patch0:		%{name}-webkit.patch
 URL:		https://www.digikam.org/
 BuildRequires:	ImageMagick-devel >= 6.7.0
 BuildRequires:	ImageMagick-c++-devel >= 6.7.0
@@ -273,6 +274,7 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
 %setup -q
+%patch0 -p1 -R
 
 %build
 %cmake -B build \

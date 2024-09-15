@@ -17,12 +17,12 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	8.3.0
+Version:	8.4.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Graphics
-Source0:	https://download.kde.org/stable/digikam/%{version}/digiKam-%{version}-1.tar.xz
-# Source0-md5:	587650b53ae995402183454458ab3774
+Source0:	https://download.kde.org/stable/digikam/%{version}/digiKam-%{version}.tar.xz
+# Source0-md5:	eb16222b62193462c99df04d0a5c9901
 URL:		https://www.digikam.org/
 BuildRequires:	ImageMagick-devel >= 6.7.0
 BuildRequires:	ImageMagick-c++-devel >= 6.7.0
@@ -46,6 +46,7 @@ BuildRequires:	libgphoto2-devel >= 2.5.0
 BuildRequires:	libgomp-devel
 BuildRequires:	libheif-devel >= 1.6.0
 BuildRequires:	libjpeg-devel >= 8
+BuildRequires:	libjxl-devel
 BuildRequires:	liblqr-devel >= 0.4.1
 # internal libpgf is used (core/libs/pgfutils/libpgf)
 #BuildRequires:	libpgf-devel

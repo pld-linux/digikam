@@ -274,7 +274,7 @@ Interfejs KDE do gphoto2 - pliki nagłówkowe.
 
 %prep
 %setup -q
-%patch0 -p1 -R
+%patch -P 0 -p1 -R
 
 %build
 %cmake -B build \

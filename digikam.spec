@@ -17,12 +17,12 @@
 Summary:	A KDE frontend for gphoto2
 Summary(pl.UTF-8):	Interfejs KDE do gphoto2
 Name:		digikam
-Version:	8.4.0
-Release:	2
+Version:	8.5.0
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Graphics
 Source0:	https://download.kde.org/stable/digikam/%{version}/digiKam-%{version}.tar.xz
-# Source0-md5:	eb16222b62193462c99df04d0a5c9901
+# Source0-md5:	baf9bfd4a11ffdb7e362667a5d4385c6
 Patch0:		%{name}-webkit.patch
 URL:		https://www.digikam.org/
 BuildRequires:	ImageMagick-devel >= 6.7.0
@@ -47,7 +47,7 @@ BuildRequires:	libgphoto2-devel >= 2.5.0
 BuildRequires:	libgomp-devel
 BuildRequires:	libheif-devel >= 1.6.0
 BuildRequires:	libjpeg-devel >= 8
-BuildRequires:	libjxl-devel
+BuildRequires:	libjxl-devel >= 0.7
 BuildRequires:	liblqr-devel >= 0.4.1
 # internal libpgf is used (core/libs/pgfutils/libpgf)
 #BuildRequires:	libpgf-devel
@@ -348,13 +348,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/hicolor/32x32/actions/tag.png
 %{_iconsdir}/hicolor/32x32/actions/tag-*.png
 %{_iconsdir}/hicolor/32x32/actions/underexposure.png
-%{_iconsdir}/hicolor/*x*/apps/avplayer.png
 %{_iconsdir}/hicolor/*x*/apps/digikam.png
 %{_iconsdir}/hicolor/*x*/apps/dk-*.png
 %{_iconsdir}/hicolor/*x*/apps/expoblending.png
 %{_iconsdir}/hicolor/*x*/apps/panorama.png
 %{_iconsdir}/hicolor/*x*/apps/showfoto.png
-%{_iconsdir}/hicolor/scalable/apps/avplayer.svgz
 %{_iconsdir}/hicolor/scalable/apps/digikam.svgz
 %{_iconsdir}/hicolor/scalable/apps/dk-*.svgz
 %{_iconsdir}/hicolor/scalable/apps/panorama.svgz

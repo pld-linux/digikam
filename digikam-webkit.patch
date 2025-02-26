@@ -211,23 +211,21 @@ diff --git a/core/app/CMakeLists.txt b/core/app/CMakeLists.txt
 index a8a6b9f7c28..2818da113e2 100644
 --- a/core/app/CMakeLists.txt
 +++ b/core/app/CMakeLists.txt
-@@ -55,15 +55,10 @@ set(DIGIKAM_TARGET_INCLUDES $<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::PrintSuppor
-                             ${DK_LOCAL_INCLUDES_UTILS}
- )
+@@ -61,17 +61,10 @@ if(KF${QT_VERSION_MAJOR}IconThemes_FOUND
+         $<TARGET_PROPERTY:KF${QT_VERSION_MAJOR}::IconThemes,INTERFACE_INCLUDE_DIRECTORIES>)
+ endif()
  
 -if(ENABLE_QWEBENGINE)
--    set(DIGIKAM_TARGET_INCLUDES
--        ${DIGIKAM_TARGET_INCLUDES}
--        $<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebEngineWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+ set(DIGIKAM_TARGET_INCLUDES
+     ${DIGIKAM_TARGET_INCLUDES}
+     $<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebEngineWidgets,INTERFACE_INCLUDE_DIRECTORIES>
+ )
 -else()
--    set(DIGIKAM_TARGET_INCLUDES
--        ${DIGIKAM_TARGET_INCLUDES}
--        $<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebKitWidgets,INTERFACE_INCLUDE_DIRECTORIES>)
+-set(DIGIKAM_TARGET_INCLUDES
+-    ${DIGIKAM_TARGET_INCLUDES}
+-    $<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebKitWidgets,INTERFACE_INCLUDE_DIRECTORIES>
+-)
 -endif()
-+set(DIGIKAM_TARGET_INCLUDES
-+    ${DIGIKAM_TARGET_INCLUDES}
-+    $<TARGET_PROPERTY:Qt${QT_VERSION_MAJOR}::WebEngineWidgets,INTERFACE_INCLUDE_DIRECTORIES>
-+)
  
  if(KF${QT_VERSION_MAJOR}KIO_FOUND)
      set(DIGIKAM_TARGET_INCLUDES
@@ -295,9 +293,9 @@ diff --git a/core/app/main/main.cpp b/core/app/main/main.cpp
 index fc2d0fcbf03..bac2525e117 100644
 --- a/core/app/main/main.cpp
 +++ b/core/app/main/main.cpp
-@@ -169,12 +169,8 @@ extern "C" MAIN_EXPORT int MAIN_FN(int argc, char** argv)
- 
-     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::RoundPreferFloor);
+@@ -151,12 +151,8 @@ extern "C" MAIN_EXPORT int MAIN_FN(int a
+         QCoreApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
+     }
  
 -#ifdef HAVE_QWEBENGINE
 -
@@ -305,9 +303,9 @@ index fc2d0fcbf03..bac2525e117 100644
  
 -#endif
 -
-     QApplication app(argc, argv);
+     // Common OpenCL rules from digikam_globals.
  
-     digikamSetDebugFilterRules(system.enableLogging);
+     setOpenCLEnvironment(system.enableOpenCL);
 diff --git a/core/app/utils/digikam_config.h.cmake.in b/core/app/utils/digikam_config.h.cmake.in
 index eaaccb1fc79..6b91b012b39 100644
 --- a/core/app/utils/digikam_config.h.cmake.in
@@ -333,7 +331,7 @@ diff --git a/core/app/utils/digikam_globals.cpp b/core/app/utils/digikam_globals
 index 7dacb8f443a..0d8e60f6023 100644
 --- a/core/app/utils/digikam_globals.cpp
 +++ b/core/app/utils/digikam_globals.cpp
-@@ -319,17 +319,8 @@ void openOnlineDocumentation(const QString& section, const QString& chapter, con
+@@ -319,17 +319,8 @@ void openOnlineDocumentation(const QStri
          }
      }
  
@@ -350,7 +348,7 @@ index 7dacb8f443a..0d8e60f6023 100644
 -
  }
  
- } // namespace Digikam
+ void setOpenCLEnvironment(bool b)
 diff --git a/core/app/utils/digikam_globals_bundles.cpp b/core/app/utils/digikam_globals_bundles.cpp
 index a1d53462369..334293e8481 100644
 --- a/core/app/utils/digikam_globals_bundles.cpp
@@ -386,14 +384,11 @@ index 08af9816b8f..122d2e6bdb8 100644
  // KDE includes
  
  #include <ki18n_version.h>
-@@ -65,6 +59,7 @@
+@@ -65,3 +59,4 @@
  #include "digikam_debug.h"
  #include "drawdecoder.h"
  #include "rawcameradlg.h"
 +#include "webbrowserdlg.h"
- 
- // Windows includes
- 
 diff --git a/core/app/views/stack/welcomepageview.cpp b/core/app/views/stack/welcomepageview.cpp
 index b3f9078126f..b328ad0bacf 100644
 --- a/core/app/views/stack/welcomepageview.cpp
@@ -1195,10 +1190,10 @@ diff --git a/core/libs/dialogs/libsinfodlg.cpp b/core/libs/dialogs/libsinfodlg.c
 index 77645d833f4..ed2c0cd7e65 100644
 --- a/core/libs/dialogs/libsinfodlg.cpp
 +++ b/core/libs/dialogs/libsinfodlg.cpp
-@@ -26,11 +26,7 @@
+@@ -25,11 +25,7 @@
+ #include <QStandardPaths>
  #include <QFile>
  #include <QTextStream>
- 
 -#ifdef HAVE_QWEBENGINE
 -#   include <QtWebEngineWidgetsVersion>
 -#else
@@ -1208,7 +1203,7 @@ index 77645d833f4..ed2c0cd7e65 100644
  
  // KDE includes
  
-@@ -247,18 +243,9 @@ LibsInfoDlg::LibsInfoDlg(QWidget* const parent)
+@@ -258,18 +254,9 @@ LibsInfoDlg::LibsInfoDlg(QWidget* const
  
  #endif
  
@@ -1481,24 +1476,24 @@ diff --git a/core/libs/widgets/mainview/dxmlguiwindow_p.h b/core/libs/widgets/ma
 index d7f3c477932..fcc9f97f2a4 100644
 --- a/core/libs/widgets/mainview/dxmlguiwindow_p.h
 +++ b/core/libs/widgets/mainview/dxmlguiwindow_p.h
-@@ -48,9 +48,7 @@
- #include <QDesktopServices>
- #include <QDialogButtonBox>
- 
+@@ -99,9 +99,7 @@
+ #include "daboutdata.h"
+ #include "dpluginloader.h"
+ #include "solidhardwaredlg.h"
 -#ifdef HAVE_QWEBENGINE
 -#   include "webbrowserdlg.h"
 -#endif
 +#include "webbrowserdlg.h"
  
- // KDE includes
- 
+ namespace Digikam
+ {
 diff --git a/core/showfoto/main/main.cpp b/core/showfoto/main/main.cpp
 index 8594b780688..8d20c94e44c 100644
 --- a/core/showfoto/main/main.cpp
 +++ b/core/showfoto/main/main.cpp
-@@ -154,12 +154,8 @@ extern "C" MAIN_EXPORT int MAIN_FN(int argc, char** argv)
- 
-     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::RoundPreferFloor);
+@@ -136,12 +136,8 @@ extern "C" MAIN_EXPORT int MAIN_FN(int a
+         QCoreApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
+     }
  
 -#ifdef HAVE_QWEBENGINE
 -
@@ -1506,9 +1501,9 @@ index 8594b780688..8d20c94e44c 100644
  
 -#endif
 -
-     QApplication app(argc, argv);
+     // Common OpenCL rules from digikam_globals.
  
-     digikamSetDebugFilterRules(system.enableLogging);
+     setOpenCLEnvironment(system.enableOpenCL);
 diff --git a/core/tests/CMakeLists.txt b/core/tests/CMakeLists.txt
 index 037a6dd2d0a..41486f4ab6a 100644
 --- a/core/tests/CMakeLists.txt
@@ -2858,7 +2853,7 @@ diff --git a/project/bundles/appimage/01-build-host.sh b/project/bundles/appimag
 index f8c317f3360..5d72686e7a2 100755
 --- a/project/bundles/appimage/01-build-host.sh
 +++ b/project/bundles/appimage/01-build-host.sh
-@@ -81,8 +81,7 @@ cmake $ORIG_WD/../3rdparty \
+@@ -82,8 +82,7 @@ cmake $ORIG_WD/../3rdparty \
        -DKA_VERSION=$DK_KA_VERSION \
        -DKP_VERSION=$DK_KP_VERSION \
        -DKDE_VERSION=$DK_KDE_VERSION \
@@ -2868,7 +2863,7 @@ index f8c317f3360..5d72686e7a2 100755
  
  # Install new cmake recent version and shared lib
  
-@@ -107,9 +106,7 @@ cmake $ORIG_WD/../3rdparty \
+@@ -108,9 +107,7 @@ cmake $ORIG_WD/../3rdparty \
        -DKA_VERSION=$DK_KA_VERSION \
        -DKP_VERSION=$DK_KP_VERSION \
        -DKDE_VERSION=$DK_KDE_VERSION \
@@ -2879,9 +2874,9 @@ index f8c317f3360..5d72686e7a2 100755
  
  # Low level libraries and Qt dependencies
  # NOTE: The order to compile each component here is very important.
-@@ -121,10 +118,6 @@ cmake --build . --config RelWithDebInfo --target ext_openssl         -- -j$CPU_C
+@@ -127,10 +124,6 @@ echo "Qt will be compiled with $QT_CORES
  
- cmake --build . --config RelWithDebInfo --target ext_qt$DK_QTVERSION -- -j$CPU_CORES    # depend of tiff, png, jpeg
+ cmake --build . --config RelWithDebInfo --target ext_qt$DK_QTVERSION -- -j$QT_CORES    # depend of tiff, png, jpeg
  
 -if [[ $DK_QTWEBENGINE = 0 ]] ; then
 -    cmake --build . --config RelWithDebInfo --target ext_qtwebkit    -- -j$CPU_CORES    # depend of Qt and libicu
@@ -3027,63 +3022,51 @@ index e0ac83c271f..f681882edf8 100755
  
  cmake --build . --config RelWithDebInfo --target ext_$1 -- -j$CPU_CORES
  
-diff --git a/project/bundles/homebrew/01-build-homebrew.sh b/project/bundles/homebrew/01-build-homebrew.sh
-index 19b16074f65..22e9cc86533 100755
---- a/project/bundles/homebrew/01-build-homebrew.sh
-+++ b/project/bundles/homebrew/01-build-homebrew.sh
-@@ -177,7 +177,6 @@ rm -rf $BUILDING_DIR/* || true
- #       -DKP_VERSION=$DK_KP_VERSION \
- #       -DKDE_VERSION=$DK_KDE_VERSION \
- #       -DENABLE_QTVERSION=$DK_QTVERSION \
--#       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
- #       -Wno-dev
- #
- #cmake --build . --config RelWithDebInfo --target ext_libjxl      -- -j$CPU_CORES
 diff --git a/project/bundles/homebrew/02-build-extralibs.sh b/project/bundles/homebrew/02-build-extralibs.sh
 index 38099b33663..0d88896d472 100755
 --- a/project/bundles/homebrew/02-build-extralibs.sh
 +++ b/project/bundles/homebrew/02-build-extralibs.sh
-@@ -85,7 +85,6 @@ cmake $ORIG_WD/../3rdparty \
+@@ -89,7 +89,6 @@ cmake $ORIG_WD/../3rdparty \
         -DKP_VERSION=$DK_KP_VERSION \
         -DKDE_VERSION=$DK_KDE_VERSION \
         -DENABLE_QTVERSION=$DK_QTVERSION \
 -       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+        -DDK_APPLE_PACKAGE_MANAGER=$DK_APPLE_PACKAGE_MANAGER \
+        -DARCH_TARGET=$ARCH_TARGET \
         -Wno-dev
- 
- # NOTE: The order to compile each component here is very important.
 diff --git a/project/bundles/homebrew/03-build-digikam.sh b/project/bundles/homebrew/03-build-digikam.sh
 index 4023fc36552..442df03b6bd 100755
 --- a/project/bundles/homebrew/03-build-digikam.sh
 +++ b/project/bundles/homebrew/03-build-digikam.sh
-@@ -62,7 +62,6 @@ rm -rf $BUILDING_DIR/* || true
+@@ -66,7 +66,6 @@ rm -rf $BUILDING_DIR/* || true
  #       -DKA_VERSION=$DK_KA_VERSION \
  #       -DKDE_VERSION=$DK_KDE_VERSION \
  #       -DENABLE_QTVERSION=$DK_QTVERSION \
 -#       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
  #       -DMACOSX_DEPLOYMENT_TARGET=$OSX_MIN_TARGET \
- #       -Wno-dev
- 
-@@ -203,7 +202,6 @@ cmake $ORIG_WD/../3rdparty \
+ #       -DARCH_TARGET=$ARCH_TARGET \
+ #       -DDK_APPLE_PACKAGE_MANAGER=$DK_APPLE_PACKAGE_MANAGER \
+@@ -224,7 +223,6 @@ cmake $ORIG_WD/../3rdparty \
         -DKA_VERSION=$DK_KA_VERSION \
         -DKDE_VERSION=$DK_KDE_VERSION \
         -DENABLE_QTVERSION=$DK_QTVERSION \
 -       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
-        -Wno-dev
- 
- cmake --build . --config RelWithDebInfo --target ext_gmic_qt    -- -j$CPU_CORES
+        -DMACOSX_DEPLOYMENT_TARGET=$OSX_MIN_TARGET \
+        -DARCH_TARGET=$ARCH_TARGET \
+        -DDK_APPLE_PACKAGE_MANAGER=$DK_APPLE_PACKAGE_MANAGER \
 diff --git a/project/bundles/homebrew/config.sh b/project/bundles/homebrew/config.sh
 index a65a80dd98a..41b819d3376 100644
 --- a/project/bundles/homebrew/config.sh
 +++ b/project/bundles/homebrew/config.sh
-@@ -103,9 +103,6 @@ DK_VERSION=master
+@@ -114,9 +114,6 @@ DK_APPLE_PACKAGE_MANAGER="homebrew"
  # Installer will include or not digiKam debug symbols
  DK_DEBUG=0
  
 -# Option to use QtWebEngine instead QtWebkit
 -DK_QTWEBENGINE=1
 -
- # Sign bundles with GPG. Passphrase must be hosted in ~/.gnupg/dkorg-gpg-pwd.txt
- DK_SIGN=0
+ # copy debug symbols into ./data/symbols for debugging
+ DK_COPY_DEBUG_SYMBOLS=1
  
 diff --git a/project/bundles/homebrew/tools/installextralibsdep.sh b/project/bundles/homebrew/tools/installextralibsdep.sh
 index 788be7de073..5a4fbc88778 100755
@@ -3113,40 +3096,32 @@ diff --git a/project/bundles/macports/01-build-macports.sh b/project/bundles/mac
 index 859547d8655..9c7c0cf8612 100755
 --- a/project/bundles/macports/01-build-macports.sh
 +++ b/project/bundles/macports/01-build-macports.sh
-@@ -319,7 +319,6 @@ cmake $ORIG_WD/../3rdparty \
+@@ -350,17 +350,8 @@ port install qt$DK_QTVERSION-qtmultimedi
+ port install qt$DK_QTVERSION-qtnetworkauth -examples -tests
+ port install qt$DK_QTVERSION-sqlite-plugin
+ port install qt$DK_QTVERSION-mysql-plugin $MP_MARIADB_VARIANT
+-
+-if [[ $DK_QTWEBENGINE = 1 ]] ; then
+-
+ port install qt$DK_QTVERSION-qtwebengine -examples -tests
+ 
+-else
+-
+-port install qt$DK_QTVERSION-qtwebkit
+-
+-fi
+-
+ port install boost
+ 
+ cmake $ORIG_WD/../3rdparty \
+@@ -371,7 +362,6 @@ cmake $ORIG_WD/../3rdparty \
         -DKP_VERSION=$DK_KP_VERSION \
         -DKDE_VERSION=$DK_KDE_VERSION \
         -DENABLE_QTVERSION=$DK_QTVERSION \
 -       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+        -DDK_APPLE_PACKAGE_MANAGER=$DK_APPLE_PACKAGE_MANAGER \
         -DARCH_TARGET=$ARCH_TARGET \
         -Wno-dev
- 
-@@ -341,16 +340,7 @@ if [[ $DK_QTVERSION = 5 ]] ; then
-     port install qt$DK_QTVERSION-qtnetworkauth
-     port install qt$DK_QTVERSION-sqlite-plugin
-     port install qt$DK_QTVERSION-mysql-plugin $MP_MARIADB_VARIANT
--
--    if [[ $DK_QTWEBENGINE = 1 ]] ; then
--
--        port install qt$DK_QTVERSION-qtwebengine
--
--    else
--
--        port install qt$DK_QTVERSION-qtwebkit
--
--    fi
-+    port install qt$DK_QTVERSION-qtwebengine
- 
- else
- 
-@@ -366,7 +356,6 @@ else
-            -DKP_VERSION=$DK_KP_VERSION \
-            -DKDE_VERSION=$DK_KDE_VERSION \
-            -DENABLE_QTVERSION=$DK_QTVERSION \
--           -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
-            -DARCH_TARGET=$ARCH_TARGET \
-            -Wno-dev
- 
 diff --git a/project/bundles/macports/02-build-extralibs.sh b/project/bundles/macports/02-build-extralibs.sh
 index a94632c1a69..3b1b2ec70a5 100755
 --- a/project/bundles/macports/02-build-extralibs.sh
@@ -3156,9 +3131,9 @@ index a94632c1a69..3b1b2ec70a5 100755
         -DKDE_VERSION=$DK_KDE_VERSION \
         -DENABLE_QTVERSION=$DK_QTVERSION \
 -       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
+        -DDK_APPLE_PACKAGE_MANAGER=$DK_APPLE_PACKAGE_MANAGER \
+        -DARCH_TARGET=$ARCH_TARGET \
         -Wno-dev
- 
- # NOTE: The order to compile each component here is very important.
 diff --git a/project/bundles/macports/03-build-digikam.sh b/project/bundles/macports/03-build-digikam.sh
 index 11c6398f609..6028cd0b497 100755
 --- a/project/bundles/macports/03-build-digikam.sh
@@ -3169,9 +3144,9 @@ index 11c6398f609..6028cd0b497 100755
         -DENABLE_QTVERSION=$DK_QTVERSION \
 -       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
         -DMACOSX_DEPLOYMENT_TARGET=$OSX_MIN_TARGET \
-        -Wno-dev
- 
-@@ -141,12 +140,6 @@ sed -e "s/DBUILD_TESTING=ON/DBUILD_TESTING=OFF/g"               ./bootstrap.macp
+        -DARCH_TARGET=$ARCH_TARGET \
+        -DDK_APPLE_PACKAGE_MANAGER=$DK_APPLE_PACKAGE_MANAGER \
+@@ -143,12 +142,6 @@ sed -e "s/DBUILD_TESTING=ON/DBUILD_TESTI
  sed -e "s/DENABLE_DBUS=ON/DENABLE_DBUS=OFF/g"                   ./bootstrap.macports > ./tmp.macports ; mv -f ./tmp.macports ./bootstrap.macports
  sed -e "s/DENABLE_APPSTYLES=OFF/DENABLE_APPSTYLES=ON/g"         ./bootstrap.macports > ./tmp.macports ; mv -f ./tmp.macports ./bootstrap.macports
  
@@ -3181,24 +3156,24 @@ index 11c6398f609..6028cd0b497 100755
 -
 -fi
 -
- chmod +x ./bootstrap.macports
+ if [[ $DK_QTVERSION = 6 ]] ; then
  
- cp -f $ORIG_WD/fixbundledatapath.sh $DK_BUILDTEMP/digikam-$DK_VERSION
-@@ -208,7 +201,6 @@ cmake $ORIG_WD/../3rdparty \
+     sed -e "s/DBUILD_WITH_QT6=OFF/DBUILD_WITH_QT6=ON/g"         ./bootstrap.macports > ./tmp.macports ; mv -f ./tmp.macports ./bootstrap.macports
+@@ -226,7 +219,6 @@ cmake $ORIG_WD/../3rdparty \
         -DKA_VERSION=$DK_KA_VERSION \
         -DKDE_VERSION=$DK_KDE_VERSION \
         -DENABLE_QTVERSION=$DK_QTVERSION \
 -       -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
-        -Wno-dev
- 
- cmake --build . --config RelWithDebInfo --target ext_gmic_qt    -- -j$CPU_CORES
+        -DMACOSX_DEPLOYMENT_TARGET=$OSX_MIN_TARGET \
+        -DARCH_TARGET=$ARCH_TARGET \
+        -DDK_APPLE_PACKAGE_MANAGER=$DK_APPLE_PACKAGE_MANAGER \
 diff --git a/project/bundles/macports/04-build-installer.sh b/project/bundles/macports/04-build-installer.sh
 index 01231e0deef..32253d0fd6c 100755
 --- a/project/bundles/macports/04-build-installer.sh
 +++ b/project/bundles/macports/04-build-installer.sh
-@@ -283,20 +283,6 @@ echo "---------- Copying Qt Web Backend files..."
- #       libexec/qt5/lib/QtWebEngineCore.framework/Versions/5/Helpers/QtWebEngineProcess.app/Contents/MacOS
- #       instead of libexec/qt5/libexec/. No needs to make extra rules for this runtime process.
+@@ -339,20 +339,6 @@ else
+ 
+ fi
  
 -if [[ $DK_QTWEBENGINE = 0 ]] ; then
 -
@@ -3255,18 +3230,6 @@ index 1bad601b731..f1a9c4ec1e5 100755
         -Wno-dev
  
  cmake --build . --config RelWithDebInfo --target ext_$1     -- -j$CPU_CORES
-diff --git a/project/bundles/vcpkg/01-build-vcpkg.sh b/project/bundles/vcpkg/01-build-vcpkg.sh
-index caba528d271..eb67c364900 100755
---- a/project/bundles/vcpkg/01-build-vcpkg.sh
-+++ b/project/bundles/vcpkg/01-build-vcpkg.sh
-@@ -193,7 +193,6 @@ cmake $ORIG_WD/../3rdparty \
-       -DKP_VERSION=$DK_KP_VERSION \
-       -DKDE_VERSION=$DK_KDE_VERSION \
-       -DENABLE_QTVERSION=$DK_QTVERSION \
--      -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
-       -Wno-dev
- 
- cmake --build . --config RelWithDebInfo --target ext_exiv2 --parallel
 diff --git a/project/bundles/vcpkg/02-build-extralibs.sh b/project/bundles/vcpkg/02-build-extralibs.sh
 index b451383bf35..fdb05828bf8 100755
 --- a/project/bundles/vcpkg/02-build-extralibs.sh
@@ -3290,8 +3253,8 @@ index d7299ee22fb..03f7e751d25 100755
 -      -DENABLE_QTWEBENGINE=$DK_QTWEBENGINE \
        -Wno-dev
  
- cmake --build . --config RelWithDebInfo --target ext_lensfun --parallel
-@@ -232,7 +231,6 @@ cmake $ORIG_WD/../3rdparty \
+ cmake --build . --config RelWithDebInfo --target ext_exiv2 --parallel
+@@ -234,7 +233,6 @@ cmake $ORIG_WD/../3rdparty \
        -DKA_VERSION=$DK_KA_VERSION \
        -DKDE_VERSION=$DK_KDE_VERSION \
        -DENABLE_QTVERSION=$DK_QTVERSION \

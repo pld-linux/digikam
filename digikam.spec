@@ -148,6 +148,7 @@ Requires:	libxslt >= 1.1.0
 Requires:	opencv >= 3.3.0
 Obsoletes:	digikamimageplugins < 0.9.2
 Obsoletes:	kipi-plugins < 1.10
+ExcludeArch:	%{ix86} x32
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
